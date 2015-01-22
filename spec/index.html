@@ -1,0 +1,17 @@
+<html>
+<head>
+<script type="text/javascript" src="../build/cts.js"></script>
+<script type="text/javascript">
+	(function(cts) {
+		cts.repository.load(
+			"./test_data/repo.xml", 
+			function(data) {
+				console.log(cts.repository.data);
+			}
+		);
+	}(CTS));
+</script>
+</head>
+<body>
+</body>
+</html>
