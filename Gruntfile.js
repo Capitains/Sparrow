@@ -40,8 +40,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-autoprefixer');
 
   // Default task. 
-  grunt.registerTask('default', ['requirejs', 'concat', 'uglify']);
-  grunt.registerTask('build', ['concat', 'uglify']);
-  //grunt.registerTask('build', ['default', 'clean', 'copy', 'compress']);
-  grunt.registerTask('test', [/*'jshint', */'jasmine']);
+  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('build', ['default']);
+  grunt.registerTask('test', ['default', 'jasmine']);
 };

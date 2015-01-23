@@ -88,7 +88,7 @@ var _load = function(url, callback) {
 
   this.xhr("GET", url[0], function(data) {
 
-    _this.data[url[0]] = data;
+    _this.data[url[0]] = new _this.Repository(data, _this.namespace);
     if(url.length === 1) {
       callback();
     } else {
@@ -100,17 +100,76 @@ var _load = function(url, callback) {
   return this;
 }
 
-// Creating namespace for the retriever.
-function repository() {
-    this.url = [];
-    this.data = {};
-    this.setUrl = _setUrl;
-    this.load = _load;
-    this.xhr = _xhr;
+var TextGroupCTS3 = function(nodes) {
+  var o = {};
+  o.label = {};
 
-    return this;
+  // We get the labels
+  [].map.call(nodes.getElementsByTagName("groupname"), function(groupname) {
+    o.defaultLang = groupname.getAttribute("xml:lang");
+    o.label[o.defaultLang] = groupname.textContent;
+  });
+
+  // We create a function to have a name
+  o.getName = function(lang) {
+    if(lang === "undefined") {
+      lang = this.defaultLang;
+    } else if (!(lang in this.label)) {
+      return this.label[this.defaultLang];
+    }
+    return this.label[lang];
+  }
+  return o;
 }
 
-  CTS.repository = new repository();
+var InventoryCTS3 = function (xml, namespace) {
+  var o = {},
+      ti;
+  o.namespace = namespace;
+  o.TextGroup = TextGroupCTS3;
+  ti = xml.getElementsByTagNameNS(o.namespace, "TextInventory");
+
+  if(ti.length == 1) {
+    o.TextInventory = ti[0];
+    o.TextGroups = [].map.call(o.TextInventory.getElementsByTagNameNS(o.namespace, "textgroup"), TextGroupCTS3);//
+    //.map(TextGroupCTS3)
+  } else {
+    o.TextInventory = null;
+    o.TextInventory = [];
+  }
+
+
+  return o;
+}
+
+// Creating namespace for the retriever.
+function repository(version, namespace) {
+    var o;
+    o = {}
+    if(typeof namespace === "undefined") {
+      if(version === 3) {
+        o.namespace = "http://chs.harvard.edu/xmlns/cts3/ti";
+      } else {
+        o.namespace = "http://chs.harvard.edu/xmlns/cts";
+      }
+    }
+    o.version = version;
+    o.url = [];
+    o.data = {};
+    o.setUrl = _setUrl;
+    o.load = _load;
+    o.xhr = _xhr;
+
+    if (o.version === 3) {
+      o.Repository = InventoryCTS3;
+    } else {
+      o.Repository = null; // NotImplementedYet
+    }
+    
+
+    return o;
+}
+
+  CTS.repository = repository;
   return CTS;
 }(CTS));

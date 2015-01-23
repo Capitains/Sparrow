@@ -3,10 +3,11 @@
 <script type="text/javascript" src="../build/cts.js"></script>
 <script type="text/javascript">
 	(function(cts) {
-		cts.repository.load(
+		TestRepo = cts.repository(3);
+		TestRepo.load(
 			"./test_data/repo.xml", 
 			function(data) {
-				console.log(cts.repository.data);
+				console.log(TestRepo.data);
 			}
 		);
 	}(CTS));
