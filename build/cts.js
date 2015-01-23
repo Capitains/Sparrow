@@ -107,11 +107,11 @@ var _load = function(url, callback) {
   return this;
 }
 
-var TextCTS3 = function(nodes, type) {
+var TextCTS3 = function(nodes, type, urn) {
   var object = {};
   object.type = type;
   object.descriptions = {};
-  object.urn = "";
+  object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
     // We get the labels
   [].map.call(nodes.getElementsByTagName("description"), function(groupname) {
@@ -132,9 +132,10 @@ var TextCTS3 = function(nodes, type) {
   return object;
 }
 
-var WorkCTS3 = function(nodes) {
+var WorkCTS3 = function(nodes, urn) {
   var object = {};
   object.label = {};
+  object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
   // We get the labels
   [].map.call(nodes.getElementsByTagName("title"), function(groupname) {
@@ -152,8 +153,8 @@ var WorkCTS3 = function(nodes) {
     return this.label[lang];
   }
 
-  object._Translation = function(dom) { return TextCTS3(dom, "translation")};
-  object._Edition = function(dom) { return TextCTS3(dom, "edition")};
+  object._Translation = function(dom) { return TextCTS3(dom, "translation", object.urn)};
+  object._Edition = function(dom) { return TextCTS3(dom, "edition", object.urn)};
 
   object.editions = [].map.call(nodes.getElementsByTagName("edition"), object._Edition);
   object.translations = [].map.call(nodes.getElementsByTagName("translation"), object._Translation);
@@ -166,6 +167,7 @@ var WorkCTS3 = function(nodes) {
 var TextGroupCTS3 = function(nodes) {
   var object = {};
   object.label = {};
+  object.urn = nodes.getAttribute("projid");
 
   // We get the labels
   [].map.call(nodes.getElementsByTagName("groupname"), function(groupname) {
@@ -187,7 +189,7 @@ var TextGroupCTS3 = function(nodes) {
 
   object.works = [].map.call(
     nodes.getElementsByTagName("work"),
-    object._Work
+    function(node) { return object._Work(node, object.urn); }
   );
 
   return object;
