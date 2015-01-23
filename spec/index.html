@@ -1,13 +1,13 @@
 <html>
 <head>
-<script type="text/javascript" src="../build/cts.js"></script>
+<script type="text/javascript" src="../build/cts.min.js"></script>
 <script type="text/javascript">
 	(function(cts) {
 		TestRepo = cts.repository(3);
 		TestRepo.load(
 			"./test_data/repo.xml", 
 			function(data) {
-				console.log(TestRepo.data);
+				console.log(TestRepo.data[0].getRaw());
 			}
 		);
 	}(CTS));
