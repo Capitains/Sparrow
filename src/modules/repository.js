@@ -246,6 +246,7 @@ function repository(version, namespace) {
     object.setUrl = _setUrl;
     object.load = _load;
     object.xhr = _xhr;
+    object.apiURL = "";
 
     if (object.version === 3) {
       object.TextInventory = TextInventoryCTS3;
