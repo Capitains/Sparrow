@@ -106,6 +106,8 @@ var TextCTS3 = function(nodes, type, urn) {
   object.descriptions = {};
   object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
+  object.citations = [].map.call(nodes.getElementsByTagName("citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
+
     // We get the labels
   [].map.call(nodes.getElementsByTagName("description"), function(groupname) {
     object.defaultLang = groupname.getAttribute("xml:lang");
@@ -213,10 +215,10 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
         var wLabel = w.getTitle(lang);
         r[tgLabel][wLabel] = {"editions" : {}, "translations" : {}};
         w.editions.forEach(function(e) {
-          r[tgLabel][wLabel]["editions"][e.getDesc(lang)] = e.urn;
+          r[tgLabel][wLabel]["editions"][e.getDesc(lang)] = e;
         });
         w.translations.forEach(function(t) {
-          r[tgLabel][wLabel]["translations"][t.getDesc(lang)] = t.urn;
+          r[tgLabel][wLabel]["translations"][t.getDesc(lang)] = t;
         });
       });
 
@@ -248,7 +250,7 @@ function repository(version, namespace) {
     if (object.version === 3) {
       object.TextInventory = TextInventoryCTS3;
     } else {
-      object.Repository = null; // NotImplementedYet
+      object.TextInventory = null; // NotImplementedYet
     }
     
 
