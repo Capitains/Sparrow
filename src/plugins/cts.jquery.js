@@ -32,7 +32,7 @@
     } else {
       this.lang = $lang["en"];
     }
-    
+
     this.repository = new CTS.repository(this.settings.endpoint, 3);
 
     this.init();
@@ -60,15 +60,17 @@
 	  //Creating encapsuler
       this.element.after($div);
 
-      if(data.length > 1) { // If we have more than one inventory, we must add a select for TextInventory
-        var $inv = $div.append($("<select />", {
+      if(Object.keys(data).length > 1) { // If we have more than one inventory, we must add a select for TextInventory
+        var $inv = $("<select />", {
       		"name" : "inventory_name"
-      	}));
+      	});
+      	$div.append($inv);
 
 		Object.keys(_this.settings.inventories).map(function(key) {
-			$inv.append($("<option />", {
+			var opt = $("<option />", {
 				"value" : key
-			}).text(_this.settings.inventories[key]));
+			}).text(_this.settings.inventories[key]);
+			$inv.append(opt);
 		});
 
       } else {
