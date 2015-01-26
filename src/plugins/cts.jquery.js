@@ -1,11 +1,11 @@
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 	// AMD. Register as an anonymous module.
-		define(["jquery"], factory);
+		define(["jquery", "cts"], factory);
 	} else {
-		factory(jQuery);
+		factory(jQuery, CTS);
 	}
-}(function($) {
+}(function($, CTS) {
 	var $name = "jQuery.cts";
 	var $default = { //Default Params
 		"repository" : "http://www.perseus.tufts.edu/hopper/CTS",	//URL of the repository CTS endpoint

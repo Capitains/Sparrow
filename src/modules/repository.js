@@ -1,4 +1,11 @@
-var CTS = (function(CTS) {
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['cts'], factory);
+  } else {
+    factory(CTS);
+  }
+}(function(CTS) {
 "use strict";
 
 /**
@@ -259,5 +266,4 @@ function repository(version, namespace) {
 }
 
   CTS.repository = repository;
-  return CTS;
-}(CTS));
+}));
