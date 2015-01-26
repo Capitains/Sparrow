@@ -134,9 +134,9 @@ var _load = function(callback, inventories) {
     var callback = null;
   }
 
-  this.xhr("GET", endpoint + "GetCapabilities&inv=" + inventories[0], function(data) {
-    _this.inventories.push(new _this.TextInventory(data, _this.namespace, inventories[0]));
-    if(url.length === 1) {
+  this.xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], function(data) {
+    _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
+    if(inventories.length === 1) {
       if(callback !== null) { callback(); }
     } else {
       inventories.shift();
