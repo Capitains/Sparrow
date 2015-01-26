@@ -1,7 +1,19 @@
 <html>
 <head>
 <script type="text/javascript" src="../build/cts.min.js"></script>
+<script type="text/javascript" src="./jQuery.js"></script>
+<script type="text/javascript" src="../src/plugins/cts.jquery.js"></script>
 <script type="text/javascript">
+	$(document).ready(function() {
+		$(".target").ctsSelector({
+			"endpoint" : "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
+			"version" : 3,
+			"inventories" : {
+				"annotsrc" : "Nice label for annotsrc",
+				"pilots" : "Pilots"
+			}
+		});
+	});/*
 	(function(cts) {
 		Repo = cts.repository("http://localhost:8080/exist/rest/db/xq/CTS.xq?", 3);
 		Repo.addInventory("annotsrc", "Annotation's Sources");
@@ -10,9 +22,10 @@
 				console.log(Repo.inventories["annotsrc"].getRaw());
 			}
 		);
-	}(CTS));
+	}(CTS));*/
 </script>
 </head>
 <body>
+	<input type="text" value="Target" class="target" />
 </body>
 </html>

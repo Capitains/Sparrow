@@ -140,7 +140,7 @@ var _load = function(callback, inventories) {
       if(callback !== null) { callback(); }
     } else {
       inventories.shift();
-      this.load(callback, inventories);
+      _this.load(callback, inventories);
     }
   });
 
