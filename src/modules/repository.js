@@ -57,50 +57,90 @@ var _xhr = function(method, url, callback, async) {
 }
 
 /**
- * Set the URL of the object
+ * Set the endpoint URL of the object
  *
  *  @param    {list|string}  A url for the repository
  *
  */
-var _setUrl = function(url) {
+var _setEndpoint = function(url) {
   if(typeof url === "string") {
-    this.url = [url];
+    this.endpoint = [url];
   } else if (typeof url === "array") {
-    this.url = url;
+    this.endpoint = url;
   }
 }
 
+/**
+ * Set the inventories
+ *
+ *  @param  {dict}  A dictionary where keys are inventory's name and value a label
+ *
+ */
+
+var _setInventory = function(dict) {
+  this.inventory = dict;
+}
+
+/**
+ * Add an inventory
+ *
+ *
+ */
+var _addInventory = function(name, label) {
+  if(typeof name === "string") {
+    if(typeof label === "undefined") {
+      this.inventory[name] = name;
+    } else {
+      this.inventory[name] = label;
+    }
+  } else {
+    throw "Name is not a string";
+  }
+}
+
+/**
+ * Remove an inventory
+ *
+ */
+var _delInventory = function(name) {
+  if(typeof name === "string" && name in self.inventory) {
+    delete self.inventory[name];
+  } else {
+    throw name + " is not in known inventories."
+  }
+}
 
 /**
  * Get the repository from source url
  *
+ * @param  {?function}       callback        Function to call when data are loaded
+ * @param  {?list}           inventory_name  Name of the inventory to load
  *
  */
-var _load = function(url, callback) {
-  var url, 
+var _load = function(callback, inventories) {
+  var endpoint = this.endpoint, 
       callback,
       xhr = this.xhr,
       _this = this;
 
+  if(typeof inventories === "undefined") {
+    var inventories = Object.keys(this.inventory);
+  }
+
   //Basically if we have only the callback
-  if(typeof url === "function") {
-    var callback = url;
-    var url = this.url;
-  } else if(typeof url === "undefined" && typeof callback === "undefined") {
-    var url = this.url;
-  }
-  if(typeof url === "string") {
-    var url = [url];
+  if(typeof callback === "function") {
+    var callback = callback;
+  } else {
+    var callback = null;
   }
 
-  this.xhr("GET", url[0], function(data) {
-
-    _this.data.push(new _this.TextInventory(data, _this.namespace, url[0]));
+  this.xhr("GET", endpoint + "GetCapabilities&inv=" + inventories[0], function(data) {
+    _this.inventories.push(new _this.TextInventory(data, _this.namespace, inventories[0]));
     if(url.length === 1) {
-      callback();
+      if(callback !== null) { callback(); }
     } else {
-      url.shift();
-      this.load(url, callback);
+      inventories.shift();
+      this.load(callback, inventories);
     }
   });
 
@@ -238,8 +278,12 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
 }
 
 // Creating namespace for the retriever.
-function repository(version, namespace) {
+function repository(endpoint, version, namespace) {
   var object = {};
+    // We check the validity of the CTS version
+    if(typeof version === "undefined" || (version !== 3 && version !== 5)) {
+      version = 3;
+    }
     if(typeof namespace === "undefined") {
       if(version === 3) {
         object.namespace = "http://chs.harvard.edu/xmlns/cts3/ti";
@@ -248,12 +292,15 @@ function repository(version, namespace) {
       }
     }
     object.version = version;
-    object.url = [];
-    object.data = [];
-    object.setUrl = _setUrl;
+    object.endpoint = endpoint;
+    object.inventories = {}; // Dictionaries of inventory object
+    object.inventory = {}; // Dictionaries of inventory's label
+    object.setEndpoint = _setEndpoint;
+    object.addInventory = _addInventory;
+    object.setInventory = _setInventory;
+    object.delInventory = _delInventory;
     object.load = _load;
     object.xhr = _xhr;
-    object.apiURL = "";
 
     if (object.version === 3) {
       object.TextInventory = TextInventoryCTS3;

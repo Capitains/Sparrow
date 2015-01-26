@@ -3,11 +3,11 @@
 <script type="text/javascript" src="../build/cts.min.js"></script>
 <script type="text/javascript">
 	(function(cts) {
-		TestRepo = cts.repository(3);
-		TestRepo.load(
-			"./test_data/repo.xml", 
-			function(data) {
-				console.log(TestRepo.data[0].getRaw());
+		Repo = cts.repository("http://sosol.perseids.org/exist/rest/db/xq/CTS.xq?", 3);
+		Repo.addInventory("annotsrc", "Annotation's Sources");
+		Repo.load(
+			function() {
+				console.log(TestRepo.data["annotsrc"].getRaw());
 			}
 		);
 	}(CTS));

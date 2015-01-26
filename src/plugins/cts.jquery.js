@@ -8,10 +8,10 @@
 }(function($, CTS) {
 	var $name = "jQuery.cts";
 	var $default = { //Default Params
-		"repository" : "http://www.perseus.tufts.edu/hopper/CTS",	//URL of the repository CTS endpoint
-		"inventoryName" : null,
+		"API" : "http://www.perseus.tufts.edu/hopper/CTS?",	//URL of the repository CTS endpoint
+		"inventories" : {"annotsrc" : "Fake Name"} // Dictionaries of inventory's name : label
 		"version" : 3, // Version of CTS
-		"namespace" : "http://chs.harvard.edu/xmlns/cts3/ti", //Namesp
+		"namespace" : "http://chs.harvard.edu/xmlns/cts3/ti", //Namespace
 		"lang" : "en"
 	};
 	var $lang = {};
