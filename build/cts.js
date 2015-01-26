@@ -172,24 +172,41 @@ var TextCTS3 = function(nodes, type, urn) {
   var object = {};
   object.type = type;
   object.descriptions = {};
+  object.labels = {}
   object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
   object.citations = [].map.call(nodes.getElementsByTagName("citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
 
     // We get the labels
   [].map.call(nodes.getElementsByTagName("description"), function(groupname) {
-    object.defaultLang = groupname.getAttribute("xml:lang");
-    object.descriptions[object.defaultLang] = groupname.textContent;
+    object.defaultLangDesc = groupname.getAttribute("xml:lang");
+    object.descriptions[object.defaultLangDesc] = groupname.textContent;
+  });
+
+    // We get the labels
+  [].map.call(nodes.getElementsByTagName("label"), function(labelname) {
+    object.defaultLangLabel = labelname.getAttribute("xml:lang");
+    object.labels[object.defaultLangLabel] = labelname.textContent;
   });
 
   // We create a function to have a name
   object.getDesc = function(lang) {
     if(lang === "undefined") {
-      lang = this.defaultLang;
+      lang = this.defaultLangDesc;
     } else if (!(lang in this.descriptions)) {
-      return this.descriptions[this.defaultLang];
+      return this.descriptions[this.defaultLangDesc];
     }
     return this.descriptions[lang];
+  }
+
+  // We create a function to have a name
+  object.getLabel = function(lang) {
+    if(lang === "undefined") {
+      lang = this.defaultLangLabel;
+    } else if (!(lang in this.labels)) {
+      return this.labels[this.defaultLangLabel];
+    }
+    return this.labels[lang];
   }
 
   return object;
