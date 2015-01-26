@@ -15,7 +15,8 @@
 	"use strict";
 
 	var CTS = function() {
-		return {}
+		return {
+		}
 	}
 	return new CTS();
 }));

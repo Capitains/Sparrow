@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         separator: ';',
       },
       dist: {
-        src: ['src/cts.js', 'src/modules/repository.js'],
+        src: ['src/cts.js', 'src/modules/repository.js', 'src/modules/i18n.js'],
         dest: 'build/cts.js',
       },
     },
