@@ -97,14 +97,14 @@
           }
         }
       }
-
+      console.log($urn);
       $element.val($urn);
 
     },
     passage : function(element, $context) {
       var $element = $(element),
           $option  = $element.find("option:selected"),
-          $inputs = $context.find("span.cts-selector-citation"),
+          $inputs = $context.find("fieldset.cts-selector-citation"),
           $level = 0,
           $citations = $option.data("citations"),
           $passage = 0,
@@ -138,11 +138,11 @@
         $citations.forEach(function(citation) {
 
           //Create the label for nice HTML formatting/guidelines
-          $input_id = $id + "-" + $passage + "-level-" + $level,
-              $label = $("<label />", {
-                "for" : $input_id
-              }),
-              $input_container = $("<div />", { "class" : "cts-selector-input-container" });
+          $input_id = $id + "-" + $passage + "-level-" + $level;
+          $label = $("<label />", {
+            "for" : $input_id
+          });
+          $input_container = $("<div />", { "class" : "cts-selector-input-container" });
           $label.text(citation + " : ");
           $input_container.append($label);
           $input = $("<input />", {
