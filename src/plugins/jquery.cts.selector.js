@@ -6,14 +6,33 @@
     factory(jQuery, CTS);
   }
 }(function($, CTS) {
-  var $name = "jQuery.cts";
+  var $name = "jQuery.cts.selector";
   var $default = { //Default Params
     "endpoint" : "http://www.perseus.tufts.edu/hopper/CTS?",  //URL of the repository CTS endpoint
     "inventories" : {}, // Dictionaries of inventory's name : label
     "version" : 3, // Version of CTS
     "namespace" : "http://chs.harvard.edu/xmlns/cts3/ti", //Namespace
-    "lang" : "en"
+    "lang" : "en",
+    "css" : {} //Custom css classes
   };
+  // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
+  var $css = {
+    //Global
+    "container" : ["cts-selector"], // Container for the whole generated DOM
+
+    //Selects
+    "select-inventory" : ["cts-selector-inventory"], //Inventory <select />
+    "select-textgroup" : ["cts-selector-textgroup"],
+    "select-work" : ["cts-selector-work"],
+    "select-text" : ["cts-selector-text"],
+
+    //Citations-Passage Selection
+    "citation-fieldset" : ["cts-selector-citation"], //Fieldset for passage selection
+    "citation-fieldset-legend" : [], // Legend for passage fieldset
+    "citation-label" : [], //<label> for passage's input
+    "citation-input" : ["cts-selector-passage"], // input[type="number"] for passage selection
+    "citation-input-container" : ["cts-selector-input-container"], //Input container for passage selection
+  }
   var $lang = {};
 
   function Plugin ( element, options ) {
@@ -25,8 +44,6 @@
     this.settings = $.extend( {}, $default, options );
     this._name = $name;
 
-    this.blocks = []; //Dom Set of the original elements
-
     if(this.settings["lang"] in $lang) {
       this.lang = $lang[this.settings["lang"]];
     } else {
@@ -34,11 +51,30 @@
     }
 
     this.repository = new CTS.repository(this.settings.endpoint, 3);
-
+    this._defaultCSS = $css;
+    this.css = this.mergeCSS();
     this.init();
   }
 
   $.extend(Plugin.prototype, {
+    getClass : function(key) {
+      if(this.css[key].length > 0) {
+        return this.css[key].join(" ");
+      }
+      return "";
+    },
+    mergeCSS : function() {
+      var _this = this,
+          css = {};
+      Object.keys(_this._defaultCSS).forEach(function(key) {
+        if(key in _this.settings.css && _this.settings.css instanceof Array) {
+          css[key] = _this._defaultCSS[key].concat(_this.settings.css);
+        } else {
+          css[key] = _this._defaultCSS[key];
+        }
+      });
+      return css;
+    },
     init: function () {
        var _this = this;
       //Setting up inventories in this.inventori 
@@ -97,7 +133,6 @@
           }
         }
       }
-      console.log($urn);
       $element.val($urn);
 
     },
@@ -124,9 +159,11 @@
       while($passage < 2) {
         $level = 0;
         $container_passage = $("<fieldset />", {
-              "class" : "cts-selector-citation"
+              "class" : _this.getClass("citation-fieldset")
             }),
-            $legend = $("<legend />"),
+            $legend = $("<legend />", {
+              "class" : _this.getClass("citation-fieldset-legend")
+            }),
             $text = "stop_passage";
 
         if($passage % 2 === 0) {
@@ -140,9 +177,10 @@
           //Create the label for nice HTML formatting/guidelines
           $input_id = $id + "-" + $passage + "-level-" + $level;
           $label = $("<label />", {
-            "for" : $input_id
+            "for" : $input_id,
+            "class" : _this.getClass("citation-label")
           });
-          $input_container = $("<div />", { "class" : "cts-selector-input-container" });
+          $input_container = $("<div />", { "class" : _this.getClass("citation-input-container") });
           $label.text(citation + " : ");
           $input_container.append($label);
           $input = $("<input />", {
@@ -150,7 +188,7 @@
             "type"  : "number",
             "size"  : 4,
             "min"   : 0,
-            "class" : "cts-selector-passage",
+            "class" : _this.getClass("citation-input"),
             "id"    : $input_id,
             "value" : 1
           });
@@ -212,10 +250,11 @@
       var $id = "cts-selector-" + $id;
 
       var data = this.repository.inventories,
+        _this = this,
         $div = $("<div />", {
-          "id" : $id
-        }),
-        _this = this;
+          "id" : $id,
+          "class" : _this.getClass("container")
+        });
  
     //Creating encapsuler
       this.element.after($div);
@@ -223,7 +262,7 @@
       if(Object.keys(data).length > 1) { // If we have more than one inventory, we must add a select for TextInventory
         var $inventory = $("<select />", {
           "name" : "inventory_name",
-          "class" : "cts-selector-inventory"
+          "class" : _this.getClass("select-inventory")
         });
 
         Object.keys(_this.settings.inventories).forEach(function(key) {
@@ -257,7 +296,7 @@
           "name" : "cts-selector-" + key + "-textgroup",
           "data-inventory" : key,
           "style" : "display:none;",
-          "class" : "cts-selector-textgroup"
+          "class" : _this.getClass("select-textgroup")
         });
 
         $textgroup.on("change", _this.select);
@@ -278,7 +317,7 @@
             "data-inventory" : key,
             "data-textgroup" : textgroup.urn,
             "style" : "display:none;",
-            "class" : "cts-selector-work"
+            "class" : _this.getClass("select-work")
           });
           if(!$work1) { $work1 = $works; }
           $div.append($works);
@@ -300,7 +339,7 @@
               "data-textgroup" : textgroup.urn,
               "data-work" : work.urn,
               "style" : "display:none;",
-              "class" : "cts-selector-text"
+              "class" : _this.getClass("select-text")
             });
             if(!$text1) { $text1 = $texts; }
 
