@@ -11,7 +11,9 @@
   var $words = {
     "translation" : "Translation",
     "edition" : "Edition",
-    "select" : "Select"
+    "select" : "Select",
+    "start_passage" : "Beginning of passage", //For passage
+    "stop_passage" : "End of passage" //For passage
   }
 
   CTS.lang.lexicons["en"] = $words;

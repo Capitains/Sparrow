@@ -41,7 +41,7 @@
   $.extend(Plugin.prototype, {
     init: function () {
        var _this = this;
-      //Setting up inventories in this.inventori
+      //Setting up inventories in this.inventori 
       Object.keys(_this.settings.inventories).map(function(key) {
         _this.repository.addInventory(key, _this.settings.inventories[key]);
       });
@@ -50,9 +50,62 @@
         _this.generate();
       });
     },
-    passage : function() {
-      var element = $(this);
-      console.log(element);
+    passage : function(element, $context) {
+      var $element = $(element),
+          $option  = $element.find("option:selected"),
+          $inputs = $context.find("span.cts-selector-citation"),
+          $level = 0,
+          $citations = $option.data("citations"),
+          $passage = 0,
+          $id = $context.attr("id");
+
+      this.element.val(element.value);
+
+      if($inputs.length > 0) {
+        $inputs.remove();
+      }
+
+      while($passage < 2) {
+        var $container_passage = $("<fieldset />", {
+              "class" : "cts-selector-citation"
+            }),
+            $legend = $("<legend />"),
+            $text = "stop_passage";
+
+        if($passage % 2 === 0) {
+          $text = "start_passage";
+        }
+        $legend.text(CTS.lang.get($text, this.lang));
+
+        $container_passage.append($legend);
+        $citations.forEach(function(citation) {
+
+          //Create the label for nice HTML formatting/guidelines
+          var $input_id = $id + "-" + $passage + "-level-" + $level,
+              $label = $("<label />", {
+                "for" : $input_id
+              }),
+              $input_container = $("<div />", { "class" : "cts-selector-input-container" });
+          $label.text(citation + " : ");
+          $input_container.append($label);
+
+          $label.after($("<input />", {
+            "name"  : "passage_" + $level,
+            "type"  : "number",
+            "size"  : 4,
+            "min"   : 0,
+            "class" : "cts-selector-passage",
+            "id"    : $input_id
+          }));
+
+          $container_passage.append($input_container);
+          $level += 1;
+        });
+
+        $context.append($container_passage);
+        $passage += 1;
+      }
+
     },
     select : function () {
       var element = $(this),
@@ -60,14 +113,14 @@
           hide;
 
       if(element.hasClass("cts-selector-inventory")) {
-        hide = [".cts-selector-textgroup", ".cts-selector-work", ".cts-selector-text"];
+        hide = [".cts-selector-textgroup", ".cts-selector-work", ".cts-selector-text", ".cts-selector-citation"];
         show = ".cts-selector-textgroup[data-inventory='" + element.val() + "']";
 
       } else if(element.hasClass("cts-selector-textgroup")) {
-        hide = [".cts-selector-work", ".cts-selector-text"];
+        hide = [".cts-selector-work", ".cts-selector-text", ".cts-selector-citation"];
         show = ".cts-selector-work[data-textgroup='" + element.val() + "']";
       } else if(element.hasClass("cts-selector-work")) {
-        hide = [".cts-selector-text"];
+        hide = [".cts-selector-text", ".cts-selector-citation"];
         show = ".cts-selector-text[data-work='" + element.val() + "']";
       }
       $(hide.join(", ")).hide();
@@ -189,15 +242,17 @@
 
             work.texts.forEach(function(text) {
               var $txoption = $("<option />", {
-                "value" : text.urn,
-                "data-passages" : text.citations
+                "value" : text.urn
               });
+              $txoption.data("citations", text.citations);
               $txoption.text(CTS.lang.get(text.type, _this.lang) + " " + text.getLabel(_this.lang))
               $texts.append($txoption);
             });
 
             $div.append($texts);
-            $texts.on("change", _this.passage);
+            $texts.on("change", function() {
+              _this.passage(this, $div);
+            });
           });
 
           $textgroup.append($toption);
