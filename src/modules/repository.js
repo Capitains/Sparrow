@@ -248,7 +248,7 @@ var TextGroupCTS3 = function(nodes) {
 
   object.works = [].map.call(
     nodes.getElementsByTagName("work"),
-    function(node) { return object._Work(node, object.urn); }
+    function(node) { return object._Work(node, object.urn); }
   );
 
   return object;
