@@ -19,7 +19,8 @@
 		}
 	}
 	return new CTS();
-}));;(function (factory) {
+}));
+(function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['cts'], factory);
@@ -351,7 +352,8 @@ function repository(endpoint, version, namespace) {
 }
 
   CTS.repository = repository;
-}));;(function (factory) {
+}));
+(function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['cts'], factory);

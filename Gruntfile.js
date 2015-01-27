@@ -2,19 +2,19 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
-      my_target: {
+      all: {
         files: {
-          'build/cts.min.js': ['build/cts.js']
+          'build/cts.min.js': ['build/cts.js'],
+          'build/jquery.cts.selector.min.js': ['build/jquery.cts.selector.js']
         }
       }
     },
     concat: {
-      options: {
-        separator: ';',
-      },
-      dist: {
-        src: ['src/cts.js', 'src/modules/repository.js', 'src/modules/i18n.js'],
-        dest: 'build/cts.js',
+      all: {
+        files : {
+          'build/cts.js' : ['src/cts.js', 'src/modules/repository.js', 'src/modules/i18n.js'],
+          'build/jquery.cts.selector.js' : ['src/plugins/jquery.cts.selector.js']
+        }
       },
     },
     jasmine : {
