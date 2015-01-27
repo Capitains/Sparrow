@@ -118,11 +118,12 @@
 
       } else if(element.hasClass("cts-selector-textgroup")) {
         hide = [".cts-selector-work", ".cts-selector-text", ".cts-selector-citation"];
-        show = ".cts-selector-work[data-textgroup='" + element.val() + "']";
+        show = ".cts-selector-work[data-inventory='" + element.attr("data-inventory") + "'][data-textgroup='" + element.val() + "']";
       } else if(element.hasClass("cts-selector-work")) {
         hide = [".cts-selector-text", ".cts-selector-citation"];
-        show = ".cts-selector-text[data-work='" + element.val() + "']";
+        show = ".cts-selector-text[data-inventory='" + element.attr("data-inventory") + "'][data-work='" + element.val() + "']";
       }
+      console.log(show);
       $(hide.join(", ")).hide();
 
       var $show = $(show);
