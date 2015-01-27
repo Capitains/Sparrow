@@ -50,6 +50,57 @@
         _this.generate();
       });
     },
+    writePassage : function($context) {
+      var _this = this,
+          $element = _this.element,
+          //$passages = $context.find("input.cts-selector-passage"),
+          $urn = $element.data("urn"),
+          $start = [],
+          $end = [],
+          $passage = [],
+          $depth = $context.data("level"),
+          $id = $context.attr("id"),
+          $index = 0,
+          $input,
+          $val = 0;
+
+      //Start first
+      while($index < $depth) {
+        $input = $context.find("input#" + $id + "-0-level-" + $index);
+        $val = parseInt($input.val());
+        if($val > 0) {
+          $start.push($val);
+        } else {
+          break;
+        }
+        $index += 1;
+      }
+      if($start.length > 0) {
+        $urn += ":" + $start.join(".");
+        //We check for an end only if we have a start
+        $index = 0;
+        while($index < $depth) {
+          $input = $context.find("input#" + $id + "-1-level-" + $index);
+          $val = parseInt($input.val());
+          if($val > 0) {
+            $end.push($val);
+          } else {
+            break;
+          }
+          $index += 1;
+        }
+        //We have the $end processed, we check if this its length is equal to $start
+        if($end.length == $start.length) {
+          //We check if they are bigger than $start
+          if(parseInt($start.join("")) < parseInt($end.join(""))) {
+            $urn += "-" + $end.join(".");
+          }
+        }
+      }
+
+      $element.val($urn);
+
+    },
     passage : function(element, $context) {
       var $element = $(element),
           $option  = $element.find("option:selected"),
@@ -57,16 +108,22 @@
           $level = 0,
           $citations = $option.data("citations"),
           $passage = 0,
-          $id = $context.attr("id");
+          $id = $context.attr("id"),
+          _this = this,
+          $input,
+          $container_passage,
+          $input_id;
 
-      this.element.val(element.value);
+      _this.element.val(element.value);
+      $context.data("level", $citations.length)
 
       if($inputs.length > 0) {
         $inputs.remove();
       }
 
       while($passage < 2) {
-        var $container_passage = $("<fieldset />", {
+        $level = 0;
+        $container_passage = $("<fieldset />", {
               "class" : "cts-selector-citation"
             }),
             $legend = $("<legend />"),
@@ -75,28 +132,32 @@
         if($passage % 2 === 0) {
           $text = "start_passage";
         }
-        $legend.text(CTS.lang.get($text, this.lang));
+        $legend.text(CTS.lang.get($text, _this.lang));
 
         $container_passage.append($legend);
         $citations.forEach(function(citation) {
 
           //Create the label for nice HTML formatting/guidelines
-          var $input_id = $id + "-" + $passage + "-level-" + $level,
+          $input_id = $id + "-" + $passage + "-level-" + $level,
               $label = $("<label />", {
                 "for" : $input_id
               }),
               $input_container = $("<div />", { "class" : "cts-selector-input-container" });
           $label.text(citation + " : ");
           $input_container.append($label);
-
-          $label.after($("<input />", {
+          $input = $("<input />", {
             "name"  : "passage_" + $level,
             "type"  : "number",
             "size"  : 4,
             "min"   : 0,
             "class" : "cts-selector-passage",
-            "id"    : $input_id
-          }));
+            "id"    : $input_id,
+            "value" : 1
+          });
+
+          $label.after($input);
+
+          $input.on("change", function() { _this.writePassage($context); })
 
           $container_passage.append($input_container);
           $level += 1;
@@ -105,12 +166,14 @@
         $context.append($container_passage);
         $passage += 1;
       }
+      $input.trigger("change");
 
     },
     select : function () {
       var element = $(this),
           show,
-          hide;
+          hide,
+          $show;
 
       if(element.hasClass("cts-selector-inventory")) {
         hide = [".cts-selector-textgroup", ".cts-selector-work", ".cts-selector-text", ".cts-selector-citation"];
@@ -123,10 +186,10 @@
         hide = [".cts-selector-text", ".cts-selector-citation"];
         show = ".cts-selector-text[data-inventory='" + element.attr("data-inventory") + "'][data-work='" + element.val() + "']";
       }
-      console.log(show);
+
       $(hide.join(", ")).hide();
 
-      var $show = $(show);
+      $show = $(show);
       $show.show();
 
       //If you can't change the value (ie, there is only one value), trigger on change
@@ -252,6 +315,7 @@
 
             $div.append($texts);
             $texts.on("change", function() {
+              _this.element.data("urn", this.value)
               _this.passage(this, $div);
             });
           });
