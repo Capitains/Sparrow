@@ -154,7 +154,7 @@ var TextCTS3 = function(nodes, type, urn) {
   object.labels = {}
   object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
-  object.citations = [].map.call(nodes.getElementsByTagName("citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
+  object.citations = [].map.call(nodes.getElementsByTagName("citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
 
     // We get the labels
   [].map.call(nodes.getElementsByTagName("description"), function(groupname) {

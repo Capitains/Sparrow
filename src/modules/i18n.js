@@ -21,6 +21,6 @@
 
   CTS.lang = {
     get : _translate,
-    lexicons : {}
+    lexicons : {}
   }
 }));
