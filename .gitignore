@@ -4,3 +4,4 @@ node_modules
 build
 build/*
 _SpecRunner.html
+doc/*.html

@@ -44,12 +44,12 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 # Basic parameters
 
-| Key         | Type | Default | Description
-|-------------|
-| endpoint    |
-| css         |
-| version     |
-| inventories |
+| Key         | Type   | Default | Required | Description
+|-------------|--------|---------|----------|------------------
+| endpoint    | string |    ""   |    Yes   | CTS API endpoint (URI) finishing with "?"
+| css         | object |    {}   |          | See below [CSS custom classes](#css-custom-classes)
+| version     | int    |    3    |          | Version of the CTS implementation (3 or 5)
+| inventories | object |    {}   |    Yes   | Object where keys are inventory's name and value are label to show
 
 # CSS custom classes
 
