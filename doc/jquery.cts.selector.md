@@ -1,0 +1,71 @@
+jQuery CTS Selector
+===
+
+[Back to the index](../README.md)
+
+If you are looking for the CTS Search field, this has not been built yet. -If you are looking for droids, these are not the one you are looking for.
+
+# Description
+
+This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you, next to a given input, the whole DOM necessary for browsing your inventories !
+
+![This ain't pretty but you can give it some css love yourself](./img/screenshot.jquery.cts.selector.png)
+
+To use it, you will need to use compressed (or uncompressed) `cts.js`, 
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>An example</title>
+  <script type="text/javascript" src="../build/cts.min.js"></script>
+  <script type="text/javascript" src="../build/i18n/en.min.js"></script>
+  <script type="text/javascript" src="/path/to/jQuery.js"></script>
+  <script type="text/javascript" src="../build/jquery.cts.selector.min.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".target").ctsSelector({
+      "endpoint" : "URL/exist/rest/db/xq/CTS.xq?",
+      "version" : 3,
+      "inventories" : {
+        "annotsrc" : "Nice label for annotsrc",
+        "pilots" : "Pilots"
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
+```
+
+# Basic parameters
+
+| Key         | Type | Default | Description
+|-------------|
+| endpoint    |
+| css         |
+| version     |
+| inventories |
+
+# CSS custom classes
+
+Because so many plugins force you to dig the code or extend your already existing CSS classes, we thought it might be cool to give you the availability to add your own classes to **all the generated DOM elements !**. To do so, when passing your `option` object to the constructor, add the `css` dictionary, where keys are identifier described below and value a list of classes (**WITHOUT THE DOT**).
+
+|      Identifier          |  Automatic class                   | Description
+|--------------------------|------------------------------------|--------------
+| container                | `["cts-selector"]`                 | Container for all the generated DOM
+|                          |                                    |
+| select-inventory         | `["cts-selector-inventory"]`       | `<select />` containing inventory choices (None when there is only one inventory)
+| select-textgroup         | `["cts-selector-textgroup"]`       | `<select />` containing textgroup choices
+| select-work              | `["cts-selector-work"]`            | `<select />` containing work choices
+| select-text              | `["cts-selector-text"]`            | `<select />` containing text choices (Edition, Translation, etc.)
+|                          |                                    |
+| citation-fieldset        | `["cts-selector-citation"]`        | `<Fieldset />` containing beginning or end passage selection's inputs
+| citation-fieldset-legend | `[""]`                             | `<Legend />` for the given fieldset
+| citation-label           | `[""]`                             | `<Label />` for one passage selection's input
+| citation-input           | `["cts-selector-passage"]`         | `<Input />` for passage selection
+| citation-input-container | `["cts-selector-input-container"]` | `<Div />` containing one input for passage selection
