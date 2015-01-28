@@ -12,8 +12,7 @@
    *
    */
   var _getText = function() {
-    var _this = this;
-    return _this.text;
+    return this.text;
   }
 
   /**
@@ -24,14 +23,6 @@
    */
   var _setText = function(text) {
     this.text = text;
-  }
-
-  /**
-   *  Convert XML to text
-   *
-   */
-  var _xmlToText = function() {
-
   }
 
   /**
