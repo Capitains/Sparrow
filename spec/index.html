@@ -17,24 +17,16 @@
 			"inventories" : {
 				"annotsrc" : "Nice label for annotsrc",
 				"pilots" : "Pilots"
-			}
+			},
+			"retrieve" : "textarea.TEItext",
+			"retrieve_scope" : "text"
 		});
-/*
-		var t = CTS.Text(
-					"urn:cts:greekLit:tlg0003.tlg001.perseus-grc1:1.1.1-1.1.2", 
-	                "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
-	                "annotsrc"
-                );
-
-		t.retrieve(function() {
-		  var nsResolver = t.document.createNSResolver( t.document.ownerDocument == null ? t.document.documentElement : t.document.ownerDocument.documentElement );
-		  var z = t.document.evaluate("/GetPassage", t.document, nsResolver, XPathResult.ANY_TYPE, null);
-		});*/
 
 	});
 </script>
 </head>
 <body>
+	<textarea class="TEItext" style="width:100%; height:300px;"></textarea>
 	<input type="text" value="Target" class="target" style="width:100%;" />
 </body>
 </html>

@@ -13,12 +13,16 @@
     "version" : 3, // Version of CTS
     "namespace" : "http://chs.harvard.edu/xmlns/cts3/ti", //Namespace
     "lang" : "en",
-    "css" : {} //Custom css classes
+    "css" : {}, //Custom css classes
+    "retrieve" : false,
+    "retrieve_scope" : null
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
     //Global
     "container" : ["cts-selector"], // Container for the whole generated DOM
+    "retrieve-button" : [], //Button to retrieve the passage 
+
 
     //Selects
     "select-inventory" : ["cts-selector-inventory"], //Inventory <select />
@@ -54,9 +58,47 @@
     this._defaultCSS = $css;
     this.css = this.mergeCSS();
     this.init();
+
+    if(this.settings.retrieve !== "false") {
+      this.retriever_init(this.settings.retrieve);
+    }
   }
 
   $.extend(Plugin.prototype, {
+    retriever_init : function(retrieve) {
+      var _this = this,
+          $button = $("<button />", {
+            "class" : _this.getClass("retrieve-button")
+          }),
+          $urn = _this.element.val(),
+          $target;
+
+      if(typeof retrieve === "string") {
+        $target = $(retrieve);
+      } else {
+        $target = _this.element;
+      }
+
+      $button.text(CTS.lang.get("retrieve_passage", _this.lang));
+
+      _this.element.after($button);
+
+      $button.on("click", function() {
+        //We put some text to tell people they are loading
+        $button.text(CTS.lang.get("loading", _this.lang));
+
+        //We create the text instance 
+        _this.text = CTS.Text(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
+        //We load the text
+        _this.text.retrieve(function() {
+          //We feed our targer value
+          $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
+          //We reset legend of the button
+          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
+        });
+      });
+
+    },
     getClass : function(key) {
       if(this.css[key].length > 0) {
         return this.css[key].join(" ");
@@ -134,6 +176,7 @@
         }
       }
       $element.val($urn);
+      $element.data("inventory", $("div#" + $id + " .cts-selector-inventory").val());
 
     },
     passage : function(element, $context) {
@@ -248,6 +291,7 @@
         $id += 1;
       }
       var $id = "cts-selector-" + $id;
+      this.id = $id;
 
       var data = this.repository.inventories,
         _this = this,

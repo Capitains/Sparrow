@@ -44,12 +44,14 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 # Basic parameters
 
-| Key         | Type   | Default | Required | Description
-|-------------|--------|---------|----------|------------------
-| endpoint    | string |    ""   |    Yes   | CTS API endpoint (URI) finishing with "?"
-| css         | object |    {}   |          | See below [CSS custom classes](#css-custom-classes)
-| version     | int    |    3    |          | Version of the CTS implementation (3 or 5)
-| inventories | object |    {}   |    Yes   | Object where keys are inventory's name and value are label to show
+| Key            | Type              | Default | Required | Description
+|----------------|-------------------|---------|----------|------------------
+| endpoint       | string            |    ""   |    Yes   | CTS API endpoint (URI) finishing with "?"
+| css            | object            |    {}   |          | See below [CSS custom classes](#css-custom-classes)
+| version        | int               |    3    |          | Version of the CTS implementation (3 or 5)
+| inventories    | object            |    {}   |    Yes   | Object where keys are inventory's name and value are label to show
+| retrieve       | boolean or string | false   |          | If set to true, replace the content of plugin target by the plugins data on clicking retrieve. If it's a string, will use string as a jQuery selector to fill with retrieved passage
+| retrieve_scope | null or string    | null    |          | Element to retrieve from retrieved passage
 
 # CSS custom classes
 
@@ -58,6 +60,7 @@ Because so many plugins force you to dig the code or extend your already existin
 |      Identifier          |  Automatic class                   | Description
 |--------------------------|------------------------------------|--------------
 | container                | `["cts-selector"]`                 | Container for all the generated DOM
+| retrieve-button          | `[]`                               | `<button />` used to retrieve passage
 |                          |                                    |
 | select-inventory         | `["cts-selector-inventory"]`       | `<select />` containing inventory choices (None when there is only one inventory)
 | select-textgroup         | `["cts-selector-textgroup"]`       | `<select />` containing textgroup choices
@@ -65,7 +68,7 @@ Because so many plugins force you to dig the code or extend your already existin
 | select-text              | `["cts-selector-text"]`            | `<select />` containing text choices (Edition, Translation, etc.)
 |                          |                                    |
 | citation-fieldset        | `["cts-selector-citation"]`        | `<Fieldset />` containing beginning or end passage selection's inputs
-| citation-fieldset-legend | `[""]`                             | `<Legend />` for the given fieldset
-| citation-label           | `[""]`                             | `<Label />` for one passage selection's input
+| citation-fieldset-legend | `[]`                               | `<Legend />` for the given fieldset
+| citation-label           | `[]`                               | `<Label />` for one passage selection's input
 | citation-input           | `["cts-selector-passage"]`         | `<Input />` for passage selection
 | citation-input-container | `["cts-selector-input-container"]` | `<Div />` containing one input for passage selection
