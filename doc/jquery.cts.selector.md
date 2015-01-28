@@ -67,6 +67,7 @@ Because so many plugins force you to dig the code or extend your already existin
 | select-textgroup         | `["cts-selector-textgroup"]`       | `<select />` containing textgroup choices
 | select-work              | `["cts-selector-work"]`            | `<select />` containing work choices
 | select-text              | `["cts-selector-text"]`            | `<select />` containing text choices (Edition, Translation, etc.)
+| trigger-button           | `["cts-selector-trigger"]`         | `<button />` triggering change on select-text when needed.
 |                          |                                    |
 | citation-fieldset        | `["cts-selector-citation"]`        | `<Fieldset />` containing beginning or end passage selection's inputs
 | citation-fieldset-legend | `[]`                               | `<Legend />` for the given fieldset

@@ -30,6 +30,7 @@
     "select-textgroup" : ["cts-selector-textgroup"],
     "select-work" : ["cts-selector-work"],
     "select-text" : ["cts-selector-text"],
+    "trigger-button" : ["cts-selector-trigger"],
 
     //Citations-Passage Selection
     "citation-fieldset" : ["cts-selector-citation"], //Fieldset for passage selection
@@ -417,6 +418,16 @@
       $textgroup1.show();
       $work1.show();
       $text1.show();
+
+      //We need to add a button which allows select when no change is triggered.
+      var $YOU_WILL_PASS = $("<button />", {
+        "class" : _this.getClass("trigger-button")
+      });
+      $YOU_WILL_PASS.text(CTS.lang.get("select", _this.lang));
+      $YOU_WILL_PASS.on("click", function() {
+        $div.find("select:visible").last().trigger("change");
+      });
+      $div.append($YOU_WILL_PASS);
 
     }
   });
