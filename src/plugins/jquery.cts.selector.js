@@ -25,6 +25,7 @@
 
 
     //Selects
+    "hidden-inventory" : ["cts-hidden-inventory"],
     "select-inventory" : ["cts-selector-inventory"], //Inventory <select />
     "select-textgroup" : ["cts-selector-textgroup"],
     "select-work" : ["cts-selector-work"],
@@ -176,7 +177,7 @@
         }
       }
       $element.val($urn);
-      $element.data("inventory", $("div#" + $id + " .cts-selector-inventory").val());
+      $element.data("inventory", $("div#" + $id + " .cts-selector-inventory, div#" + $id + " .cts-hidden-inventory").val());
 
     },
     passage : function(element, $context) {
@@ -326,9 +327,11 @@
         var $inventory = $("<input />", {
           "type" : "hidden",
           "name" : "inventory_name",
+          "class" : _this.getClass("hidden-inventory"),
           "value" : Object.keys(this.settings.inventories)[0]
         });
         $inv1 = $inventory;
+        $div.append($inventory);
       }
       //Writing DOM
 
