@@ -231,10 +231,10 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
         var wLabel = w.getTitle(lang);
         r[tgLabel][wLabel] = {"editions" : {}, "translations" : {}};
         w.editions.forEach(function(e) {
-          r[tgLabel][wLabel]["editions"][e.getDesc(lang)] = e;
+          r[tgLabel][wLabel]["editions"][e.getLabel(lang)] = e;
         });
         w.translations.forEach(function(t) {
-          r[tgLabel][wLabel]["translations"][t.getDesc(lang)] = t;
+          r[tgLabel][wLabel]["translations"][t.getLabel(lang)] = t;
         });
       });
 
