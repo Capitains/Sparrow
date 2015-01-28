@@ -2,6 +2,10 @@
   "name": "ctsJS",
   "description": "CTS JS tool",
   "version": "0.0.1",
+  "dependencies" : {
+    "typeahead.js" : "~0.10.5",
+    "jquery" : "~2"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-requirejs" : "~0.4.0",
