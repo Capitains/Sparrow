@@ -62,6 +62,7 @@ Because so many plugins force you to dig the code or extend your already existin
 | container                | `["cts-selector"]`                 | Container for all the generated DOM
 | retrieve-button          | `[]`                               | `<button />` used to retrieve passage
 |                          |                                    |
+| hidden-inventory         | `["cts-hidden-inventory"]`         | `<input[type="hidden"] />` containing inventory information
 | select-inventory         | `["cts-selector-inventory"]`       | `<select />` containing inventory choices (None when there is only one inventory)
 | select-textgroup         | `["cts-selector-textgroup"]`       | `<select />` containing textgroup choices
 | select-work              | `["cts-selector-work"]`            | `<select />` containing work choices
