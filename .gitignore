@@ -5,3 +5,4 @@ build
 build/*
 _SpecRunner.html
 doc/*.html
+plugins
