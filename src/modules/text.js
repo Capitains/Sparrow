@@ -70,27 +70,38 @@
    *  Gets the xml using the URN
    *
    *  @param  elementName  {?string}  The name of the element to retrieve. Should be null to access format and still get whole document
-   *  @param  format       {?string}  Type of data to retrieve. Default : HTMLCollection. Available : HTMLCollection, String
+   *  @param  format       {?string}  Type of data to retrieve. Default : xml. Available : xml, string
    *
    *  @return      {Document|string}  Asked dom
    *
    */
   var _getXml = function(elementName, format) {
     var _this = this,
+        reconstruct = false,
         xml;
 
+    if(typeof format !== "string" || (format !== "xml" && format !== "string")) {
+      format = "xml";
+    }
+
+    //If elementName is not a string
     if(typeof elementName !== "string") {
-      xml = _this.xml;
+      xml = _this.document;
     //If we have a selector, we go around by transforming the DOM into a document
     } else {
       xml = _this.document.getElementsByTagName(elementName);
+      reconstruct = true;
     }
 
-    if(typeof format !== "string" || format !== "string") {
-      return xml;
-    } else {
+    if(format === "string") {
       var oSerializer = new XMLSerializer();
-      return [].map.call(xml, function(node) { return oSerializer.serializeToString(node); }).join("\n");
+      if(reconstruct === true) {
+        return [].map.call(xml, function(node) { return oSerializer.serializeToString(node); }).join("\n");
+      } else {
+        return oSerializer.serializeToString(xml); 
+      }
+    } else {
+      return xml;
     }
   }
 
