@@ -1,7 +1,9 @@
 <html>
 <head>
 <script type="text/javascript" src="../src/cts.js"></script>
+<script type="text/javascript" src="../src/modules/utils.js"></script>
 <script type="text/javascript" src="../src/modules/repository.js"></script>
+<script type="text/javascript" src="../src/modules/text.js"></script>
 <script type="text/javascript" src="../src/modules/i18n.js"></script>
 <script type="text/javascript" src="./jQuery.js"></script>
 <script type="text/javascript" src="../src/i18n/en.js"></script>
@@ -17,6 +19,18 @@
 				"pilots" : "Pilots"
 			}
 		});
+/*
+		var t = CTS.Text(
+					"urn:cts:greekLit:tlg0003.tlg001.perseus-grc1:1.1.1-1.1.2", 
+	                "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
+	                "annotsrc"
+                );
+
+		t.retrieve(function() {
+		  var nsResolver = t.document.createNSResolver( t.document.ownerDocument == null ? t.document.documentElement : t.document.ownerDocument.documentElement );
+		  var z = t.document.evaluate("/GetPassage", t.document, nsResolver, XPathResult.ANY_TYPE, null);
+		});*/
+
 	});
 </script>
 </head>

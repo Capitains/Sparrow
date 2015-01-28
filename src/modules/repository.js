@@ -9,54 +9,6 @@
 "use strict";
 
 /**
- * Just an XmlHttpRequest polyfill for different IE versions. Simple reuse of sigma.parsers.json
- *
- * @return {*} The XHR like object.
- */
-var _xhr = function(method, url, callback, async) {
-  var xhr;
-  if(typeof async === "undefined") {
-    async = true;
-  }
-
-  if (window && window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest();
-  } else if(window && window.ActiveXObject) {
-    var names,
-        i;
-  
-    if (window.ActiveXObject) {
-      names = [
-        'Msxml2.XMLHTTP.6.0',
-        'Msxml2.XMLHTTP.3.0',
-        'Msxml2.XMLHTTP',
-        'Microsoft.XMLHTTP'
-      ];
-  
-      for (i in names)
-        try {
-          return new ActiveXObject(names[i]);
-        } catch (e) {}
-    }
-  } else {
-    return null;
-  }
-  try {
-    xhr.open(method, url, async);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if(typeof callback === "function") {
-          callback(xhr.responseXML);
-        }
-      }
-    };
-    xhr.send();
-  } catch(err) {
-    console.error(err);
-  }
-}
-
-/**
  * Set the endpoint URL of the object
  *
  *  @param    {list|string}  A url for the repository
@@ -120,7 +72,7 @@ var _delInventory = function(name) {
 var _load = function(callback, inventories) {
   var endpoint = this.endpoint, 
       callback,
-      xhr = this.xhr,
+      xhr = CTS.utils.xhr,
       _this = this;
 
   if(typeof inventories === "undefined") {
@@ -134,7 +86,7 @@ var _load = function(callback, inventories) {
     var callback = null;
   }
 
-  this.xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], function(data) {
+  xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], function(data) {
     _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
     if(inventories.length === 1) {
       if(callback !== null) { callback(); }
@@ -226,7 +178,7 @@ var WorkCTS3 = function(nodes, urn) {
 var TextGroupCTS3 = function(nodes) {
   var object = {};
   object.label = {};
-  object.urn = nodes.getAttribute("projid");
+  object.urn = "urn:cts:" + nodes.getAttribute("projid");
 
   // We get the labels
   [].map.call(nodes.getElementsByTagName("groupname"), function(groupname) {
@@ -317,7 +269,6 @@ function repository(endpoint, version, namespace) {
     object.setInventory = _setInventory;
     object.delInventory = _delInventory;
     object.load = _load;
-    object.xhr = _xhr;
 
     if (object.version === 3) {
       object.TextInventory = TextInventoryCTS3;
