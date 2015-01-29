@@ -103,7 +103,7 @@
           $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
           //We reset legend of the button
           $button.text(CTS.lang.get("retrieve_passage", _this.lang));
-          $target.trigger("cts-passage:retried");
+          $target.trigger("cts-passage:retrieved");
         });
       });
 
