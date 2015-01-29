@@ -17,8 +17,9 @@
    * @param  async     {boolean}    Async
    *
    */
-  var _xhr = function(method, url, callback, type, async) {
-    var xhr;
+  var _xhr = function(method, url, callback, type, data, async) {
+    var xhr,
+        _this = this;
     if(typeof type === "undefined") {
       type = "text/xml";
     }
@@ -61,7 +62,12 @@
           }
         }
       };
-      xhr.send();
+      if(typeof data !== "undefined()") {
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.send(_this.format(data));
+      } else {
+        xhr.send();
+      }
     } catch(err) {
       console.error(err);
     }
@@ -84,8 +90,31 @@
     }
   }
 
+  /**
+   * Encode data for XHR
+   *
+   * @param  data  {dict}  A dictionary where keys are string
+   *
+   */
+  var _urlEncode = function(data) {
+    var encoded = [];
+    Object.keys(data).forEach(function(key) {
+      var param = [key, "="];
+      if(typeof data[key] === "object") {
+        param.push(data[key].join(","));
+      } else if (typeof data[key] !== "string") {
+        param.push(data[key].toString())
+      } else {
+        param.push(data[key].toString())
+      }
+      encoded.push(param.join(""))
+    });
+    return encoded.join("&");
+  }
+
   CTS.utils = {
     xhr : _xhr,
+    urlEncode : _urlEncode,
     checkEndpoint : _checkEndpoint
   }
 }));
