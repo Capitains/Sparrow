@@ -137,7 +137,6 @@
 
       //Start first
       while($index < $depth) {
-        console.log($context.find("input#" + $id + "-0-level-" + $index));
         $input = $context.find("input#" + $id + "-0-level-" + $index);
         $val = parseInt($input.val());
         if($val > 0) {
