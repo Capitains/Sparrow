@@ -31,8 +31,7 @@
     "citation" : [], // Div containing each passage container
     "citation-container" : ["cts-selector-passage-container"], //Fieldset for passage selection
     "citation-container-legend" : ["cts-selector-passage-label"], // Legend for passage fieldset
-    "citation-input" : ["cts-selector-passage-number"], // input[type="number"] for passage selection
-    "citation-input-container" : ["cts-selector-input-container"], //Input container for passage selection
+    "citation-input" : ["cts-selector-passage-number"]
   }
   var $lang = {};
 
@@ -64,7 +63,6 @@
           $button = $("<button />", {
             "class" : _this.getClass("retrieve-button")
           }),
-          $urn = _this.element.val(),
           $target;
 
       if(typeof retrieve === "string") {
@@ -122,12 +120,129 @@
         _this.generate();
       });
     },
+    getPassageString : function() {
+      var _this = this,
+          $element = _this.element,
+          $urn = $element.data("urn"),
+          $context = _this.context,
+          $id = $context.attr("id"),
+          $depth = $context.data("level"),
+          $start = [],
+          $end = [],
+          $passage = [],
+          $index = 0,
+          $val = 0,
+          $input;
+
+
+      //Start first
+      while($index < $depth) {
+        console.log($context.find("input#" + $id + "-0-level-" + $index));
+        $input = $context.find("input#" + $id + "-0-level-" + $index);
+        $val = parseInt($input.val());
+        if($val > 0) {
+          $start.push($val);
+        } else {
+          break;
+        }
+        $index += 1;
+      }
+      if($start.length > 0) {
+        $urn += ":" + $start.join(".");
+        //We check for an end only if we have a start
+        $index = 0;
+        while($index < $depth) {
+          $input = $context.find("input#" + $id + "-1-level-" + $index);
+          $val = parseInt($input.val());
+          if($val > 0) {
+            $end.push($val);
+          } else {
+            break;
+          }
+          $index += 1;
+        }
+        //We have the $end processed, we check if this its length is equal to $start
+        if($end.length == $start.length) {
+          //We check if they are bigger than $start
+          if(parseInt($start.join("")) < parseInt($end.join(""))) {
+            $urn += "-" + $end.join(".");
+          }
+        }
+      }
+      $element.val($urn);
+    },
+    generatePassage : function($urn, $citations) {
+      var $inputs = this.citation_div.find("*"),
+          $id = this.context.attr("id"),
+          $passage = 0,
+          $level = 0,
+          _this = this;
+
+      _this.element.val($urn);
+      this.context.data("level", $citations.length);
+
+      if($inputs.length > 0) {
+        $inputs.remove();
+      }
+
+      while($passage < 2) {
+        $level = 0;
+        $container_passage = $("<div />", {
+              "class" : _this.getClass("citation-container")
+            }),
+            $legend = $("<span />", {
+              "class" : _this.getClass("citation-container-legend")
+            }),
+            $text = "stop_passage";
+
+        if($passage % 2 === 0) {
+          $text = "start_passage";
+        }
+        $legend.text(CTS.lang.get($text, _this.lang));
+
+        $container_passage.append($legend);
+        $citations.forEach(function(citation) {
+
+          //Create the label for nice HTML formatting/guidelines
+          $input_id = $id + "-" + $passage + "-level-" + $level;
+          $input = $("<input />", {
+            "name"  : "passage_" + $level,
+            "type"  : "number",
+            "size"  : 4,
+            "min"   : 0,
+            "class" : _this.getClass("citation-input"),
+            "id"    : $input_id,
+            "placeholder" : citation
+          });
+
+          $container_passage.append($input);
+
+          $input.on("change", function() { _this.getPassageString(); })
+
+          $level += 1;
+        });
+
+        _this.citation_div.append($container_passage);
+        $passage += 1;
+      }
+      $input.trigger("change");
+
+    },
+    generateId : function() {
+      var $id = 1;
+      while($("div#cts-typeahead-" + $id).length >= 1) {
+        $id += 1;
+      }
+      $id = "cts-typeahead-" + $id;
+      return $id;
+    },
     generate : function () {
       var texts = [];
       var _this = this;
 
       _this.context = $("<div />", {
-        "class" : _this.getClass("container")
+        "class" : _this.getClass("container"),
+        "id" : _this.generateId()
       });
       _this.retriever_div = $("<div />", {
         "class" : _this.getClass("retrieve-button-container")
@@ -208,12 +323,11 @@
         }
       });
       this.typeahead.on("typeahead:selected", function(event, suggestion, name) {
-        _this.typeahead.data("repository", suggestion.repository);
-        _this.typeahead.data("urn", suggestion.urn);
-        _this.typeahead.data("citations", suggestion.citations);
+        _this.element.data("inventory", suggestion.inventory);
+        _this.element.data("urn", suggestion.urn);
+        _this.element.data("citations", suggestion.citations);
         _this.element.val(suggestion.urn);
-        //_this.
-        //_this.passage();
+        _this.generatePassage(suggestion.urn, suggestion.citations);
       }); 
     }
   });
