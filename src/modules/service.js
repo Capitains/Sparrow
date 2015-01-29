@@ -7,16 +7,29 @@
   }
 }(function(CTS) {
 
+  var _setValue = function (key, value) {
+    this.options[key]["value"] = value;
+  }
+
+  var _getValues = function() {
+    var data = {},
+        _this = this;
+    Object.keys(_this.options).forEach(function(key) {
+      data[key] = _this.options[key]["value"] || _this.options[key]["default"];
+    });
+    return data;
+  }
+
   var _getOptions = function() {
     return this.options;
   }
 
-  var _send = function(data, callback) {
+  var _send = function(callback) {
     var _this = this;
     //function(method, url, callback, type, async)
     CTS.utils.xhr(_this.method, _this.endpoint, function(data) {
       callback(data);
-    });
+    }, "text/xml", _this.getValues());
   }
 
   /**
@@ -85,6 +98,8 @@
           "default" : "http://www.tei-c.org/ns/1.0"
         }
       },
+      setValue : _setValue,
+      getValues  : _getValues,
       getOptions : _getOptions,
       send : _send
     }

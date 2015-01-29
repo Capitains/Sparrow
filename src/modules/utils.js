@@ -62,9 +62,11 @@
           }
         }
       };
-      if(typeof data !== "undefined()") {
+      console.log(data);
+      console.log(method);
+      if(typeof data !== "undefined" && method === "POST") {
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        xhr.send(_this.format(data));
+        xhr.send(CTS.utils.urlEncode(data));
       } else {
         xhr.send();
       }
