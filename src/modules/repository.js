@@ -229,12 +229,12 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
       r[tgLabel] = {};
       tg.works.forEach(function(w) {
         var wLabel = w.getTitle(lang);
-        r[tgLabel][wLabel] = {"editions" : {}, "translations" : {}};
+        r[tgLabel][wLabel] = {"edition" : {}, "translation" : {}};
         w.editions.forEach(function(e) {
-          r[tgLabel][wLabel]["editions"][e.getDesc(lang)] = e;
+          r[tgLabel][wLabel]["edition"][e.getLabel(lang)] = e;
         });
         w.translations.forEach(function(t) {
-          r[tgLabel][wLabel]["translations"][t.getDesc(lang)] = t;
+          r[tgLabel][wLabel]["translation"][t.getLabel(lang)] = t;
         });
       });
 

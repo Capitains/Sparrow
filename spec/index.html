@@ -5,12 +5,29 @@
 <script type="text/javascript" src="../src/modules/repository.js"></script>
 <script type="text/javascript" src="../src/modules/text.js"></script>
 <script type="text/javascript" src="../src/modules/i18n.js"></script>
-<script type="text/javascript" src="./jQuery.js"></script>
 <script type="text/javascript" src="../src/i18n/en.js"></script>
+<!-- Dependencies -->
+<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+<script type="text/javascript" src="../node_modules/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<!-- Plugins using dependencies -->
+<script type="text/javascript" src="../src/plugins/jquery.cts.typeahead.js"></script>
 <script type="text/javascript" src="../src/plugins/jquery.cts.selector.js"></script>
 <link rel="stylesheet" type="text/css" href="../src/css/jquery.cts.selector.css" />
+<link rel="stylesheet" type="text/css" href="../src/css/jquery.cts.typeahead.css" />
 <script type="text/javascript">
 	$(document).ready(function() {
+		$(".target").ctsTypeahead({
+			"endpoint" : "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
+			"version" : 3,
+			"inventories" : {
+				"annotsrc" : "Nice label for annotsrc",
+				"pilots" : "Pilots"
+			},
+			"retrieve" : "textarea.TEItext",
+			"retrieve_scope" : null
+		});
+		/*
 		$(".target").ctsSelector({
 			"endpoint" : "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
 			"version" : 3,
@@ -32,14 +49,20 @@
 			"retrieve" : "textarea.TEItext2",
 			"retrieve_scope" : null
 		});
+		*/
 	});
 </script>
 </head>
 <body>
+<!--
 	<textarea class="TEItext" style="width:100%; height:100px;"></textarea>
 	<input type="text" value="Target" class="target" style="width:100%;" />
 	<p></p>
 	<textarea class="TEItext2" style="width:100%; height:100px;"></textarea>
 	<input type="text" value="Target" class="target2" style="width:100%;" />
+-->
+	<textarea class="TEItext" style="width:100%; height:300px;"></textarea>
+	<input type="text" class="target" style="width:100%;" />
+	</div>
 </body>
 </html>
