@@ -252,9 +252,8 @@
       $input.trigger("change");
 
     },
-    select : function () {
-      var element = $(this),
-          show,
+    select : function (element, $context) {
+      var show,
           hide,
           $show;
 
@@ -270,9 +269,9 @@
         show = ".cts-selector-text[data-inventory='" + element.attr("data-inventory") + "'][data-work='" + element.val() + "']";
       }
 
-      $(hide.join(", ")).hide();
+      $context.find(hide.join(", ")).hide();
 
-      $show = $(show);
+      $show = $context.find(show);
       $show.show();
 
       //If you can't change the value (ie, there is only one value), trigger on change
@@ -322,7 +321,7 @@
 
         $div.append($inventory);
         //Mapping onChange
-        $inventory.on("change", _this.select);
+        $inventory.on("change", function() { _this.select($(this), $div); });
 
       } else {
         var $inventory = $("<input />", {
@@ -347,7 +346,7 @@
           "class" : _this.getClass("select-textgroup")
         });
 
-        $textgroup.on("change", _this.select);
+        $textgroup.on("change", function() { _this.select($(this), $div); });
 
         $div.append($textgroup);
 
@@ -369,7 +368,7 @@
           });
           if(!$work1) { $work1 = $works; }
           $div.append($works);
-          $works.on("change", _this.select);
+          $works.on("change", function() { _this.select($(this), $div); });
 
           //Add a select for Work
           textgroup.works.forEach(function(work) {

@@ -22,11 +22,24 @@
 			"retrieve_scope" : null
 		});
 
+		$(".target2").ctsSelector({
+			"endpoint" : "http://localhost:8080/exist/rest/db/xq/CTS.xq?",
+			"version" : 3,
+			"inventories" : {
+				"annotsrc" : "Nice label for annotsrc",
+				"pilots" : "Pilots"
+			},
+			"retrieve" : "textarea.TEItext2",
+			"retrieve_scope" : null
+		});
 	});
 </script>
 </head>
 <body>
-	<textarea class="TEItext" style="width:100%; height:300px;"></textarea>
+	<textarea class="TEItext" style="width:100%; height:100px;"></textarea>
 	<input type="text" value="Target" class="target" style="width:100%;" />
+	<p></p>
+	<textarea class="TEItext2" style="width:100%; height:100px;"></textarea>
+	<input type="text" value="Target" class="target2" style="width:100%;" />
 </body>
 </html>
