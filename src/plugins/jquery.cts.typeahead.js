@@ -75,7 +75,12 @@
 
       _this.retriever_div.append($button);
 
-      $button.on("click", function() {
+      $button.on("click", function(event) {
+        // prevent the event from filtering up and
+        // default submission based upon a button click
+        // in case the plugin is embedded in a form
+        event.stopPropagation();
+        event.preventDefault();
         //We put some text to tell people they are loading
         $button.text(CTS.lang.get("loading", _this.lang));
 
