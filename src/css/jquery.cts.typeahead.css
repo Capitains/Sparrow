@@ -2,6 +2,19 @@
  *	Reused https://github.com/twitter/typeahead.js/blob/gh-pages/css/examples.css
  *
  */
+ .cts-selector-retriever {
+  padding: 2px 12px;
+  font-size: 12px;
+  line-height: 32px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  outline: none;
+  height:32px;
+  box-sizing:border-box;
+
+ }
  .typeahead,
  .tt-query,
  .tt-hint {
@@ -32,7 +45,7 @@
 }
 .tt-dropdown-menu {
   width: 422px;
-  margin-top: 12px;
+  margin-top: 0px;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -46,7 +59,7 @@
 }
 .tt-suggestion {
   padding: 3px 20px;
-  font-size: 18px;
+  font-size: 12px;
   line-height: 24px;
 }
 .tt-suggestion.tt-cursor {
@@ -57,23 +70,31 @@
   margin: 0;
 }
 .gist {
+  font-size: 12px;
+}
+
+.tt-suggestion {
+  padding: 8px 20px;
   font-size: 14px;
+  line-height: 18px;
 }
-/* example specific styles */
-/* ----------------------- */
-#custom-templates .empty-message {
-  padding: 5px 10px;
-  text-align: center;
+
+.tt-suggestion + .tt-suggestion {
+  font-size: 14px;
+  border-top: 1px solid #ccc;
 }
-#multiple-datasets .league-name {
-  margin: 0 20px 5px 20px;
-  padding: 3px 0;
-  border-bottom: 1px solid #ccc;
+
+.tt-suggestions .text-type {
+  float: right;
+  font-style: italic;
 }
-#scrollable-dropdown-menu .tt-dropdown-menu {
-  max-height: 150px;
-  overflow-y: auto;
+
+.tt-suggestions .text-name {
+  font-size: 12px;
+  font-weight: bold;
 }
-#rtl-support .tt-dropdown-menu {
-  text-align: right;
+
+.tt-suggestions .text-description {
+  margin: 0;
+  font-size:10px;
 }
