@@ -21,13 +21,17 @@
   var $css = {
     //Global
     "container" : ["cts-selector"], // Container for the whole generated DOM
+
+
+
     "retrieve-button" : ["cts-selector-retriever"], //Button to retrieve the passage 
+    "retrieve-button-container" : [""], // Div containing retrieve button
 
     //Citations-Passage Selection
-    "citation-fieldset" : ["cts-selector-citation"], //Fieldset for passage selection
-    "citation-fieldset-legend" : [], // Legend for passage fieldset
-    "citation-label" : [], //<label> for passage's input
-    "citation-input" : ["cts-selector-passage"], // input[type="number"] for passage selection
+    "citation" : [], // Div containing each passage container
+    "citation-container" : ["cts-selector-passage-container"], //Fieldset for passage selection
+    "citation-container-legend" : ["cts-selector-passage-label"], // Legend for passage fieldset
+    "citation-input" : ["cts-selector-passage-number"], // input[type="number"] for passage selection
     "citation-input-container" : ["cts-selector-input-container"], //Input container for passage selection
   }
   var $lang = {};
@@ -52,9 +56,6 @@
     this.css = this.mergeCSS();
     this.init();
 
-    if(this.settings.retrieve !== "false") {
-      this.retriever_init(this.settings.retrieve);
-    }
   }
 
   $.extend(Plugin.prototype, {
@@ -74,7 +75,7 @@
 
       $button.text(CTS.lang.get("retrieve_passage", _this.lang));
 
-      _this.element.after($button);
+      _this.retriever_div.append($button);
 
       $button.on("click", function() {
         //We put some text to tell people they are loading
@@ -122,9 +123,40 @@
       });
     },
     generate : function () {
-      var texts = [],
-          _this = this;
+      var texts = [];
+      var _this = this;
 
+      _this.context = $("<div />", {
+        "class" : _this.getClass("container")
+      });
+      _this.retriever_div = $("<div />", {
+        "class" : _this.getClass("retrieve-button-container")
+      });
+      _this.citation_div = $("<div />", {
+        "class" : _this.getClass("citation")
+      });
+
+
+      /**
+       * We create the basic DOM first
+       */
+
+      _this.typeahead = $("<input />", {
+        "class" : "typeahead"
+      });
+      _this.element.after(_this.context);
+
+      _this.context.append(_this.typeahead);
+      _this.element.hide();
+      _this.context.append(this.citation_div);
+      _this.context.append(_this.retriever_div);
+
+
+      if(this.settings.retrieve !== "false") {
+        this.retriever_init(this.settings.retrieve);
+      }
+
+      // Then we transform our inventories data into a list of small object
       Object.keys(_this.repository.inventories).forEach(function(inventory_name) {
         var inventory = _this.repository.inventories[inventory_name].getRaw(_this.lang);
 
@@ -147,6 +179,7 @@
         });
       });
 
+      // We instantiate Bloodhound
       var BHTexts = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -160,8 +193,7 @@
       // passing in `null` for the `options` arguments will result in the default
       // options being used
 
-      this.element.addClass("typeahead");
-      this.element.typeahead(null, {
+      this.typeahead.typeahead(null, {
         name: 'texts',
         displayKey: 'name',
         // `ttAdapter` wraps the suggestion engine in an adapter that
@@ -175,10 +207,12 @@
           ].join(''))
         }
       });
-      this.element.on("typeahead:selected", function(event, suggestion, name) {
-        _this.element.data("repository", suggestion.repository);
-        _this.element.data("urn", suggestion.urn);
-        _this.element.data("citations", suggestion.citations);
+      this.typeahead.on("typeahead:selected", function(event, suggestion, name) {
+        _this.typeahead.data("repository", suggestion.repository);
+        _this.typeahead.data("urn", suggestion.urn);
+        _this.typeahead.data("citations", suggestion.citations);
+        _this.element.val(suggestion.urn);
+        //_this.
         //_this.passage();
       }); 
     }
