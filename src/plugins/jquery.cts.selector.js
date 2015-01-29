@@ -85,7 +85,12 @@
 
       _this.element.after($button);
 
-      $button.on("click", function() {
+      $button.on("click", function(event) {
+        // prevent the event from filtering up and
+        // default submission based upon a button click
+        // in case the plugin is embedded in a form
+        event.stopPropagation();
+        event.preventDefault();
         //We put some text to tell people they are loading
         $button.text(CTS.lang.get("loading", _this.lang));
 
@@ -423,7 +428,13 @@
         "class" : _this.getClass("trigger-button")
       });
       $YOU_WILL_PASS.text(CTS.lang.get("select", _this.lang));
-      $YOU_WILL_PASS.on("click", function() {
+      $YOU_WILL_PASS.on("click", function(event) {
+        // prevent the event from filtering up and
+        // default submission based upon a button click
+        // in case the plugin is embedded in a form
+        event.stopPropagation();
+        event.preventDefault();
+        
         $div.find("select:visible").last().trigger("change");
       });
       $div.append($YOU_WILL_PASS);
