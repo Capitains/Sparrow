@@ -21,9 +21,7 @@
   var $css = {
     //Global
     "container" : ["cts-selector"], // Container for the whole generated DOM
-
-
-
+    
     "retrieve-button" : ["cts-selector-retriever"], //Button to retrieve the passage 
     "retrieve-button-container" : [""], // Div containing retrieve button
 
@@ -83,6 +81,7 @@
         event.preventDefault();
         //We put some text to tell people they are loading
         $button.text(CTS.lang.get("loading", _this.lang));
+        $target.trigger("cts-passage:retrieving");
 
         //We create the text instance 
         _this.text = CTS.Text(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
@@ -92,6 +91,7 @@
           $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
           //We reset legend of the button
           $button.text(CTS.lang.get("retrieve_passage", _this.lang));
+          $target.trigger("cts-passage:retried");
         });
       });
 

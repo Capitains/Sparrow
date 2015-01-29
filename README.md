@@ -20,4 +20,4 @@ grunt build
 ## jQuery
 
 - [jQuery.cts.selector](./doc/jquery.cts.selector.md) : A way to browse and construct an URN using `<select />`
-- jQuery.cts.textbox : A way to search for an edition or translation
+- [jQuery.cts.typeahead](./jquery.cts.typeahead.js.md) : A way to search for an edition or translation

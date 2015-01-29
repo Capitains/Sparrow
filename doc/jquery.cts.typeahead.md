@@ -1,15 +1,17 @@
-jQuery CTS Selector
+jQuery CTS Typeahead
 ===
 
 [Back to the index](../README.md)
 
-If you are looking for the CTS Search field, this is [here](./jquery.cts.typeahead.js.md). -If you are looking for droids, these are not the one you are looking for.
+If you are looking for the CTS Search field, this is here. -If you are looking for droids, these are not the one you are looking for.
 
 # Description
 
-This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you, next to a given input, the whole DOM necessary for browsing your inventories !
+This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you a search box where your user can simply type to find !
 
-![This ain't pretty but you can give it some css love yourself](./img/screenshot.jquery.cts.selector.png)
+![List when typing](./img/screenshot.jquery.cts.typeahead.list.png)
+
+![After retrieval](./img/screenshot.jquery.cts.typeahead.retrieved.png)
 
 To use it, you will need to use compressed (or uncompressed) `cts.js`, 
 
@@ -21,13 +23,18 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
   <script type="text/javascript" src="../build/cts.min.js"></script>
   <script type="text/javascript" src="../build/i18n/en.min.js"></script>
   <script type="text/javascript" src="/path/to/jQuery.js"></script>
-  <script type="text/javascript" src="../build/jquery.cts.selector.min.js"></script>
+  <script type="text/javascript" src="/path/to/jQuery.js"></script>
+  <script type="text/javascript" src="/path/to/handlebars.js"></script>
+  <script type="text/javascript" src="/path/to/typeahead.bundle.js"></script>
+  <script type="text/javascript" src="../build/jquery.cts.typeahead.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../src/css/jquery.cts.typeahead.css" />
+
 </head>
 <body>
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $(".target").ctsSelector({
+    $(".target").ctsTypeahead({
       "endpoint" : "URL/exist/rest/db/xq/CTS.xq?",
       "version" : 3,
       "inventories" : {
@@ -64,20 +71,13 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 Because so many plugins force you to dig the code or extend your already existing CSS classes, we thought it might be cool to give you the availability to add your own classes to **all the generated DOM elements !**. To do so, when passing your `option` object to the constructor, add the `css` dictionary, where keys are identifier described below and value a list of classes (**WITHOUT THE DOT**).
 
-|      Identifier          |  Automatic class                   | Description
-|--------------------------|------------------------------------|--------------
-| container                | `["cts-selector"]`                 | Container for all the generated DOM
-| retrieve-button          | `[]`                               | `<button />` used to retrieve passage
-|                          |                                    |
-| hidden-inventory         | `["cts-hidden-inventory"]`         | `<input[type="hidden"] />` containing inventory information
-| select-inventory         | `["cts-selector-inventory"]`       | `<select />` containing inventory choices (None when there is only one inventory)
-| select-textgroup         | `["cts-selector-textgroup"]`       | `<select />` containing textgroup choices
-| select-work              | `["cts-selector-work"]`            | `<select />` containing work choices
-| select-text              | `["cts-selector-text"]`            | `<select />` containing text choices (Edition, Translation, etc.)
-| trigger-button           | `["cts-selector-trigger"]`         | `<button />` triggering change on select-text when needed.
-|                          |                                    |
-| citation-fieldset        | `["cts-selector-citation"]`        | `<Fieldset />` containing beginning or end passage selection's inputs
-| citation-fieldset-legend | `[]`                               | `<Legend />` for the given fieldset
-| citation-label           | `[]`                               | `<Label />` for one passage selection's input
-| citation-input           | `["cts-selector-passage"]`         | `<Input />` for passage selection
-| citation-input-container | `["cts-selector-input-container"]` | `<Div />` containing one input for passage selection
+|      Identifier           |  Automatic class                     | Description
+|---------------------------|--------------------------------------|--------------
+| container                 | `["cts-selector"]`                   | Container for all the generated DOM
+| retrieve-button           | `["cts-selector-retriever"]`         | `<button />` used to retrieve passage
+| retrieve-container        | `[]`                                 | `<div />` containing previous button
+|                           |                                      |
+| citation                  | `["cts-selector-citation"]`          | `<div />` containing beginning or end passage selection's containers
+| citation-container        | `["cts-selector-passage-container"]` | `<div />` containing beginning or end passage selection's inputs
+| citation-container-legend | `["cts-selector-passage-label"]`     | `<span />` for the given div containing identifier for beginning or end
+| citation-input            | `["cts-selector-passage-number"]`    | `<Input />` for passage selection
