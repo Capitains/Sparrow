@@ -434,7 +434,6 @@
         // in case the plugin is embedded in a form
         event.stopPropagation();
         event.preventDefault();
-        
         $div.find("select:visible").last().trigger("change");
       });
       $div.append($YOU_WILL_PASS);
