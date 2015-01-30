@@ -1,7 +1,7 @@
 jQuery CTS Typeahead
 ===
 
-[Back to the index](../README.md)
+[Back to the index](../../README.md)
 
 If you are looking for the CTS Search field, this is here. -If you are looking for droids, these are not the one you are looking for.
 

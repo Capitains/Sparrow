@@ -1,9 +1,9 @@
 jQuery CTS Selector
 ===
 
-[Back to the index](../README.md)
+[Back to the index](../../README.md)
 
-If you are looking for the CTS Search field, this is [here](./jquery.cts.typeahead.js.md). -If you are looking for droids, these are not the one you are looking for.
+If you are looking for the CTS Search field, this is [here](./jquery.cts.typeahead.md). -If you are looking for droids, these are not the one you are looking for.
 
 # Description
 

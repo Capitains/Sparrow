@@ -20,5 +20,5 @@ grunt build
 ## jQuery
 
 - [jQuery.cts.selector](./doc/plugins/jquery.cts.selector.md) : A way to browse and construct an URN using `<select />`
-- [jQuery.cts.typeahead](./doc/plugins/jquery.cts.typeahead.js.md) : A way to search for an edition or translation
-- [jQuery.cts.service](./doc/plugins/jquery.cts.service.js.md) : A way to embed service parameters and form in your html
+- [jQuery.cts.typeahead](./doc/plugins/jquery.cts.typeahead.md) : A way to search for an edition or translation
+- [jQuery.cts.service](./doc/plugins/jquery.cts.service.md) : A way to embed service parameters and form in your html
