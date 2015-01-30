@@ -67,6 +67,16 @@
   }
 
   $.extend(Plugin.prototype, {
+    generateId : function() {
+      var $id = 1;
+
+      while($("div#cts-service-" + $id).length >= 1) {
+        $id += 1;
+      }
+      $id = "cts-service-" + $id;
+      this.id = $id;
+      return $id;
+    },
     retriever_init : function(retrieve) {
       var _this = this,
           $button = $("<button />", {

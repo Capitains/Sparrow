@@ -24,28 +24,20 @@
     return this.options;
   }
 
-  var _send = function(callback) {
+  var _send = function(callback, format) {
     var _this = this;
+    if (typeof format === "undefined") { format = "text/xml"; }
     //function(method, url, callback, type, async)
     CTS.utils.xhr(_this.method, _this.endpoint, function(data) {
       if(typeof callback === "function") { callback(data); }
-    }, "text/xml", _this.getValues());
+    }, format, _this.getValues());
   }
 
   /**
+   * LLT Tokenizer HTTP REST API
    *
-| Parameter name         | Type    | Default                     | Description 
-| ---------------------- | ------- | --------                    | ----------------------
-| xml                    | boolean | true                        | Wether or not text is XML
-| inline                 | boolean | true                        | ?
-| splitting              | boolean | true                        | Split Enclytics
-| merging                | boolean | false                       | Merge split words
-| shifting               | boolean | false                       | Shift Enclytics
-| text                   | xml     |                             | Text to tokenize
-| remove_node            | list    |                             | List of nodes to remove from XML (Example : teiHeader,head,speaker,note,ref)
-| go_to_root             | string  | TEI                         | Name of the root node
-| ns                     | string  | http://www.tei-c.org/ns/1.0 | Namespace
-   *
+   * @Github : https://github.com/latin-language-toolkit/llt
+   * 
    */
   var _llt_tokenizer = function(endpoint, options) {
 
