@@ -5,7 +5,7 @@ jQuery CTS Typeahead
 
 If you are looking for the CTS Search field, this is here. -If you are looking for droids, these are not the one you are looking for.
 
-# Description
+## Description
 
 This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you a search box where your user can simply type to find !
 
@@ -49,14 +49,14 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 </html>
 ```
 
-# Events
+## Events
 
 | Name                   | Description
 |------------------------|---------------------------------
 | cts-passage:retrieving | Before retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
 | cts-passage:retrieved  | After retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
 
-# Basic parameters
+## Basic parameters
 
 | Key            | Type              | Default | Required | Description
 |----------------|-------------------|---------|----------|------------------
@@ -67,7 +67,7 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 | retrieve       | boolean or string | false   |          | If set to true, replace the content of plugin target by the plugins data on clicking retrieve. If it's a string, will use string as a jQuery selector to fill with retrieved passage
 | retrieve_scope | null or string    | null    |          | Element to retrieve from retrieved passage
 
-# CSS custom classes
+## CSS custom classes
 
 Because so many plugins force you to dig the code or extend your already existing CSS classes, we thought it might be cool to give you the availability to add your own classes to **all the generated DOM elements !**. To do so, when passing your `option` object to the constructor, add the `css` dictionary, where keys are identifier described below and value a list of classes (**WITHOUT THE DOT**).
 

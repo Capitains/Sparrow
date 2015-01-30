@@ -28,6 +28,23 @@ See implemented services documentations.
 | show             | boolean,string | true          | Hide/Show the element. If a string, $(target).trigger(the string) will toggle the visibility of the form
 | callback         | function       | null          | Function to call on service calling. Response from ajax request is passed as data to the callback function
 
+
+## CSS custom classes
+
+Because so many plugins force you to dig the code or extend your already existing CSS classes, we thought it might be cool to give you the availability to add your own classes to **all the generated DOM elements !**. To do so, when passing your `option` object to the constructor, add the `css` dictionary, where keys are identifier described below and value a list of classes (**WITHOUT THE DOT**).
+
+|      Identifier          |  Automatic class                   | Description
+|--------------------------|------------------------------------|--------------
+| container                | `["cts-service"]`                  | Container for all the generated DOM (`<fieldset />`)
+| container-legend         | `["cts-service-legend"]`           | Container for the title of the service (`<legend />`)
+|                          |                                    |
+| field-container          | `[]`                               | `<div />` containing a field
+| field-label              | `[]`                               | `<Label />` of the field
+| field-input-container    | `[]`                               | `<div />` wrapping the input inside the field-container
+| field-text               | `[]`                               | Classes for `<input type="text" />`
+| field-checkbox           | `[]`                               | Classes for `<input type="checkbox" />`
+| field-textarea           | `[]`                               | Classes for `<textarea />`
+
 ## Example 
 
 ```html
