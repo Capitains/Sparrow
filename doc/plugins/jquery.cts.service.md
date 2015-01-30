@@ -26,6 +26,7 @@ See implemented services documentations.
 | DOM              | dictionary     | {}            | Instead of generating DOM, reuse an element in the DOM for a given parameter
 | defaults         | dictionary     | {}            | Override a default value of the service
 | show             | boolean,string | true          | Hide/Show the element. If a string, $(target).trigger(the string) will toggle the visibility of the form
+| callback         | function       | null          | Function to call on service calling. Response from ajax request is passed as data to the callback function
 
 ## Example 
 
