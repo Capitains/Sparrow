@@ -65,8 +65,9 @@
       console.log(data);
       console.log(method);
       if(typeof data !== "undefined" && method === "POST") {
-        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        xhr.send(CTS.utils.urlEncode(data));
+        xhr.overrideMimeType("multipart/form-data");
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
+        xhr.send(CTS.utils.dataEncode(data));
       } else {
         xhr.send();
       }
@@ -98,25 +99,23 @@
    * @param  data  {dict}  A dictionary where keys are string
    *
    */
-  var _urlEncode = function(data) {
-    var encoded = [];
+  var _dataEncode = function(data) {
+    var urlEncodedData = "",
+        urlEncodedDataPairs = [];
+    // We turn the data object into an array of URL encoded key value pairs.
     Object.keys(data).forEach(function(key) {
-      var param = [key, "="];
-      if(typeof data[key] === "object") {
-        param.push(data[key].join(","));
-      } else if (typeof data[key] !== "string") {
-        param.push(data[key].toString())
-      } else {
-        param.push(data[key].toString())
-      }
-      encoded.push(param.join(""))
+      urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     });
-    return encoded.join("&");
+
+    // We combine the pairs into a single string and replace all encoded spaces to 
+    // the plus character to match the behaviour of the web browser form submit.
+    urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+    return urlEncodedData;
   }
 
   CTS.utils = {
     xhr : _xhr,
-    urlEncode : _urlEncode,
+    dataEncode : _dataEncode,
     checkEndpoint : _checkEndpoint
   }
 }));
