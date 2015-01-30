@@ -17,8 +17,9 @@
    * @param  async     {boolean}    Async
    *
    */
-  var _xhr = function(method, url, callback, type, async) {
-    var xhr;
+  var _xhr = function(method, url, callback, type, data, async) {
+    var xhr,
+        _this = this;
     if(typeof type === "undefined") {
       type = "text/xml";
     }
@@ -61,7 +62,13 @@
           }
         }
       };
-      xhr.send();
+      if(typeof data !== "undefined" && method === "POST") {
+        xhr.overrideMimeType("multipart/form-data");
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
+        xhr.send(CTS.utils.dataEncode(data));
+      } else {
+        xhr.send();
+      }
     } catch(err) {
       console.error(err);
     }
@@ -84,8 +91,35 @@
     }
   }
 
+  /**
+   * Encode data for XHR
+   *
+   * @param  data  {dict}  A dictionary where keys are string
+   *
+   */
+  var _dataEncode = function(data) {
+    var urlEncodedData = "",
+        urlEncodedDataPairs = [];
+    // We turn the data object into an array of URL encoded key value pairs.
+    Object.keys(data).forEach(function(key) {
+      if(Array.isArray(data[key])) {
+        data[key].forEach(function(val) {
+          urlEncodedDataPairs.push(encodeURIComponent(key) + "[]=" + encodeURIComponent(val));
+        });
+      } else {
+        urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+      }
+    });
+
+    // We combine the pairs into a single string and replace all encoded spaces to 
+    // the plus character to match the behaviour of the web browser form submit.
+    urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+    return urlEncodedData;
+  }
+
   CTS.utils = {
     xhr : _xhr,
+    dataEncode : _dataEncode,
     checkEndpoint : _checkEndpoint
   }
 }));
