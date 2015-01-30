@@ -86,7 +86,7 @@
         "remove_node" : {
           "type" : "list",
           "html" : "input",
-          "default" : "teiHeader,head,speaker,note,ref"
+          "default" : ["teiHeader","head","speaker","note","ref"]
         },
         "go_to_root" : {
           "type" : "string",

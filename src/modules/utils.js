@@ -62,8 +62,6 @@
           }
         }
       };
-      console.log(data);
-      console.log(method);
       if(typeof data !== "undefined" && method === "POST") {
         xhr.overrideMimeType("multipart/form-data");
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
@@ -104,7 +102,13 @@
         urlEncodedDataPairs = [];
     // We turn the data object into an array of URL encoded key value pairs.
     Object.keys(data).forEach(function(key) {
-      urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+      if(Array.isArray(data[key])) {
+        data[key].forEach(function(val) {
+          urlEncodedDataPairs.push(encodeURIComponent(key) + "[]=" + encodeURIComponent(val));
+        });
+      } else {
+        urlEncodedDataPairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+      }
     });
 
     // We combine the pairs into a single string and replace all encoded spaces to 
