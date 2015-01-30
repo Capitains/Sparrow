@@ -27,9 +27,8 @@
   var _send = function(callback) {
     var _this = this;
     //function(method, url, callback, type, async)
-    console.log(_this.method);
     CTS.utils.xhr(_this.method, _this.endpoint, function(data) {
-      callback(data);
+      if(typeof callback === "function") { callback(data); }
     }, "text/xml", _this.getValues());
   }
 
