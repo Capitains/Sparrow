@@ -176,6 +176,8 @@
         }
       }
       $element.val($urn);
+      _this.element.trigger("cts-passage-:urn-updated");
+      _this.element.trigger("cts-passage-:urn-passage");
     },
     generatePassage : function($urn, $citations) {
       var $inputs = this.citation_div.find("*"),
@@ -332,6 +334,8 @@
         _this.element.data("inventory", suggestion.inventory);
         _this.element.data("urn", suggestion.urn);
         _this.element.val(suggestion.urn);
+        _this.element.trigger("cts-passage-:urn-updated");
+        _this.element.trigger("cts-passage-:urn-work");
         if(_this.settings.passage === true) {
           _this.element.data("citations", suggestion.citations);
           _this.generatePassage(suggestion.urn, suggestion.citations);

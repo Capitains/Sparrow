@@ -197,7 +197,8 @@
       }
       $element.val($urn);
       $element.data("inventory", $("div#" + $id + " .cts-selector-inventory, div#" + $id + " .cts-hidden-inventory").val());
-
+      _this.element.trigger("cts-passage-:urn-updated");
+      _this.element.trigger("cts-passage-:urn-passage");
     },
     passage : function(element, $context) {
       var $element = $(element),
@@ -425,6 +426,8 @@
                 _this.element.data("urn", this.value);
                 _this.passage(this, $div);
               }
+              _this.element.trigger("cts-passage-:urn-updated");
+              _this.element.trigger("cts-passage-:urn-work");
             });
           });
 

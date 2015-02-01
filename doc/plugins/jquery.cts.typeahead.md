@@ -51,10 +51,13 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 ## Events
 
-| Name                   | Description
-|------------------------|---------------------------------
-| cts-passage:retrieving | Before retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
-| cts-passage:retrieved  | After retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
+| Name                    | Description
+|-------------------------|---------------------------------
+| cts-passage:retrieving  | Before retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
+| cts-passage:retrieved   | After retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
+| cts-passage:urn-updated | When urn value has been updated
+| cts-passage:urn-work    | When a work urn has been chosen
+| cts-passage:urn-passage | When a work&passage urn has been chosen
 
 ## Basic parameters
 
@@ -66,6 +69,8 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 | inventories    | object            |    {}   |    Yes   | Object where keys are inventory's name and value are label to show
 | retrieve       | boolean or string | false   |          | If set to true, replace the content of plugin target by the plugins data on clicking retrieve. If it's a string, will use string as a jQuery selector to fill with retrieved passage
 | retrieve_scope | null or string    | null    |          | Element to retrieve from retrieved passage
+| passage        | boolean           |  true   |          | Show a passage selector
+| theoretical    | boolean           | false   |          | Show theoretical works
 
 ## CSS custom classes
 
