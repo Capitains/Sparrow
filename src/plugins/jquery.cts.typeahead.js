@@ -15,7 +15,9 @@
     "lang" : "en",
     "css" : {}, //Custom css classes
     "retrieve" : false,
-    "retrieve_scope" : null
+    "retrieve_scope" : null,
+    "passage" : true, // Add the passage selector.
+    "theoretical" : false // Include theoretical works
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
@@ -277,7 +279,7 @@
 
       // Then we transform our inventories data into a list of small object
       Object.keys(_this.repository.inventories).forEach(function(inventory_name) {
-        var inventory = _this.repository.inventories[inventory_name].getRaw(_this.lang);
+        var inventory = _this.repository.inventories[inventory_name].getRaw(_this.lang, _this.settings.theoretical);
 
         Object.keys(inventory).forEach(function(textgroup) {
           Object.keys(inventory[textgroup]).forEach(function(work) {
@@ -322,16 +324,18 @@
           suggestion: Handlebars.compile([
             '<p class="text-type">{{type}}</p>',
             '<p class="text-name">{{shortname}}</p>',
-            '<p class="text-description">{{fullname}}</p>'
+            '<p class="text-description">( {{inventory}}) {{fullname}}</p>'
           ].join(''))
         }
       });
       this.typeahead.on("typeahead:selected", function(event, suggestion, name) {
         _this.element.data("inventory", suggestion.inventory);
         _this.element.data("urn", suggestion.urn);
-        _this.element.data("citations", suggestion.citations);
         _this.element.val(suggestion.urn);
-        _this.generatePassage(suggestion.urn, suggestion.citations);
+        if(_this.settings.passage === true) {
+          _this.element.data("citations", suggestion.citations);
+          _this.generatePassage(suggestion.urn, suggestion.citations);
+        }
       }); 
     }
   });

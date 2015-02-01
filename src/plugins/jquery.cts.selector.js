@@ -15,7 +15,8 @@
     "lang" : "en",
     "css" : {}, //Custom css classes
     "retrieve" : false,
-    "retrieve_scope" : null
+    "retrieve_scope" : null,
+    "passage" : true // Add the passage selector.
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
