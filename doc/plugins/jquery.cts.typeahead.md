@@ -51,13 +51,15 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 ## Events
 
-| Name                    | Description
-|-------------------------|---------------------------------
-| cts-passage:retrieving  | Before retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
-| cts-passage:retrieved   | After retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
-| cts-passage:urn-updated | When urn value has been updated
-| cts-passage:urn-work    | When a work urn has been chosen
-| cts-passage:urn-passage | When a work&passage urn has been chosen
+| Name                         | Description
+|------------------------------|---------------------------------
+| cts-passage:retrieving       | Before retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
+| cts-passage:retrieved        | After retrieving the passage, this event is triggered on the retrieve_scope, aka. settings["retrieve_scope"] or on the element targeted at the init phase (`$(".target")` in the example)
+| cts-passage:urn-updated      | When urn value has been updated
+| cts-passage:urn-work         | When a work urn has been chosen
+| cts-passage:urn-passage      | When a work & passage urn has been chosen
+| cts-passage:passage-error    | Retrieved passage is empty
+| cts-passage:retrieving-error | An HTTP error occured during retrieval
 
 ## Basic parameters
 

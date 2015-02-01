@@ -98,6 +98,7 @@
             console.log(0, "XML is empty");
             $target.trigger("cts-passage:passage-error");
           }
+          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
         }, function(status, statusText) {
           console.log(status, statusText); // For debug
           $target.trigger("cts-passage:retrieving-error");
