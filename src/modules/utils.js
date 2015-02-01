@@ -130,7 +130,7 @@
   }
 
   var _parseInt = function(str) {
-    var isString = str.toLowerCase().match("[a-z]{1}");
+    if(typeof str === "string") { var isString = str.toLowerCase().match("[a-z]{1}"); } else { isString === null; }
     if (!isNaN(str)) {
       return parseInt(str);
     } else if (isString !== null && isString[0].length === str.length) {
