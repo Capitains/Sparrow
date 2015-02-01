@@ -62,7 +62,7 @@
     this.css = this.mergeCSS();
     this.init();
 
-    if(this.settings.retrieve !== "false") {
+    if(this.settings.retrieve !== false) {
       this.retriever_init(this.settings.retrieve);
     }
   }
