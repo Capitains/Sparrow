@@ -129,9 +129,61 @@
     return urlEncodedData;
   }
 
+  var _parseInt = function(str) {
+    var isString = str.toLowerCase().match("[a-z]{1}");
+    if (!isNaN(str)) {
+      return parseInt(str);
+    } else if (isString !== null && isString[0].length === str.length) {
+      var alpha = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:10,k:11,l:12,m:13,n:14,o:15,p:16,q:17,r:18,s:19,t:20,u:21,v:22,w:23,x:24,y:25,z:26};
+      return alpha[str];
+    } else {
+      var array = str.toLowerCase().match("([0-9]*)([a-z]*)([0-9]*)([a-z]*)([0-9]*)");
+      if(array === null) { return 0; }
+      var array = array.map(
+        function(substr) { 
+          if(substr.length > 0 && substr != str) { return substr; };
+        }
+      );
+      var ret = [];
+      for(var i = 0; i< array.length; i++){
+          if (array[i]){
+            ret.push(array[i]);
+        }
+      }
+      return ret;
+    }
+    return 0;
+  }
+
+  var _ValidPassage = function ($start, $end) {
+    var bigger = false,
+        s,
+        e;
+    for (var i = 0; i <= $end.length - 1; i++) {
+      var s = CTS.utils.parseInt($start[i]),
+          e = CTS.utils.parseInt($end[i]);
+      if(Array.isArray(s) && Array.isArray(e)) {
+        bigger = CTS.utils.validPassage(s, e);
+        if(bigger === true) {
+          break;
+        }
+      } else {
+        if(s < e) {
+          bigger = true;
+          break;
+        } else if( e < s ) {
+          break;
+        }
+      }
+    };
+    return bigger;
+  }
+
   CTS.utils = {
     xhr : _xhr,
     dataEncode : _dataEncode,
-    checkEndpoint : _checkEndpoint
+    checkEndpoint : _checkEndpoint,
+    parseInt : _parseInt,
+    validPassage : _ValidPassage
   }
 }));
