@@ -14,10 +14,11 @@
    * @param  url       {string}     HTTP URI to call
    * @param  callback  {?function}  Function to call when request is done.
    * @param  type      {string}     Type of data wished (default: text/xml)
-   * @param  async     {boolean}    Async
+   * @param  data      {?}          Data to send
+   * @param  callback  {?function}  Function to call when request gave an error.
    *
    */
-  var _xhr = function(method, url, callback, type, data, async) {
+  var _xhr = function(method, url, callback, type, data, error_callback) {
     var xhr,
         _this = this;
     if(typeof type === "undefined") {
@@ -51,24 +52,35 @@
     }
     try {
       xhr.open(method, url, async);
+
+      xhr.onerror = function() {
+        error_callback(xhr.status, xhr.statusText);
+      }
+
       xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if(typeof callback === "function") {
-            if(type === "text/xml") {
-              callback(xhr.responseXML);
-            } else if (type == "text") {
-              callback(xhr.responseText);
+        if(xhr.status === 500) {
+          error_callback(xhr.status, xhr.statusText);
+        } else {
+          if (xhr.readyState === 4) {
+            if(typeof callback === "function") {
+              if(type === "text/xml") {
+                callback(xhr.responseXML);
+              } else if (type == "text") {
+                callback(xhr.responseText);
+              }
             }
           }
         }
       };
-      if(typeof data !== "undefined" && method === "POST") {
+
+      if((typeof data !== "undefined" || data !== null) && method === "POST") {
         xhr.overrideMimeType("multipart/form-data");
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
         xhr.send(CTS.utils.dataEncode(data));
       } else {
         xhr.send();
       }
+
     } catch(err) {
       console.error(err);
     }
