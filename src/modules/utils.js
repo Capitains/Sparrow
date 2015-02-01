@@ -58,7 +58,7 @@
       }
 
       xhr.onreadystatechange = function() {
-        if(xhr.status === 500) {
+        if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404) {
           error_callback(xhr.status, xhr.statusText);
         } else {
           if (xhr.readyState === 4) {
