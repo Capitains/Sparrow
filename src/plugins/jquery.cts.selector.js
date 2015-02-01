@@ -419,8 +419,12 @@
 
             $div.append($texts);
             $texts.on("change", function() {
-              _this.element.data("urn", this.value)
-              _this.passage(this, $div);
+              if(_this.settings.passage !== true) {
+                _this.element.val(this.value);
+              } else {
+                _this.element.data("urn", this.value);
+                _this.passage(this, $div);
+              }
             });
           });
 

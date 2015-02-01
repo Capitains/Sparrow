@@ -273,7 +273,7 @@
       _this.context.append(_this.retriever_div);
 
 
-      if(this.settings.retrieve !== "false") {
+      if(this.settings.retrieve !== false) {
         this.retriever_init(this.settings.retrieve);
       }
 
