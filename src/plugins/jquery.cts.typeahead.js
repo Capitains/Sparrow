@@ -136,6 +136,16 @@
         _this.generate();
       });
     },
+    parseInt : function(str) {
+      var match = str.match("[0-9]+");
+      if (match !== null && match.length === 1 && match[0].length === str.length) {
+        return parseInt(str);
+      } else if (str.toLowerCase().match("[a-z]{1}")) {
+        var alpha = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:10,k:11,l:12,m:13,n:14,o:15,p:16,q:17,r:18,s:19,t:20,u:21,v:22,w:23,x:24,y:25,z:26};
+        return alpha[str];
+      }
+      return 0;
+    },
     getPassageString : function() {
       var _this = this,
           $element = _this.element,
@@ -154,9 +164,9 @@
       //Start first
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
-        $val = parseInt($input.val());
+        $val = _this.parseInt($input.val());
         if($val > 0) {
-          $start.push($val);
+          $start.push($input.val());
         } else {
           break;
         }
@@ -168,9 +178,9 @@
         $index = 0;
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
-          $val = parseInt($input.val());
+          $val = _this.parseInt($input.val());
           if($val > 0) {
-            $end.push($val);
+            $end.push($input.val());
           } else {
             break;
           }
@@ -178,8 +188,20 @@
         }
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
+          var bigger = false;
           //We check if they are bigger than $start
-          if(parseInt($start.join("")) < parseInt($end.join(""))) {
+          for (var i = 0; i <= $end.length - 1; i++) {
+            var s = _this.parseInt($start[i]),
+                e = _this.parseInt($end[i]);
+            console.log(s, e);
+            if(s < e) {
+              bigger = true;
+              break;
+            } else if( e < s ) {
+              break;
+            }
+          };
+          if(bigger === true) {
             $urn += "-" + $end.join(".");
           }
         }
@@ -224,7 +246,7 @@
           $input_id = $id + "-" + $passage + "-level-" + $level;
           $input = $("<input />", {
             "name"  : "passage_" + $level,
-            "type"  : "number",
+            "type"  : "text",
             "size"  : 4,
             "min"   : 0,
             "class" : _this.getClass("citation-input"),
