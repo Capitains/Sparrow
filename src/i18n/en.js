@@ -35,7 +35,18 @@
     "llt.tokenizer.text" : "Text to tokenize",
     "llt.tokenizer.remove_node" : "Nodes to remove from XML",
     "llt.tokenizer.go_to_root" : "Name of the root node",
-    "llt.tokenizer.ns" : "Namespace of the XML"
+    "llt.tokenizer.ns" : "Namespace of the XML",
+/*
+    LLT.Segtok_to_tb XSLT translations
+*/
+    "llt.segtok_to_tb.e_lang" : "Language",
+    "llt.segtok_to_tb.e_format" : "Treebank grammar",
+    "llt.segtok_to_tb.e_docuri" : "Document URI",
+    "llt.segtok_to_tb.e_agenturi" : "Agent URI",
+    "llt.segtok_to_tb.e_appuri" : "Application URI",
+    "llt.segtok_to_tb.e_datetime" : "Date",
+    "llt.segtok_to_tb.e_collection" : "Collection",
+    "llt.segtok_to_tb.e_attachtoroot" : "Attach to the root", 
   }
 
   CTS.lang.lexicons["en"] = $words;

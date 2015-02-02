@@ -113,42 +113,42 @@
       options : {
         "e_lang" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "input",
           "default" : "lat"
         },
         "e_format" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "input",
           "default" : "aldt"
         },
         "e_docuri" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "input",
           "default" : "urn:cts:latinLit:tg.work.edition:1.1"
         },
         "e_agenturi" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "input",
           "default" : "http://services.perseids.org/llt/segtok"
         },
         "e_appuri" : { 
           "type" : "string",
-          "html" : "",
-          "default" : null
+          "html" : "input",
+          "default" : ""
         },
         "e_datetime" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "hidden",
           "default" : function() { return (new Date()).toDateString(); }
         },
         "e_collection" : { 
           "type" : "string",
-          "html" : "",
+          "html" : "input",
           "default" : "urn:cite:perseus:lattb"
         },
         "e_attachtoroot" : { 
           "type" : "boolean",
-          "html" : "radio",
+          "html" : "checkbox",
           "default" : true
         } 
       },
@@ -168,7 +168,7 @@
    */
   var _new = function(xslt, endpoint, option) {
     if(typeof xslt === "string") {
-      if(service in this.stylesheets) {
+      if(xslt in this.stylesheets) {
         return new this.stylesheets[xslt](endpoint, option);
       } else {
         throw xslt + " is Unknown."

@@ -6,24 +6,25 @@
     factory(jQuery, CTS);
   }
 }(function($, CTS) {
-  var $name = "jQuery.cts.service";
+  var $name = "jQuery.cts.xslt";
   var $default = { //Default Params
-    "endpoint" : "http://www.perseus.tufts.edu/hopper/CTS?",  //URL of the repository CTS endpoint
+    "endpoint" : "",  //URL of the repository CTS endpoint
     "lang" : "en",
     "css" : {}, //Custom css classes
     "trigger" : null,
     "click" : null,
+    "xml" : null,
     "DOM" : {},
     "defaults" : {},
     "show" : true,
     "callback" : null,
     "names" : {}
   };
-  // $css is the basic classes used for accessing DOM inside jQuery.cts.service
+  // $css is the basic classes used for accessing DOM inside jQuery.cts.xslt
   var $css = {
     //Global
-    "container" : ["cts-service"], // Container for the whole generated DOM
-    "container-legend" : ["cts-service-legend"], // Container for the whole generated DOM
+    "container" : ["cts-xslt"], // Container for the whole generated DOM
+    "container-legend" : ["cts-xslt-legend"], // Container for the whole generated DOM
 
     "field-container" : [], // 
     "field-label" : [], // 
@@ -34,7 +35,7 @@
   }
   var $lang = {"en" : "en"};
 
-  function Plugin ( element, service, options ) {
+  function Plugin ( element, xslt, options ) {
     this.element = $(element);
     // jQuery has an extend method which merges the contents of two or
     // more objects, storing the result in the first object. The first object
@@ -42,8 +43,8 @@
     // future instances of the plugin
     this.settings = $.extend( {}, $default, options );
     this._name = $name;
-    this.serviceName = service;
-    this.service = CTS.service.new(service, this.settings.endpoint, {});
+    this.xsltName = xslt;
+    this.xslt = CTS.xslt.new(xslt, this.settings.endpoint, {});
 
     if(this.settings["lang"] in $lang) {
       this.lang = $lang[this.settings["lang"]];
@@ -60,32 +61,38 @@
     generateId : function() {
       var $id = 1;
 
-      while($("div#cts-service-" + $id).length >= 1) {
+      while($("div#cts-xslt-" + $id).length >= 1) {
         $id += 1;
       }
-      $id = "cts-service-" + $id;
+      $id = "cts-xslt-" + $id;
       this.id = $id;
       return $id;
     },
-    send : function() {
+    send : function(xml, raw) {
+      if(typeof xml === "undefined") { xml = this.settings.xml.val()}
       var data = this.getValues(),
           _this = this;
 
       //Setting values
       Object.keys(data).forEach(function(param) {
-        _this.service.setValue(param, data[param]);
+        _this.xslt.setValue(param, data[param]);
       });
 
       //Sending data
-      _this.element.trigger("cts-service:"+_this.serviceName+":doing");
-      _this.service.send(function(data) {
-        if(typeof _this.settings.callback === "function") { _this.settings.callback(data); }
-        _this.element.trigger("cts-service:"+_this.serviceName+":done");
-      }, "text");
+      _this.element.trigger("cts-xslt:"+_this.xsltName+":doing");
+      var transformed = _this.xslt.transform(xml);
+      if(raw !== true) {
+        transformed = (new XMLSerializer()).serializeToString(transformed);
+      }
+      if(typeof _this.settings.callback === "function") {
+        _this.settings.callback(transformed);
+      }
+      _this.element.trigger("cts-xslt:"+_this.xsltName+":done");
+      return transformed;
     },
     makeInput : function(key, object) {
       var _this = this,
-          $default = (key in this.settings.defaults) ? this.settings.defaults[param] : this.service.options[key].default,
+          $default = (key in this.settings.defaults) ? this.settings.defaults[param] : this.xslt.options[key].default,
           $input;
 
       if(object.html === "hidden") {
@@ -144,17 +151,17 @@
       _this.legend = $("<legend />", {
         "class" : _this.getClass("container-legend")
       });
-      _this.legend.text(CTS.lang.get(_this.serviceName, _this.lang));
+      _this.legend.text(CTS.lang.get(_this.xsltName, _this.lang));
       _this.container.append(_this.legend);
       this.element.append(_this.container);
 
       //We create the input
-      Object.keys(_this.service.options).forEach(function(param) {
+      Object.keys(_this.xslt.options).forEach(function(param) {
         var $input;
         if(param in _this.settings.DOM) {
           $input = _this.settings.DOM[param];
         } else {
-          $input = _this.makeInput(param, _this.service.options[param]);
+          $input = _this.makeInput(param, _this.xslt.options[param]);
         }
         _this.inputs[param] = $input;
       });
@@ -184,7 +191,7 @@
         var $input = _this.inputs[param];
         if($input.is("[type='checkbox']")) {
           data[param] = $input.is(':checked').toString();
-        } else if (_this.service.options[param].type === "list") {
+        } else if (_this.xslt.options[param].type === "list") {
           data[param] = $input.val().replace(/\s+/g, '').split(",");
         } else{
           data[param] = $input.val();
@@ -193,7 +200,7 @@
       return data;
     },
     translate : function(key) {
-      return CTS.lang.get(this.serviceName + "." + key, this.lang);
+      return CTS.lang.get(this.xsltName + "." + key, this.lang);
     },
     getClass : function(key) {
       if(this.css[key].length > 0) {
@@ -215,7 +222,7 @@
     }
   });
 
-  $.fn.ctsService = function(serviceName, options) {
+  $.fn.ctsXSLT = function(xsltName, options) {
     var args = arguments;
     if (!window.CTS) {
       throw new Error("CTS lib required");
@@ -225,12 +232,12 @@
       return this.each(function () {
         // Only allow the plugin to be instantiated once,
         // so we check that the element has no plugin instantiation yet
-        if (!$.data(this, "_cts_service_"+serviceName)) {
+        if (!$.data(this, "_cts_xslt_"+xsltName)) {
           // if it has no instance, create a new one,
           // pass options to our plugin constructor,
           // and store the plugin instance
           // in the elements jQuery data object.
-          $.data(this, "_cts_service_"+serviceName, new Plugin( this, serviceName, options ));
+          $.data(this, "_cts_xslt_"+xsltName, new Plugin( this, xsltName, options ));
         }
       });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
@@ -240,7 +247,7 @@
       var returns;
 
       this.each(function () {
-        var instance = $.data(this, "_cts_service_"+serviceName);
+        var instance = $.data(this, "_cts_xslt_"+xsltName);
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
         if (instance instanceof Plugin && typeof instance[options] === "function") {
@@ -250,7 +257,7 @@
         }
         // Allow instances to be destroyed via the 'destroy' method
         if (options === "destroy") {
-          $.data(this, "_cts_service_"+serviceName, null);
+          $.data(this, "_cts_xslt_"+xsltName, null);
         }
       });
       // If the earlier cached method
