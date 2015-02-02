@@ -57,9 +57,15 @@
    */
   var _getValues = function() {
     var data = {},
-        _this = this;
+        _this = this,
+        $default;
     Object.keys(_this.options).forEach(function(key) {
-      data[key] = _this.options[key]["value"] || _this.options[key]["default"];
+      if (typeof _this.options[key]["default"] === "function") {
+        $default = _this.options[key]["default"]();
+      } else {
+        $default = _this.options[key]["default"];
+      }
+      data[key] = _this.options[key]["value"] || $default;
     });
     return data;
   }
@@ -75,12 +81,22 @@
   }
 
   var _transform = function(xml) {
+    var transformed,
+        values,
+        processor;
     if(!this.processor) {
       this.load();
     }
+    processor = this.processor;
     if(typeof xml === "string") {
-      xml = (new Dom)
+      xml = (new DOMParser()).parseFromString(xml,"text/xml");
     }
+    values = this.getValues();
+    Object.keys(values).forEach(function(key) {
+      processor.setParameter(null, key, values[key]);
+    });
+    transformed = processor.transformToDocument(xml);
+    return transformed;
   }
 
   /**
@@ -89,17 +105,52 @@
    * @Github : https://github.com/alpheios-project/treebank-editor/blob/master/db/xslt/segtok_to_tb.xsl
    * 
    */
-  var _llt_tokenizer = function(endpoint, options) {
+  var _segtok_to_tb = function(endpoint, options) {
 
     return {
       endpoint : endpoint,
       processor : null,
       options : {
-        "xml" : {
+        "e_lang" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : "lat"
+        },
+        "e_format" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : "aldt"
+        },
+        "e_docuri" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : "urn:cts:latinLit:tg.work.edition:1.1"
+        },
+        "e_agenturi" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : "http://services.perseids.org/llt/segtok"
+        },
+        "e_appuri" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : null
+        },
+        "e_datetime" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : function() { return (new Date()).toDateString(); }
+        },
+        "e_collection" : { 
+          "type" : "string",
+          "html" : "",
+          "default" : "urn:cite:perseus:lattb"
+        },
+        "e_attachtoroot" : { 
           "type" : "boolean",
-          "html" : "checkbox",
+          "html" : "radio",
           "default" : true
-        }
+        } 
       },
       setValue : _setValue,
       getValues  : _getValues,
@@ -128,7 +179,7 @@
   }
   CTS.xslt = {
     stylesheets : {
-      "llt.tokenizer" : _llt_tokenizer
+      "llt.segtok_to_tb" : _segtok_to_tb
     },
     "new" : _new
   }
