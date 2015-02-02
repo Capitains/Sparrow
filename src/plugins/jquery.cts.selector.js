@@ -176,10 +176,9 @@
       //Start first
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
-        $val = parseInt($input.val());
-        console.log($val);
-        if($val > 0) {
-          $start.push($val);
+        var $val = $input.val();
+        if(!$val || /^\s*$/.test($val)) {
+          $end.push($val);
         } else {
           break;
         }
@@ -191,8 +190,8 @@
         $index = 0;
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
-          $val = parseInt($input.val());
-          if($val > 0) {
+          var $val = $input.val();
+          if(!$val || /^\s*$/.test($val)) {
             $end.push($val);
           } else {
             break;
@@ -201,10 +200,7 @@
         }
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
-          var bigger = false;
-          if(bigger === true) {
-            $urn += "-" + $end.join(".");
-          }
+          $urn += "-" + $end.join(".");
         }
       }
       $element.val($urn);

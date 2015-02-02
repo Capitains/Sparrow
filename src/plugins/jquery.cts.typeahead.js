@@ -154,9 +154,9 @@
       //Start first
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
-        $val = CTS.utils.parseInt($input.val());
-        if($val > 0 || (Array.isArray($val) && $val.length > 0)) {
-          $start.push($input.val());
+        var $val = $input.val();
+        if(!$val || /^\s*$/.test($val)) {
+          $end.push($val);
         } else {
           break;
         }
@@ -168,9 +168,9 @@
         $index = 0;
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
-          $val = CTS.utils.parseInt($input.val());
-          if($val > 0 || (Array.isArray($val) && $val.length > 0)) {
-            $end.push($input.val());
+          var $val = $input.val();
+          if(!$val || /^\s*$/.test($val)) {
+            $end.push($val);
           } else {
             break;
           }
@@ -178,11 +178,7 @@
         }
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
-          var bigger = CTS.utils.validPassage($start, $end);
-          console.log($start, $end, bigger);
-          if(bigger === true) {
-            $urn += "-" + $end.join(".");
-          }
+          $urn += "-" + $end.join(".");
         }
       }
       $element.val($urn);
