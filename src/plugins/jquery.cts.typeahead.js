@@ -155,8 +155,8 @@
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
         var $val = $input.val();
-        if(!$val || /^\s*$/.test($val)) {
-          $end.push($val);
+        if($val && !(/^\s*$/.test($val))) {
+          $start.push($val);
         } else {
           break;
         }
@@ -169,7 +169,7 @@
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
           var $val = $input.val();
-          if(!$val || /^\s*$/.test($val)) {
+          if($val && !(/^\s*$/.test($val))) {
             $end.push($val);
           } else {
             break;

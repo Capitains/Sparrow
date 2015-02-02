@@ -177,8 +177,8 @@
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
         var $val = $input.val();
-        if(!$val || /^\s*$/.test($val)) {
-          $end.push($val);
+        if($val && !(/^\s*$/.test($val))) {
+          $start.push($val);
         } else {
           break;
         }
@@ -191,13 +191,13 @@
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
           var $val = $input.val();
-          if(!$val || /^\s*$/.test($val)) {
+         if($val && !(/^\s*$/.test($val))) {
             $end.push($val);
           } else {
             break;
           }
           $index += 1;
-        }
+        };
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
           $urn += "-" + $end.join(".");
