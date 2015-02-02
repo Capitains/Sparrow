@@ -130,7 +130,7 @@ callback  function  null  Function to trigger, passes received data as parameter
         }
         $input.attr("id", _this.id + "-" + key);
         $inputContainer.append($input);
-        $container.append($input);
+        $container.append($inputContainer);
 
         _this.container.append($container);
       }
