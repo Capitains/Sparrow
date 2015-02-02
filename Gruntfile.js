@@ -10,7 +10,8 @@ module.exports = function(grunt) {
           'build/cts.min.js': ['build/cts.js'],
           'build/jquery.cts.selector.min.js': ['build/jquery.cts.selector.js'],
           'build/jquery.cts.typeahead.min.js': ['build/jquery.cts.typeahead.js'],
-          'build/jquery.cts.service.min.js': ['build/jquery.cts.service.js']
+          'build/jquery.cts.service.min.js': ['build/jquery.cts.service.js'],
+          'build/jquery.cts.xslt.min.js': ['build/jquery.cts.xslt.js']
         }
       },
       i18n: {
@@ -27,10 +28,20 @@ module.exports = function(grunt) {
     concat: {
       all: {
         files : {
-          'build/cts.js' : ['src/cts.js', 'src/modules/utils.js', 'src/modules/service.js', 'src/modules/text.js', 'src/modules/repository.js', 'src/modules/i18n.js', 'src/i18n/en.js'],
+          'build/cts.js' : [
+            'src/cts.js', 
+            'src/modules/utils.js', 
+            'src/modules/service.js', 
+            'src/modules/xslt.js', 
+            'src/modules/text.js', 
+            'src/modules/repository.js', 
+            'src/modules/i18n.js', 
+            'src/i18n/en.js'
+          ],
           'build/jquery.cts.selector.js' : ['src/plugins/jquery.cts.selector.js'],
           'build/jquery.cts.typeahead.js' : ['src/plugins/jquery.cts.typeahead.js'],
-          'build/jquery.cts.service.js' : ['src/plugins/jquery.cts.service.js']
+          'build/jquery.cts.service.js' : ['src/plugins/jquery.cts.service.js'],
+          'build/jquery.cts.xslt.js' : ['src/plugins/jquery.cts.xslt.js']
         }
       }
     },
