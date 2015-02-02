@@ -210,8 +210,8 @@ callback  function  null  Function to trigger, passes received data as parameter
       var _this = this,
           css = {};
       Object.keys(_this._defaultCSS).forEach(function(key) {
-        if(key in _this.settings.css && _this.settings.css instanceof Array) {
-          css[key] = _this._defaultCSS[key].concat(_this.settings.css);
+        if(key in _this.settings.css && _this.settings.css[key] instanceof Array) {
+          css[key] = _this._defaultCSS[key].concat(_this.settings.css[key]);
         } else {
           css[key] = _this._defaultCSS[key];
         }
