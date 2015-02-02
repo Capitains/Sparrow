@@ -15,7 +15,8 @@
     "lang" : "en",
     "css" : {}, //Custom css classes
     "retrieve" : false,
-    "retrieve_scope" : null
+    "retrieve_scope" : null,
+    "passage" : true // Add the passage selector.
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
@@ -61,7 +62,7 @@
     this.css = this.mergeCSS();
     this.init();
 
-    if(this.settings.retrieve !== "false") {
+    if(this.settings.retrieve !== false) {
       this.retriever_init(this.settings.retrieve);
     }
   }
@@ -108,13 +109,24 @@
         //We create the text instance 
         _this.text = CTS.Text(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
         //We load the text
+
         _this.text.retrieve(function() {
-          //We feed our targer value
-          $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
-          //We reset legend of the button
+          if(_this.text.checkXML() === true) {
+            //We feed our targer value
+            $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
+            //We reset legend of the button
+            $target.trigger("cts-passage:retrieved");
+          } else {
+            console.log(0, "XML is empty");
+            $target.trigger("cts-passage:passage-error");
+          }
           $button.text(CTS.lang.get("retrieve_passage", _this.lang));
-          $target.trigger("cts-passage:retrieved");
+        }, function(status, statusText) {
+          console.log(status, statusText); // For debug
+          $target.trigger("cts-passage:retrieving-error");
+          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
         });
+
       });
 
     },
@@ -128,8 +140,8 @@
       var _this = this,
           css = {};
       Object.keys(_this._defaultCSS).forEach(function(key) {
-        if(key in _this.settings.css && _this.settings.css instanceof Array) {
-          css[key] = _this._defaultCSS[key].concat(_this.settings.css);
+        if(key in _this.settings.css && _this.settings.css[key] instanceof Array) {
+          css[key] = _this._defaultCSS[key].concat(_this.settings.css[key]);
         } else {
           css[key] = _this._defaultCSS[key];
         }
@@ -164,8 +176,8 @@
       //Start first
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
-        $val = parseInt($input.val());
-        if($val > 0) {
+        var $val = $input.val();
+        if($val && !(/^\s*$/.test($val))) {
           $start.push($val);
         } else {
           break;
@@ -178,25 +190,23 @@
         $index = 0;
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
-          $val = parseInt($input.val());
-          if($val > 0) {
+          var $val = $input.val();
+         if($val && !(/^\s*$/.test($val))) {
             $end.push($val);
           } else {
             break;
           }
           $index += 1;
-        }
+        };
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
-          //We check if they are bigger than $start
-          if(parseInt($start.join("")) < parseInt($end.join(""))) {
-            $urn += "-" + $end.join(".");
-          }
+          $urn += "-" + $end.join(".");
         }
       }
       $element.val($urn);
       $element.data("inventory", $("div#" + $id + " .cts-selector-inventory, div#" + $id + " .cts-hidden-inventory").val());
-
+      _this.element.trigger("cts-passage-:urn-updated");
+      _this.element.trigger("cts-passage-:urn-passage");
     },
     passage : function(element, $context) {
       var $element = $(element),
@@ -418,8 +428,14 @@
 
             $div.append($texts);
             $texts.on("change", function() {
-              _this.element.data("urn", this.value)
-              _this.passage(this, $div);
+              if(_this.settings.passage !== true) {
+                _this.element.val(this.value);
+              } else {
+                _this.element.data("urn", this.value);
+                _this.passage(this, $div);
+              }
+              _this.element.trigger("cts-passage-:urn-updated");
+              _this.element.trigger("cts-passage-:urn-work");
             });
           });
 

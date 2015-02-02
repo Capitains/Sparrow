@@ -130,7 +130,7 @@ callback  function  null  Function to trigger, passes received data as parameter
         }
         $input.attr("id", _this.id + "-" + key);
         $inputContainer.append($input);
-        $container.append($input);
+        $container.append($inputContainer);
 
         _this.container.append($container);
       }
@@ -210,8 +210,8 @@ callback  function  null  Function to trigger, passes received data as parameter
       var _this = this,
           css = {};
       Object.keys(_this._defaultCSS).forEach(function(key) {
-        if(key in _this.settings.css && _this.settings.css instanceof Array) {
-          css[key] = _this._defaultCSS[key].concat(_this.settings.css);
+        if(key in _this.settings.css && _this.settings.css[key] instanceof Array) {
+          css[key] = _this._defaultCSS[key].concat(_this.settings.css[key]);
         } else {
           css[key] = _this._defaultCSS[key];
         }

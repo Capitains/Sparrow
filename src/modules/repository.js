@@ -222,7 +222,10 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
     object.textgroups = [];
   }
 
-  object.getRaw = function(lang) {
+  object.getRaw = function(lang, theoretical) {
+    if(typeof theoretical === "undefined") {
+      theoretical = false;
+    }
     var r = {};
     object.textgroups.forEach(function(tg) {
       var tgLabel = tg.getName(lang);
@@ -236,6 +239,10 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
         w.translations.forEach(function(t) {
           r[tgLabel][wLabel]["translation"][t.getLabel(lang)] = t;
         });
+        if(theoretical === true) {
+          r[tgLabel][wLabel]["theoretical"] = {};
+          r[tgLabel][wLabel]["theoretical"][wLabel] = w;
+        }
       });
 
     });

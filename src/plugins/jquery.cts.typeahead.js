@@ -15,7 +15,9 @@
     "lang" : "en",
     "css" : {}, //Custom css classes
     "retrieve" : false,
-    "retrieve_scope" : null
+    "retrieve_scope" : null,
+    "passage" : true, // Add the passage selector.
+    "theoretical" : false // Include theoretical works
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
@@ -87,11 +89,20 @@
         _this.text = CTS.Text(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
         //We load the text
         _this.text.retrieve(function() {
-          //We feed our targer value
-          $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
-          //We reset legend of the button
+          if(_this.text.checkXML() === true) {
+            //We feed our targer value
+            $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
+            //We reset legend of the button
+            $target.trigger("cts-passage:retrieved");
+          } else {
+            console.log(0, "XML is empty");
+            $target.trigger("cts-passage:passage-error");
+          }
           $button.text(CTS.lang.get("retrieve_passage", _this.lang));
-          $target.trigger("cts-passage:retrieved");
+        }, function(status, statusText) {
+          console.log(status, statusText); // For debug
+          $target.trigger("cts-passage:retrieving-error");
+          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
         });
       });
 
@@ -106,8 +117,8 @@
       var _this = this,
           css = {};
       Object.keys(_this._defaultCSS).forEach(function(key) {
-        if(key in _this.settings.css && _this.settings.css instanceof Array) {
-          css[key] = _this._defaultCSS[key].concat(_this.settings.css);
+        if(key in _this.settings.css && _this.settings.css[key] instanceof Array) {
+          css[key] = _this._defaultCSS[key].concat(_this.settings.css[key]);
         } else {
           css[key] = _this._defaultCSS[key];
         }
@@ -143,8 +154,8 @@
       //Start first
       while($index < $depth) {
         $input = $context.find("input#" + $id + "-0-level-" + $index);
-        $val = parseInt($input.val());
-        if($val > 0) {
+        var $val = $input.val();
+        if($val && !(/^\s*$/.test($val))) {
           $start.push($val);
         } else {
           break;
@@ -157,8 +168,8 @@
         $index = 0;
         while($index < $depth) {
           $input = $context.find("input#" + $id + "-1-level-" + $index);
-          $val = parseInt($input.val());
-          if($val > 0) {
+          var $val = $input.val();
+          if($val && !(/^\s*$/.test($val))) {
             $end.push($val);
           } else {
             break;
@@ -167,13 +178,12 @@
         }
         //We have the $end processed, we check if this its length is equal to $start
         if($end.length == $start.length) {
-          //We check if they are bigger than $start
-          if(parseInt($start.join("")) < parseInt($end.join(""))) {
-            $urn += "-" + $end.join(".");
-          }
+          $urn += "-" + $end.join(".");
         }
       }
       $element.val($urn);
+      _this.element.trigger("cts-passage-:urn-updated");
+      _this.element.trigger("cts-passage-:urn-passage");
     },
     generatePassage : function($urn, $citations) {
       var $inputs = this.citation_div.find("*"),
@@ -211,7 +221,7 @@
           $input_id = $id + "-" + $passage + "-level-" + $level;
           $input = $("<input />", {
             "name"  : "passage_" + $level,
-            "type"  : "number",
+            "type"  : "text",
             "size"  : 4,
             "min"   : 0,
             "class" : _this.getClass("citation-input"),
@@ -271,13 +281,13 @@
       _this.context.append(_this.retriever_div);
 
 
-      if(this.settings.retrieve !== "false") {
+      if(this.settings.retrieve !== false) {
         this.retriever_init(this.settings.retrieve);
       }
 
       // Then we transform our inventories data into a list of small object
       Object.keys(_this.repository.inventories).forEach(function(inventory_name) {
-        var inventory = _this.repository.inventories[inventory_name].getRaw(_this.lang);
+        var inventory = _this.repository.inventories[inventory_name].getRaw(_this.lang, _this.settings.theoretical);
 
         Object.keys(inventory).forEach(function(textgroup) {
           Object.keys(inventory[textgroup]).forEach(function(work) {
@@ -322,16 +332,20 @@
           suggestion: Handlebars.compile([
             '<p class="text-type">{{type}}</p>',
             '<p class="text-name">{{shortname}}</p>',
-            '<p class="text-description">{{fullname}}</p>'
+            '<p class="text-description">( {{inventory}}) {{fullname}}</p>'
           ].join(''))
         }
       });
       this.typeahead.on("typeahead:selected", function(event, suggestion, name) {
         _this.element.data("inventory", suggestion.inventory);
         _this.element.data("urn", suggestion.urn);
-        _this.element.data("citations", suggestion.citations);
         _this.element.val(suggestion.urn);
-        _this.generatePassage(suggestion.urn, suggestion.citations);
+        _this.element.trigger("cts-passage-:urn-updated");
+        _this.element.trigger("cts-passage-:urn-work");
+        if(_this.settings.passage === true) {
+          _this.element.data("citations", suggestion.citations);
+          _this.generatePassage(suggestion.urn, suggestion.citations);
+        }
       }); 
     }
   });

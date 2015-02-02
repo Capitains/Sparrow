@@ -14,6 +14,7 @@
 */
     "translation" : "Translation",
     "edition" : "Edition",
+    "theoretical" : "Theoretical Work",
     "select" : "Select",
 /*
     Passage selector

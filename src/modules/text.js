@@ -28,17 +28,21 @@
   /**
    * Load the text from the endpoint
    *
-   * @param  callback  {?function}    CTS API Endpoint
-   * @param  endpoint  {?string}    CTS API Endpoint
+   * @param  callback        {?function}    Function to call when text is retrieved
+   * @param  error_callback  {?function}    Function to call when an error occured
+   * @param  endpoint        {?string}      CTS API Endpoint
    *
    */
-  var _retrieve = function(callback, endpoint) {
+  var _retrieve = function(callback, error_callback, endpoint) {
     var _this = this,
         url;
     // If the callback is the endpoint
     if (typeof callback === "string") {
       endpoint = CTS.utils.checkEndpoint(callback);
       callback = null;
+    } else if (typeof error_callback === "string") {
+      endpoint = CTS.utils.checkEndpoint(error_callback);
+      error_callback = null;
     } else if(typeof endpoint !== "string") {
       if(_this.endpoint === null) {
         throw "No endpoint given";
@@ -51,19 +55,48 @@
 
     url = endpoint + "request=GetPassage&inv=" + _this.inventory + "&urn=" + _this.urn;
 
-    CTS.utils.xhr("GET", url, function(data) {
+    try {
+      CTS.utils.xhr("GET", url, function(data) {
 
-      var parser = new DOMParser(),
-          dom = parser.parseFromString(data, "text/xml");
+        var parser = new DOMParser(),
+            dom = parser.parseFromString(data, "text/xml");
 
-      _this.xml = data;
-      _this.document = dom;
+        _this.xml = data;
+        _this.document = dom;
 
-      if(callback) { callback(); }
+        if(callback) { callback(); }
 
-    }, "text");
+      }, "text", null, error_callback);
+    } catch (e) {
+      if(typeof error_callback === "function") {
+        error_callback(e);
+      }
+    }
 
     //And here we should load the stuff through cts.utils.ajax
+  }
+
+  /**
+   * Check if the body of the XML is not empty
+   *
+   * @return  {boolean} Indicator of success
+   *
+   */
+  var _checkXML = function() {
+    var _this = this,
+        xml;
+
+    try {
+      xml = _this.getXml("body");
+      if(xml[0].children.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+
   }
 
   /**
@@ -133,7 +166,8 @@
       retrieve : _retrieve,
       setText : _setText,
       getText : _getText,
-      getXml : _getXml
+      getXml : _getXml,
+      checkXML : _checkXML
     }
   }
   CTS.Text = _Text;
