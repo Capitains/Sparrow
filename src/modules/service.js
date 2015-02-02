@@ -7,10 +7,23 @@
   }
 }(function(CTS) {
 
+  /**
+   * Set the value of a field
+   *
+   * @param  key       {string}  Field whom value has to change  
+   * @param  value     {string}  New value for given field
+   *
+   */
   var _setValue = function (key, value) {
     this.options[key]["value"] = value;
   }
 
+  /**
+   * Return values of current object
+   *
+   * @return  {object}  A dictionary of key-value pair where key are field name
+   *
+   */
   var _getValues = function() {
     var data = {},
         _this = this;
@@ -20,6 +33,12 @@
     return data;
   }
 
+  /**
+   *  Get the option of the current instance
+   *
+   * @return  {object}  Dictionary of pair key-object where key are field name and object contain datatype, html and default value 
+   *
+   */
   var _getOptions = function() {
     return this.options;
   }

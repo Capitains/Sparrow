@@ -87,8 +87,8 @@ callback  function  null  Function to trigger, passes received data as parameter
       //Sending data
       _this.element.trigger("cts-service:"+_this.serviceName+":doing");
       _this.service.send(function(data) {
-        _this.element.trigger("cts-service:"+_this.serviceName+":done");
         if(typeof _this.settings.callback === "function") { _this.settings.callback(data); }
+        _this.element.trigger("cts-service:"+_this.serviceName+":done");
       }, "text");
     },
     makeInput : function(key, object) {
