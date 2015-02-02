@@ -47,7 +47,7 @@
       options : {
         "xml" : {
           "type" : "boolean",
-          "html" : "hidden",
+          "html" : "checkbox",
           "default" : true
         },
         "inline" : {
