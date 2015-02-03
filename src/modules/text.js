@@ -44,7 +44,7 @@
       endpoint = CTS.utils.checkEndpoint(error_callback);
       error_callback = null;
     } else if(typeof endpoint !== "string") {
-      if(_this.endpoint === null) {
+      if(_this.endpoint === null && _this.rest !== true) {
         throw "No endpoint given";
       }
       endpoint = _this.endpoint;
@@ -53,18 +53,18 @@
       callback = null;
     }
 
-    url = endpoint + "request=GetPassage&inv=" + _this.inventory + "&urn=" + _this.urn;
+    if(_this.rest === true) {
+      url = _this.urn;
+    } else {
+      url = endpoint + "request=GetPassage&inv=" + _this.inventory + "&urn=" + _this.urn;
+    }
 
     try {
       CTS.utils.xhr("GET", url, function(data) {
 
-        var parser = new DOMParser(),
-            dom = parser.parseFromString(data, "text/xml");
-
         _this.xml = data;
-        _this.document = dom;
-
-        if(callback) { callback(); }
+        _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+        if(callback) { callback(data); }
 
       }, "text", null, error_callback);
     } catch (e) {
@@ -141,12 +141,17 @@
   /**
    * Create a text object representing either a passage or a full text
    *
-   * @param  urn       {string}     URN identifying the text
-   * @param  endpoint  {?string}    CTS API Endpoint
-   * @param  endpoint  {?inventory} Inventory Identifier
+   * @param  urn       {string}             URN identifying the text
+   * @param  endpoint  {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
+   * @param  endpoint  {?inventory}         Inventory Identifier
    *
    */
   var _Text = function(urn, endpoint, inventory) {
+    var rest = false;
+    if(endpoint === false) {
+      //This means we have a uri instead of a urn
+      rest = true;
+    }
     if(typeof endpoint !== "string") {
       endpoint = null;
     }  
@@ -159,6 +164,7 @@
       //Strings
       xml : null,
       text : null,
+      rest : rest,
       urn : urn,
       inventory : inventory,
       endpoint : endpoint,

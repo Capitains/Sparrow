@@ -39,6 +39,7 @@
 /*
     LLT.Segtok_to_tb XSLT translations
 */
+    "llt.segtok_to_tb" : "Treebank Parameters",
     "llt.segtok_to_tb.e_lang" : "Language",
     "llt.segtok_to_tb.e_format" : "Treebank grammar",
     "llt.segtok_to_tb.e_docuri" : "Document URI",

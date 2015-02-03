@@ -179,11 +179,26 @@
     return bigger;
   }
 
+  var _uriParam = function() {
+      var result = {},
+          params = window.location.search.split(/\?|\&/);
+
+      params.forEach( function(it) {
+          if (it) {
+              var param = it.split("=");
+              result[param[0]] = param[1];
+          }
+      });
+
+      return result;
+  }
+
   CTS.utils = {
     xhr : _xhr,
     dataEncode : _dataEncode,
     checkEndpoint : _checkEndpoint,
     parseInt : _parseInt,
-    validPassage : _ValidPassage
+    validPassage : _ValidPassage,
+    uriParam : _uriParam
   }
 }));
