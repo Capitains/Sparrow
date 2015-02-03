@@ -103,7 +103,7 @@
 
       _this.retriever_div.append($button);
 
-      $button.on("click, cts-passage:retrieve", function(event) {
+      $button.on("click", function(event) {
         // prevent the event from filtering up and
         // default submission based upon a button click
         // in case the plugin is embedded in a form
@@ -132,10 +132,6 @@
           $target.trigger("cts-passage:retrieving-error");
           $button.text(CTS.lang.get("retrieve_passage", _this.lang));
         });
-      });
-
-      _this.element.on("cts-passage:retrieve", function() {
-        $button.trigger("cts-passage:retrieve");
       });
 
     },

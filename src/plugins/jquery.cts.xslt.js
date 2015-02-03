@@ -197,7 +197,7 @@
           data[param] = $input.is(':checked').toString();
         } else if (_this.xslt.options[param].type === "list") {
           data[param] = $input.val().replace(/\s+/g, '').split(",");
-        } else{
+        } else {
           data[param] = $input.val();
         }
       });
