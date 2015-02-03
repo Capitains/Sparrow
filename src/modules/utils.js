@@ -82,7 +82,7 @@
       }
 
     } catch(err) {
-      console.error(err);
+      error_callback(err);
     }
   }
 
