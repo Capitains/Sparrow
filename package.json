@@ -1,6 +1,6 @@
 {
-  "name": "ctsJS",
-  "description": "CTS JS tool",
+  "name": "CapitainsSparrow",
+  "description": " Capitains-Sparrow provide a suite of CTS abstraction in JS but also jQuery plugins ",
   "version": "0.0.1",
   "dependencies" : {
     "typeahead.js" : "~0.10.5",
@@ -30,7 +30,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "http://github.com/PerseusDL/ctsJS/ctsJS.git"
+      "url": "https://github.com/PerseusDL/Capitains-Sparrow"
     }
   ]
 }
