@@ -189,7 +189,11 @@
           data = {};
       Object.keys(_this.inputs).forEach(function(param) {
         var $input = _this.inputs[param];
-        if($input.is("[type='checkbox']")) {
+        if(typeof $input === "string") {
+          data[param] = $($input).val();
+        } else if (typeof $input === "function") {
+          data[param] = $input();
+        } else if($input.is("[type='checkbox']")) {
           data[param] = $input.is(':checked').toString();
         } else if (_this.xslt.options[param].type === "list") {
           data[param] = $input.val().replace(/\s+/g, '').split(",");
