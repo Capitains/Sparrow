@@ -1,4 +1,4 @@
-describe( "Testing CTS Synchronous functions", function () {
+describe( "Testing CTS Utils functions", function () {
 
     describe("Checking structure", function() {
         it("should exist and be an object", function() {
@@ -23,5 +23,63 @@ describe( "Testing CTS Synchronous functions", function () {
 	    	expect(typeof CTS.utils.uriParam).toEqual("function");
 	    });
     });
+
+    describe('Checking URL Params helper', function(){
+    	/**
+    	 * Need to find a way to moc location.search
+    	 */
+		var context = {
+			"window":{
+				location:{
+					href: "http://www.website.com?varName=foo",
+					search : "?varName=foo"
+				}
+			}
+		}
+		with(context) {
+			it('should retrieve a value from a URI', function(){
+				expect(CTS.utils.uriParam().varName).toEqual("foo");
+			});
+			
+		}
+    });
+
+    describe('Checking Encoding data function', function(){
+    	it('should handle list properly', function(){
+    	  expect(CTS.utils.dataEncode({"list" : ["1", "2"]})).toEqual("list[]=1&list[]=2")
+    	});
+
+    	it('should handle string properly', function(){
+    	  expect(CTS.utils.dataEncode({"foo" : "bar"})).toEqual("foo=bar")
+    	});
+
+    	it('should handle boolean value properly', function(){
+    	  expect(CTS.utils.dataEncode({"foo": true})).toEqual("foo=true")
+    	  expect(CTS.utils.dataEncode({"foo": false})).toEqual("foo=false")
+    	});
+
+    	it('should handle xml properly', function () {
+    	  expect(CTS.utils.dataEncode({"xml": "<xml attr=\"a\"></xml>"})).toEqual("xml=%3Cxml+attr%3D%22a%22%3E%3C%2Fxml%3E")
+    	});
+    });
+
+    describe('Checking Endpoint Checking properly ', function(){
+    	it('should be null when not a string', function() {
+    		expect(CTS.utils.checkEndpoint(null)).toEqual(null);
+    		expect(CTS.utils.checkEndpoint([])).toEqual(null);
+    		expect(CTS.utils.checkEndpoint({})).toEqual(null);
+    		expect(CTS.utils.checkEndpoint()).toEqual(null);
+    		expect(CTS.utils.checkEndpoint(true)).toEqual(null);
+    	});
+
+    	it('should add a ? at the end when there is none', function() {
+    		expect(CTS.utils.checkEndpoint("http://lala.com")).toEqual("http://lala.com?");
+    	});
+
+    	it('should return the string as it is when there is a ?', function() {
+    		expect(CTS.utils.checkEndpoint("http://lala.com?")).toEqual("http://lala.com?");
+    	});
+    });
+    
 
 });
