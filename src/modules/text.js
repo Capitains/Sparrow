@@ -88,7 +88,7 @@
 
     try {
       xml = _this.getXml("body");
-      if(xml[0].children.length === 0) {
+      if(xml[0].childNodes.length === 0) {
         return false;
       } else {
         return true;
