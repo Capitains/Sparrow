@@ -47,9 +47,15 @@ module.exports = function(grunt) {
     },
     jasmine : {
       // Your project's source files
-      src : 'src/**/*.js',
-      // Your Jasmine spec files
-      specs : 'specs/**/*.js'
+      src : [
+        'src/cts.js',
+        'src/modules/**.js',
+        'src/i18n/**.js',
+
+      ],
+      options : {
+        specs : 'specs/**/*.js'
+      }
     }
   });
 
