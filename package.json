@@ -22,7 +22,8 @@
     "grunt-contrib-compress": "~0.5.2",
     "grunt-contrib-sass": "~0.7.x",
     "grunt-autoprefixer": "0.7.x",
-    "jasmine" : "~2.2"
+    "jasmine" : "~2.2",
+    "jasmine-ajax" : "~2"
   },
   "scripts": {
     "test" : "grunt jasmine",
