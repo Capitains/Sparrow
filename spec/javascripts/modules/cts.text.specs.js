@@ -31,7 +31,11 @@ describe( "Testing CTS Texts functions", function () {
 
 	describe('XML Helpers', function(){
 	  	var text = CTS.Text("http://restservice/urn:cts:lala", false);
-	  	var xml = (new DOMParser()).parseFromString("<?xml version=\"1.0\" encoding=\"utf-8\"?><TEI xmlns=\"http://www.tei-c.org/ns/1.0\"><text xml:lang=\"en\"><body><div type=\"translation\"><div type=\"textpart\" subtype=\"letter\" n=\"1\" xml:id=\"Alif\"><div type=\"textpart\" subtype=\"poem\" n=\"1\"><l n=\"1\"><seg n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg></l></div></div></div></body></text></TEI>", "text/xml");
+
+		beforeEach(function() {
+	    	xml = jasmine.getFixtures().read('xml/text.xml');
+	    	xml = (new DOMParser()).parseFromString(xml, "text/xml");
+		});
 
 	  	it("should say data is (TEI-)XML when it is", function() {
 	  		text.document = xml;
@@ -42,7 +46,9 @@ describe( "Testing CTS Texts functions", function () {
 
 	  	it("should return xml nodes in string", function() {
 	  		text.document = xml;
-	  		expect(text.getXml("seg", "string")).toEqual("<seg xmlns=\"http://www.tei-c.org/ns/1.0\" n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg>");
+	  		expect(text.getXml("seg", "string")).toEqual(
+	  			"<seg xmlns=\"http://www.tei-c.org/ns/1.0\" n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg>"
+	  		);
 	  	});
 
 	  	it("should return xml nodes in XML", function() {
@@ -65,6 +71,7 @@ describe( "Testing CTS Texts functions", function () {
 			jasmine.Ajax.install();
 			successFN = jasmine.createSpy("success");
 			errorFN = jasmine.createSpy("error");
+	    	xml = jasmine.getFixtures().read('xml/text.xml');
 		});
 		afterEach(function() {
 			jasmine.Ajax.uninstall();
@@ -94,11 +101,16 @@ describe( "Testing CTS Texts functions", function () {
       		jasmine.Ajax.requests.mostRecent().respondWith({
       			"status": 200,
       			"contentType": 'text/xml',
-      			"responseText": "<?xml version=\"1.0\" encoding=\"utf-8\"?><TEI xmlns=\"http://www.tei-c.org/ns/1.0\"><text xml:lang=\"en\"><body><div type=\"translation\"><div type=\"textpart\" subtype=\"letter\" n=\"1\" xml:id=\"Alif\"><div type=\"textpart\" subtype=\"poem\" n=\"1\"><l n=\"1\"><seg n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg></l></div></div></div></body></text></TEI>"
+      			"responseText": xml
       		});
       		expect(successFN).toHaveBeenCalled();
       		expect(errorFN).not.toHaveBeenCalled();
-      		expect(text.getXml(false, "string")).toEqual("<TEI xmlns=\"http://www.tei-c.org/ns/1.0\"><text xml:lang=\"en\" xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"><body><div type=\"translation\"><div type=\"textpart\" subtype=\"letter\" n=\"1\" xml:id=\"Alif\"><div type=\"textpart\" subtype=\"poem\" n=\"1\"><l n=\"1\"><seg n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg></l></div></div></div></body></text></TEI>");
+      		expect(text.getXml(false, "string")).toEqual(
+      			"<TEI xmlns=\"http://www.tei-c.org/ns/1.0\"><text xml:lang=\"en\" xmlns:xml=\"http://www.w3.org/XML/1998/namespace\">"
+      			+ "<body><div type=\"translation\"><div type=\"textpart\" subtype=\"letter\" n=\"1\" xml:id=\"Alif\"><div type=\"textpart\" "
+      			+ "subtype=\"poem\" n=\"1\"><l n=\"1\"><seg n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg>"
+      			+ "</l></div></div></div></body></text></TEI>"
+  			);
 		});
 
 		it("should take new endpoint url", function() {

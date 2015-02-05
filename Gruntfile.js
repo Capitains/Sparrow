@@ -18,11 +18,6 @@ module.exports = function(grunt) {
         files : {
           'build/i18n/en.min.js' : ["src/i18n/en.js"]
         }
-        /*files: [{
-            cwd: 'src/i18n/js',
-            src: '*.js',
-            dest: 'build/i18n/js'
-        }]*/
       }
     },
     concat: {
@@ -49,7 +44,6 @@ module.exports = function(grunt) {
       all: ['src/*.js', 'src/**/*.js']
     },
     jasmine : {
-      // Your project's source files
       src : [
         'src/cts.js',
         'src/modules/**.js',
@@ -57,8 +51,12 @@ module.exports = function(grunt) {
 
       ],
       options : {
-        vendor: ['node_modules/jasmine-ajax/lib/mock-ajax.js'],
-        specs : 'specs/**/*.js'
+        vendor: [
+          'node_modules/jasmine-ajax/lib/mock-ajax.js',
+          'node_modules/jquery/dist/jquery.min.js',
+          'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
+        ],
+        specs : 'spec/**/*.js'
       }
     }
   });

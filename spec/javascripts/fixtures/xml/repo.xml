@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextInventory xmlns="http://chs.harvard.edu/xmlns/cts3/ti" tiversion="3.0.rc1">
+    <collection id="demo">
+        <title xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">Alpheios CTS Repository template</title>
+        <creator xmlns="http://purl.org/dc/elements/1.1">The Alpheios Project, Ltd.</creator>
+        <coverage xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">TBD</coverage>
+        <description xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">Inventory of texts in the Alpheios text repository. </description>
+        <rights xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">TBD - Creative Commons License info</rights>
+    </collection>
+    <textgroup projid="latinLit:phi0690" urn="urn:cts:latinLit:phi0690">
+        <groupname xml:lang="eng">Virgil</groupname>
+        <work projid="latinLit:phi003" urn="urn:cts:latinLit:phi0690.phi003" xml:lang="lat">
+            <title xml:lang="eng">Aeneid</title>
+            <edition projid="latinLit:perseus-lat1" urn="urn:cts:latinLit:phi0690.phi003.perseus-lat1">
+                <label xml:lang="eng">Aeneid</label>
+                <description xml:lang="eng">Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn &amp;amp; Co. 1900.</description>
+                <online docname="/db/repository/latinLit/phi0690/phi003/phi0690.phi003.perseus-lat1.xml">
+                    <validate schema="teia.xsd"/>
+                    <namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                    <citationMapping>
+                        <citation label="book" xpath="/div1[@n='?']" scope="/TEI.2/text/body">
+                            <citation label="line" xpath="/l[@n='?']" scope="/TEI.2/text/body/div1[@n='?']"/>
+                        </citation>
+                    </citationMapping>
+                </online>
+                <memberof collection="Perseus:collection:Greco-Roman"/>
+            </edition>
+        </work>
+    </textgroup>
+    <textgroup projid="latinLit:phi0959" urn="urn:cts:latinLit:phi0959">
+        <groupname xml:lang="eng">Ovid</groupname>
+        <work projid="latinLit:phi006" urn="urn:cts:latinLit:phi0959.phi006" xml:lang="lat">
+            <title xml:lang="eng">Metamorphoses</title>
+            <edition projid="latinLit:perseus-lat1" urn="urn:cts:latinLit:phi0959.phi006.perseus-lat1">
+                <label xml:lang="eng">Metamorphoses</label>
+                <description xml:lang="eng">Perseus:bib:oclc,32116154, Ovid. Metamorphoses. Hugo Magnus. Gotha (Germany). Friedr. Andr. Perthes. 1892.</description>
+                <online docname="/db/repository/latinLit/phi0959/phi006/phi0959.phi006.perseus-lat1.xml">
+                    <validate schema="teia.xsd"/>
+                    <namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                    <citationMapping>
+                        <citation label="book" xpath="/div1[@n='?']" scope="/TEI.2/text/body">
+                            <citation label="line" xpath="/l[@n='?']" scope="/TEI.2/text/body/div1[@n='?']"/>
+                        </citation>
+                    </citationMapping>
+                </online>
+                <memberof collection="Perseus:collection:Greco-Roman"/>
+            </edition>
+        </work>
+    </textgroup>
+    <textgroup projid="latinLit:phi0917" urn="urn:cts:latinLit:phi0917">
+        <groupname xml:lang="eng">Lucan</groupname>
+        <work projid="latinLit:phi001" urn="urn:cts:latinLit:phi0917.phi001" xml:lang="lat">
+            <title xml:lang="eng">Civil War</title>
+            <edition projid="latinLit:perseus-lat1" urn="urn:cts:latinLit:phi0917.phi001.perseus-lat1">
+                <label xml:lang="eng">Pharsalia</label>
+                <description xml:lang="eng">Pharsaliae Libri X. M. Annaeus Lucanus. Carolus Hermannus Weise. Leipzig. G. Bassus. 1835.</description>
+                <online docname="/db/repository/latinLit/phi0917/phi001/phi0917.phi001.perseus-lat1.xml">
+                    <validate schema="teia.xsd"/>
+                    <namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                    <citationMapping>
+                        <citation label="book" xpath="/div1[@n='?']" scope="/TEI.2/text/body">
+                            <citation label="line" xpath="/l[@n='?']" scope="/TEI.2/text/body/div1[@n='?']"/>
+                        </citation>
+                    </citationMapping>
+                </online>
+                <memberof collection="Perseus:collection:Greco-Roman"/>
+            </edition>
+        </work>
+    </textgroup>
+</TextInventory>
