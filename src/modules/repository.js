@@ -66,10 +66,11 @@ var _delInventory = function(name) {
  * Get the repository from source url
  *
  * @param  {?function}       callback        Function to call when data are loaded
+ * @param  {?function}       error_callback  Function to call when data are not loaded
  * @param  {?list}           inventory_name  Name of the inventory to load
  *
  */
-var _load = function(callback, inventories) {
+var _load = function(callback, error_callback, inventories) {
   var endpoint = this.endpoint, 
       callback,
       xhr = CTS.utils.xhr,
@@ -78,6 +79,7 @@ var _load = function(callback, inventories) {
   if(typeof inventories === "undefined") {
     var inventories = Object.keys(this.inventory);
   }
+
 
   //Basically if we have only the callback
   if(typeof callback === "function") {
@@ -94,7 +96,7 @@ var _load = function(callback, inventories) {
       inventories.shift();
       _this.load(callback, inventories);
     }
-  });
+  }, "text/xml", null, error_callback);
 
   return this;
 }
@@ -268,7 +270,7 @@ function repository(endpoint, version, namespace) {
       }
     }
     object.version = version;
-    object.endpoint = endpoint;
+    object.endpoint = CTS.utils.checkEndpoint(endpoint);
     object.inventories = {}; // Dictionaries of inventory object
     object.inventory = {}; // Dictionaries of inventory's label
     object.setEndpoint = _setEndpoint;
