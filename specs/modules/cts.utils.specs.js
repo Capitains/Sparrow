@@ -24,26 +24,6 @@ describe( "Testing CTS Utils functions", function () {
 	    });
     });
 
-    describe('Checking URL Params helper', function(){
-    	/**
-    	 * Need to find a way to moc location.search
-    	 */
-		var context = {
-			"window":{
-				location:{
-					href: "http://www.website.com?varName=foo",
-					search : "?varName=foo"
-				}
-			}
-		}
-		with(context) {
-			it('should retrieve a value from a URI', function(){
-				expect(CTS.utils.uriParam().varName).toEqual("foo");
-			});
-			
-		}
-    });
-
     describe('Checking Encoding data function', function(){
     	it('should handle list properly', function(){
     	  expect(CTS.utils.dataEncode({"list" : ["1", "2"]})).toEqual("list[]=1&list[]=2")
@@ -83,3 +63,38 @@ describe( "Testing CTS Utils functions", function () {
     
 
 });
+
+
+
+/**
+ * Need to find a way to moc location.search
+
+(function() {
+	window.jasmine = jasmineRequire.core(jasmineRequire);
+	jasmineRequire.html(jasmine);
+	var env = jasmine.getEnv();
+	var jasmineInterface = jasmineRequire.interface(jasmine, env);
+
+
+	var queryString = new jasmine.QueryString({
+		getWindowLocation: function() { return window.location; }
+	});
+	describe('Checking URL Params helper', function(){
+		var context = {
+			"window" : {
+				location : {
+					search : "?foo=bar&z=y"
+				}
+			}
+		}
+		it('should retrieve a value from a URI', function(){
+			(function(window) {
+				console.log(window.location.search.split(/\?|\&/));
+				expect(CTS.utils.uriParam().foo).toEqual("bar");
+			})(context.window)
+		});
+		
+	});
+})();
+
+ */

@@ -182,7 +182,6 @@
   var _uriParam = function() {
       var result = {},
           params = window.location.search.split(/\?|\&/);
-
       params.forEach( function(it) {
           if (it) {
               var param = it.split("=");

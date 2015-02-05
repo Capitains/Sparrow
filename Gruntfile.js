@@ -45,6 +45,9 @@ module.exports = function(grunt) {
         }
       }
     },
+    jslint: {
+      all: ['src/*.js', 'src/**/*.js']
+    },
     jasmine : {
       // Your project's source files
       src : [
@@ -73,9 +76,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-jslint');
 
   // Default task. 
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('build', ['default']);
-  grunt.registerTask('test', ['default', 'jasmine']);
+  //grunt.registerTask('jshint', ['jshint']);
+  grunt.registerTask('test', ['jasmine']);
 };

@@ -21,12 +21,13 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-compress": "~0.5.2",
     "grunt-contrib-sass": "~0.7.x",
+    "grunt-jslint": "~1.1",
     "grunt-autoprefixer": "0.7.x",
     "jasmine" : "~2.2",
     "jasmine-ajax" : "~2"
   },
   "scripts": {
-    "test" : "grunt jasmine",
+    "test" : "grunt test",
     "build" : "grunt build"
   },
   "repositories": [
