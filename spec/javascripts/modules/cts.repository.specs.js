@@ -91,6 +91,116 @@ describe( "Testing CTS Repository object", function () {
         expect(textgroups).toEqual(["Virgil", "Ovid", "Lucan"]);
       });
 
+      it('should have a level n + 1 in Virgil being its works title', function(){
+        var data = repo.inventories.annotsrc.getRaw();
+        var work = Object.keys(data.Virgil);
+        expect(work).toEqual(["Aeneid"]);
+      });
+
+      it('should have a level n + 1 in Virgil being its works title', function(){
+        var data = repo.inventories.annotsrc.getRaw();
+        var work = Object.keys(data.Virgil);
+        expect(work).toEqual(["Aeneid"]);
+      });
+      
+      it('should have a level n + 2 in Virgil being type of works', function(){
+        var data = repo.inventories.annotsrc.getRaw();
+        var work = Object.keys(data.Virgil.Aeneid);
+        expect(work).toEqual(["edition", "translation"]);
+      });
+      
+      it('should have a level n + 2 with theoretical text', function(){
+        var data = repo.inventories.annotsrc.getRaw("eng", true);
+        var work = Object.keys(data.Virgil.Aeneid);
+        expect(work).toEqual(["edition", "translation", "theoretical"]);
+      });
+      
+      it('should have a level n + 3  being editions', function(){
+        var data = repo.inventories.annotsrc.getRaw();
+        var work = Object.keys(data.Virgil.Aeneid.edition);
+        expect(work).toEqual(["Aeneid"]);
+      });
+      
+      it('should have a level n + 4  being editions/translation object', function(){
+        var data = repo.inventories.annotsrc.getRaw();
+        var work = Object.keys(data.Virgil.Aeneid.edition);
+        expect(work).toEqual(["Aeneid"]);
+        expect(data.Virgil.Aeneid.edition.Aeneid.prototype).toBe(CTS.repositoryPrototypes.Text);
+      });
+      
+      it('should return given language when specified', function(){
+        var data = repo.inventories.annotsrc.getRaw("fr");
+        var work = Object.keys(data);
+        expect(work).toEqual(["Virgile", "Ovid", "Lucan"]);
+      });
+
     });
+
+    describe('CTS3-Text ', function(){
+
+      beforeEach(function() {
+          repo = CTS.repository("http://localhost") 
+          jasmine.Ajax.install();
+          repo.addInventory("annotsrc");
+          repo.load();
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            "status": 200,
+            "contentType": 'text/xml',
+            "responseText": xml
+          });
+          text = repo.inventories.annotsrc.getRaw("eng").Virgil.Aeneid.edition.Aeneid;
+      });
+      afterEach(function() {
+          jasmine.Ajax.uninstall();
+      });
+
+      it('should have an URN', function(){
+        expect(text.urn).toEqual("urn:cts:latinLit:phi0690.phi003.perseus-lat1");
+      });
+
+      it('should have citations Scheme', function(){
+        expect(text.citations).toEqual(["book", "line"]);
+      });
+
+      it('should have citations Scheme', function(){
+        expect(text.citations).toEqual(["book", "line"]);
+      });
+
+      it('should have at least one label', function(){
+        var label = text.getLabel();
+        expect(label).toBeDefined();
+        expect(label).toBe("Aeneid");
+      });
+
+      it('should return other language label', function(){
+        var label = text.getLabel("fr");
+        expect(label).toBe("Énéide")
+      });
+
+      it('should return default language label when one does not existing', function(){
+        var label = text.getLabel("nonExistingLanguage");
+        expect(label).toBe("Aeneid")
+      });
+
+      it('should have at least one description', function(){
+        var desc = text.getDesc();
+        expect(desc).toBeDefined();
+        expect(desc).toEqual("Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.");
+      });
+
+      it('should return other language description', function(){
+        var desc = text.getDesc("fr");
+        expect(desc).toEqual("Perseus:bib:oclc,22858571, Vergil. Bucoliques, Énéide, and Géorgiques Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.")
+      });
+
+      it('should return default language description when one does not existing', function(){
+        var desc = text.getDesc("nonExistingLanguage");
+        expect(desc).toEqual("Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.")
+      });
+      
+      
+      
+    });
+    
 
 });

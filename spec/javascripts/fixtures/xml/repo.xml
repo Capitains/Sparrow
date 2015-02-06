@@ -8,12 +8,15 @@
         <rights xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">TBD - Creative Commons License info</rights>
     </collection>
     <textgroup projid="latinLit:phi0690" urn="urn:cts:latinLit:phi0690">
+        <groupname xml:lang="fr">Virgile</groupname>
         <groupname xml:lang="eng">Virgil</groupname>
         <work projid="latinLit:phi003" urn="urn:cts:latinLit:phi0690.phi003" xml:lang="lat">
             <title xml:lang="eng">Aeneid</title>
             <edition projid="latinLit:perseus-lat1" urn="urn:cts:latinLit:phi0690.phi003.perseus-lat1">
+                <label xml:lang="fr">Énéide</label>
                 <label xml:lang="eng">Aeneid</label>
-                <description xml:lang="eng">Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn &amp;amp; Co. 1900.</description>
+                <description xml:lang="fr">Perseus:bib:oclc,22858571, Vergil. Bucoliques, Énéide, and Géorgiques Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.</description>
+                <description xml:lang="eng">Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.</description>
                 <online docname="/db/repository/latinLit/phi0690/phi003/phi0690.phi003.perseus-lat1.xml">
                     <validate schema="teia.xsd"/>
                     <namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
