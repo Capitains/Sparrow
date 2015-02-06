@@ -53,6 +53,7 @@ module.exports = function(grunt) {
       options : {
         vendor: [
           'node_modules/jasmine-ajax/lib/mock-ajax.js',
+          'node_modules/jasmine-expect/dist/jasmine-matchers.js',
           'node_modules/jquery/dist/jquery.min.js',
           'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
         ],

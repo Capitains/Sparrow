@@ -16,7 +16,8 @@
     "grunt-jslint": "~1.1",
     "jasmine" : "~2.2",
     "jasmine-ajax" : "~2",
-    "jasmine-jquery" : "~2"
+    "jasmine-jquery" : "~2",
+    "jasmine-expect" : "~1"
   },
   "scripts": {
     "test" : "grunt test",
