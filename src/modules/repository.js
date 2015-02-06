@@ -101,9 +101,27 @@ var _load = function(callback, error_callback, inventories) {
   return this;
 }
 
+var CTStext = function(nodes, type, urn) {
+  return { "type" : type}
+}
+
+var CTSwork = function(nodes, urn) {
+  return {}
+}
+
+var CTStextgroup = function(nodes, urn) {
+  return {}
+}
+
+var CTSinventory = function(nodes, urn) {
+  return {}
+}
+
+
+
 var TextCTS3 = function(nodes, type, urn) {
   var object = {};
-  object.type = type;
+  object.prototype = CTStext;
   object.descriptions = {};
   object.labels = {}
   object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
@@ -147,6 +165,7 @@ var TextCTS3 = function(nodes, type, urn) {
 
 var WorkCTS3 = function(nodes, urn) {
   var object = {};
+  object.prototype = CTSwork;
   object.label = {};
   object.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
@@ -179,6 +198,7 @@ var WorkCTS3 = function(nodes, urn) {
 
 var TextGroupCTS3 = function(nodes) {
   var object = {};
+  object.prototype = CTStextgroup;
   object.label = {};
   object.urn = "urn:cts:" + nodes.getAttribute("projid");
 
@@ -212,6 +232,7 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
   var object = {},
       ti;
 
+  object.prototype = CTSinventory;
   object.identifier = uri;
   object.namespace = namespace;
   ti = xml.getElementsByTagNameNS(object.namespace, "TextInventory");
@@ -290,4 +311,10 @@ function repository(endpoint, version, namespace) {
 }
 
   CTS.repository = repository;
+  CTS.repositoryPrototypes = {
+    Text : CTStext,
+    Work : CTSwork,
+    Textgroup : CTStextgroup,
+    Inventory : CTSinventory
+  }
 }));
