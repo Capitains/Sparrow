@@ -11,6 +11,7 @@
         <groupname xml:lang="fr">Virgile</groupname>
         <groupname xml:lang="eng">Virgil</groupname>
         <work projid="latinLit:phi003" urn="urn:cts:latinLit:phi0690.phi003" xml:lang="lat">
+            <title xml:lang="fr">Énéide</title>
             <title xml:lang="eng">Aeneid</title>
             <edition projid="latinLit:perseus-lat1" urn="urn:cts:latinLit:phi0690.phi003.perseus-lat1">
                 <label xml:lang="fr">Énéide</label>

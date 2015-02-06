@@ -141,7 +141,7 @@ var TextCTS3 = function(nodes, type, urn) {
   });
 
   // We create a function to have a name
-  object.getDesc = function(lang) {
+  object.getDesc  = function(lang) {
     if(lang === "undefined") {
       lang = this.defaultLangDesc;
     } else if (!(lang in this.descriptions)) {

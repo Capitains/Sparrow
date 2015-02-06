@@ -193,14 +193,112 @@ describe( "Testing CTS Repository object", function () {
         expect(desc).toEqual("Perseus:bib:oclc,22858571, Vergil. Bucoliques, Énéide, and Géorgiques Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.")
       });
 
-      it('should return default language description when one does not existing', function(){
+      it('should return default language description when one does not exist', function(){
         var desc = text.getDesc("nonExistingLanguage");
         expect(desc).toEqual("Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.")
       });
       
-      
-      
     });
     
+    describe('CTS3-TextGroup ', function(){
 
+      beforeEach(function() {
+          repo = CTS.repository("http://localhost") 
+          jasmine.Ajax.install();
+          repo.addInventory("annotsrc");
+          repo.load();
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            "status": 200,
+            "contentType": 'text/xml',
+            "responseText": xml
+          });
+          textgroup = repo.inventories.annotsrc.textgroups[0];
+
+      });
+      afterEach(function() {
+          jasmine.Ajax.uninstall();
+      });
+
+      it('should have an URN', function(){
+        expect(textgroup.urn).toEqual("urn:cts:latinLit:phi0690");
+      });
+
+      it('should have at least one label', function(){
+        var label = textgroup.getName();
+        expect(label).toBeDefined();
+        expect(label).toBe("Virgil");
+      });
+
+      it('should return other language label', function(){
+        var label = textgroup.getName("fr");
+        expect(label).toBe("Virgile")
+      });
+
+      it('should return default language label when one does not existing', function(){
+        var label = textgroup.getName("nonExistingLanguage");
+        expect(label).toBe("Virgil")
+      });
+
+      it('should have children Works', function(){
+        var label = textgroup.works;
+        expect(label.length).toEqual(1)
+      });
+
+    });
+    
+    describe('CTS3-Work ', function(){
+
+      beforeEach(function() {
+          repo = CTS.repository("http://localhost") 
+          jasmine.Ajax.install();
+          repo.addInventory("annotsrc");
+          repo.load();
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            "status": 200,
+            "contentType": 'text/xml',
+            "responseText": xml
+          });
+          work = repo.inventories.annotsrc.textgroups[0].works[0];
+
+      });
+      afterEach(function() {
+          jasmine.Ajax.uninstall();
+      });
+
+      it('should have an URN', function(){
+        expect(work.urn).toEqual("urn:cts:latinLit:phi0690.phi003");
+      });
+
+      it('should have at least one label', function(){
+        var label = work.getTitle();
+        expect(label).toBeDefined();
+        expect(label).toBe("Aeneid");
+      });
+
+      it('should return other language label', function(){
+        var label = work.getTitle("fr");
+        expect(label).toBe("Énéide")
+      });
+
+      it('should return default language label when one does not existing', function(){
+        var label = work.getTitle("nonExistingLanguage");
+        expect(label).toBe("Aeneid")
+      });
+
+      it("should have a list of editions", function() {
+        var editions = work.editions;
+        expect(editions).toBeArray();
+      });
+
+      it("should have a list of editions of length 1", function() {
+        var editions = work.editions;
+        expect(editions.length).toEqual(1);
+      });
+
+      it("should have a list of translations", function() {
+        var translations = work.translations;
+        expect(translations).toBeArray();
+      });
+
+    });
 });
