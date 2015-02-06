@@ -303,6 +303,7 @@ function repository(endpoint, version, namespace) {
     if (object.version === 3) {
       object.TextInventory = TextInventoryCTS3;
     } else {
+      throw "CTS Version 5 is not implemented yet";
       object.TextInventory = null; // NotImplementedYet
     }
     
