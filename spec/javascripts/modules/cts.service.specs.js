@@ -62,7 +62,6 @@ describe('CTS.Service Helper', function(){
       example.setValue("foo", "barbar");
       expect(successFN).not.toHaveBeenCalled();
       example.send(successFN);
-      console.log(jasmine.Ajax.requests.mostRecent())
       jasmine.Ajax.requests.mostRecent().respondWith({
         status : 200,
         contentType: 'plain/text',
