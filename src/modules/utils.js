@@ -60,7 +60,7 @@
       }
 
       xhr.onreadystatechange = function() {
-        if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404 || xhr.status === 400) {
+        if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404 || xhr.status === 400) {
           if(typeof error_callback !== "undefined") {
             error_callback(xhr.status, xhr.statusText);
           }
@@ -69,7 +69,7 @@
             if(typeof callback === "function") {
               if(type === "text/xml") {
                 callback(xhr.responseXML);
-              } else if (type === "text" || type === "plain/text") {
+              } else if (type === "text" || type === "plain/text") {
                 callback(xhr.responseText);
               }
             }
