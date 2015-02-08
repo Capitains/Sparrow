@@ -54,18 +54,22 @@
       xhr.open(method, url, async);
 
       xhr.onerror = function() {
-        error_callback(xhr.status, xhr.statusText);
+        if(typeof error_callback !== "undefined") {
+          error_callback(xhr.status, xhr.statusText);
+        }
       }
 
       xhr.onreadystatechange = function() {
-        if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404) {
-          error_callback(xhr.status, xhr.statusText);
+        if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404 || xhr.status === 400) {
+          if(typeof error_callback !== "undefined") {
+            error_callback(xhr.status, xhr.statusText);
+          }
         } else {
           if (xhr.readyState === 4) {
             if(typeof callback === "function") {
               if(type === "text/xml") {
                 callback(xhr.responseXML);
-              } else if (type == "text") {
+              } else if (type === "text" || type === "plain/text") {
                 callback(xhr.responseText);
               }
             }
@@ -82,7 +86,9 @@
       }
 
     } catch(err) {
-      error_callback(err);
+      if(typeof error_callback !== "undefined") {
+        error_callback(err);
+      }
     }
   }
 
@@ -182,7 +188,6 @@
   var _uriParam = function() {
       var result = {},
           params = window.location.search.split(/\?|\&/);
-
       params.forEach( function(it) {
           if (it) {
               var param = it.split("=");

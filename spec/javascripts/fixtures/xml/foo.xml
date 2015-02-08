@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns="http://chs.harvard.edu/xmlns/cts3/ti">
+  <foo>
+    <bar>foo</bar>
+  </foo>
+</root>

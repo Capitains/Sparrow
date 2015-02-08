@@ -1,6 +1,8 @@
 Capitains Sparrow 
 ===
 
+[![Build Status](https://travis-ci.org/PerseusDL/Capitains-Sparrow.svg)](https://travis-ci.org/PerseusDL/Capitains-Sparrow)
+
 # About
 This software has been developed by @PerseusDL team to provide a simple and ready to use Javascript abstraction/implementation of the CTS norm. On the road leading to the CTS abstraction, we thought it might be nice to provide ready-to-use plugins for various uses and various libraries.
 
