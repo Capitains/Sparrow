@@ -72,7 +72,6 @@ var _delInventory = function(name) {
  */
 var _load = function(callback, error_callback, inventories) {
   var endpoint = this.endpoint, 
-      callback,
       xhr = CTS.utils.xhr,
       _this = this;
 
@@ -80,12 +79,13 @@ var _load = function(callback, error_callback, inventories) {
     var inventories = Object.keys(this.inventory);
   }
 
-
   //Basically if we have only the callback
-  if(typeof callback === "function") {
-    var callback = callback;
-  } else {
+  if(typeof callback !== "function") {
     var callback = null;
+  }
+  //Basically if we have only the callback
+  if(typeof error_callback !== "function") {
+    var error_callback = function(e) { return; };
   }
 
   xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], function(data) {
@@ -94,7 +94,7 @@ var _load = function(callback, error_callback, inventories) {
       if(callback !== null) { callback(); }
     } else {
       inventories.shift();
-      _this.load(callback, inventories);
+      _this.load(callback, error_callback, inventories);
     }
   }, "text/xml", null, error_callback);
 
