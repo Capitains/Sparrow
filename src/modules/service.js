@@ -77,7 +77,7 @@
    * @Github : https://github.com/latin-language-toolkit/llt
    * 
    */
-  CTS.service.services.llt_tokenizer = function(endpoint, options) {
+  CTS.service.services["llt.tokenizer"] = function(endpoint, options) {
     CTS.service._service.call(this, endpoint, options);
     this.method = "POST";
     this.options = {
@@ -127,7 +127,7 @@
       }
     }
   }
-  CTS.service.services.llt_tokenizer.prototype = Object.reate(CTS.service._service)
+  CTS.service.services["llt.tokenizer"].prototype = Object.create(CTS.service._service)
 
   /**
    *  Create a new service
