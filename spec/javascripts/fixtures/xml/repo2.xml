@@ -25,20 +25,6 @@ scope="/tei:TEI/tei:text/tei:body/tei:div">
 </citationMapping>
 </online>
 </edition>
-<translation projid="pdlmc:perseus-eng1" xml:lang="eng">
-<label>Forest Law Compendium - Medieval Latin Class Translation</label>
-<online docname="/db/repository/pdlmc/cdf/flc/cdf.flc.perseus-eng1.xml">
-<validate schema="tei-epidoc.rng"/>
-<namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
-<citationMapping>
-<citation label="Chapter" xpath="/tei:div[@n='?']"
-scope="/tei:TEI/tei:text/tei:body/tei:div">
-<!-- Add sections and lines once they are encoded -->
-<!--citation label="Section" xpath="/tei:lg[@n='?']" scope="/tei:TEI/tei:text/tei:body/tei:div/tei:div[@n='?']"/-->
-</citation>
-</citationMapping>
-</online>
-</translation>
 </work>
 </textgroup>
 </TextInventory>
