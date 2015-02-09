@@ -106,10 +106,7 @@ describe( "Testing CTS Texts functions", function () {
       		expect(successFN).toHaveBeenCalled();
       		expect(errorFN).not.toHaveBeenCalled();
       		expect(text.getXml(false, "string")).toEqual(
-      			"<TEI xmlns=\"http://www.tei-c.org/ns/1.0\"><text xml:lang=\"en\" xmlns:xml=\"http://www.w3.org/XML/1998/namespace\">"
-      			+ "<body><div type=\"translation\"><div type=\"textpart\" subtype=\"letter\" n=\"1\" xml:id=\"Alif\"><div type=\"textpart\" "
-      			+ "subtype=\"poem\" n=\"1\"><l n=\"1\"><seg n=\"1\">Ho ! Saki, pass around and offer the bowl (of love for God) : --- </seg>"
-      			+ "</l></div></div></div></body></text></TEI>"
+      			(new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(xml, "text/xml"))
   			);
 		});
 

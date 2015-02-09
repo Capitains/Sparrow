@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextInventory xmlns="http://chs.harvard.edu/xmlns/cts3/ti" tiversion="3.0.rc1">
+    <collection id="demo">
+        <title xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">Alpheios CTS Repository template</title>
+        <creator xmlns="http://purl.org/dc/elements/1.1">The Alpheios Project, Ltd.</creator>
+        <coverage xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">TBD</coverage>
+        <description xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">Inventory of texts in the Alpheios text repository. </description>
+        <rights xmlns="http://purl.org/dc/elements/1.1" xml:lang="eng">TBD - Creative Commons License info</rights>
+    </collection>
+ <textgroup projid="pdlmc:cdf">
+<groupname>carta de foresta</groupname>
+<work projid="pdlmc:flc" xml:lang="lat">
+<title xml:lang="eng">Forest Law Compendium</title>
+<edition projid="pdlmc:perseus-lat1">
+<label>carta de foresta - Medieval Latin Class Transcription</label>
+<online docname="/db/repository/pdlmc/cdf/flc/cdf.flc.perseus-lat1.xml">
+<validate schema="tei-epidoc.rng"/>
+<namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+<citationMapping>
+<citation label="Chapter" xpath="/tei:div[@n='?']"
+scope="/tei:TEI/tei:text/tei:body/tei:div">
+<!-- Add sections and lines once they are encoded -->
+<!--citation label="Section" xpath="/tei:lg[@n='?']" scope="/tei:TEI/tei:text/tei:body/tei:div/tei:div[@n='?']"/-->
+</citation>
+</citationMapping>
+</online>
+</edition>
+</work>
+</textgroup>
+</TextInventory>

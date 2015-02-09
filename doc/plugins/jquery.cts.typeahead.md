@@ -82,7 +82,7 @@ Because so many plugins force you to dig the code or extend your already existin
 |---------------------------|--------------------------------------|--------------
 | container                 | `["cts-selector"]`                   | Container for all the generated DOM
 | retrieve-button           | `["cts-selector-retriever"]`         | `<button />` used to retrieve passage
-| retrieve-container        | `[]`                                 | `<div />` containing previous button
+| retrieve-button-container | `[]`                                 | `<div />` containing previous button
 |                           |                                      |
 | citation                  | `["cts-selector-citation"]`          | `<div />` containing beginning or end passage selection's containers
 | citation-container        | `["cts-selector-passage-container"]` | `<div />` containing beginning or end passage selection's inputs
