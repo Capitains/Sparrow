@@ -47,8 +47,7 @@ module.exports = function(grunt) {
       src : [
         'src/cts.js',
         'src/modules/**.js',
-        'src/i18n/**.js',
-
+        'src/i18n/**.js'
       ],
       options : {
         vendor: [
@@ -88,5 +87,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('build', ['default']);
   //grunt.registerTask('jshint', ['jshint']);
-  grunt.registerTask('test', ['jasmine']);
+  grunt.registerTask('test', ['jasmine', 'karma']);
 };
