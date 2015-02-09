@@ -84,7 +84,7 @@
       "xml" : {
         "type" : "boolean",
         "html" : "checkbox",
-        "default" : true
+        "default" : false
       },
       "inline" : {
         "type" : "boolean",
