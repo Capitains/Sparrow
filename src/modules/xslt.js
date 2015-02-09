@@ -150,7 +150,7 @@
       "e_docuri" : { 
         "type" : "string",
         "html" : "input",
-        "default" : "urn:cts:latinLit:tg.work.edition:1.1"
+        "default" : ""
       },
       "e_agenturi" : { 
         "type" : "string",
