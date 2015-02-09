@@ -175,7 +175,7 @@
       "e_attachtoroot" : { 
         "type" : "boolean",
         "html" : "checkbox",
-        "default" : true
+        "default" : false
       } 
     }
   }
