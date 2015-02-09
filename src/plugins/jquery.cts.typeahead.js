@@ -35,7 +35,7 @@
   }
   var $lang = {};
 
-  function Plugin ( element, options ) {
+  function SparrowTypeahead ( element, options ) {
     this.element = $(element);
     // jQuery has an extend method which merges the contents of two or
     // more objects, storing the result in the first object. The first object
@@ -53,11 +53,12 @@
     this.repository = new CTS.repository(this.settings.endpoint, 3);
     this._defaultCSS = $css;
     this.css = this.mergeCSS();
+    this.typeahead = null;
     this.init();
 
   }
 
-  $.extend(Plugin.prototype, {
+  $.extend(SparrowTypeahead.prototype, {
     checkURI : function() {
       var GET = CTS.utils.uriParam(),
           _this = this,
@@ -395,7 +396,7 @@
           // pass options to our plugin constructor,
           // and store the plugin instance
           // in the elements jQuery data object.
-          $.data(this, "_cts_typeahead", new Plugin( this, options ));
+          $.data(this, "_cts_typeahead", new SparrowTypeahead( this, options ));
         }
       });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
@@ -408,7 +409,7 @@
         var instance = $.data(this, "_cts_typeahead");
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
-        if (instance instanceof Plugin && typeof instance[options] === "function") {
+        if (instance instanceof SparrowTypeahead && typeof instance[options] === "function") {
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );

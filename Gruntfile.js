@@ -58,8 +58,21 @@ module.exports = function(grunt) {
           'node_modules/sinon/lib/sinon.js',
           'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
         ],
-        specs : 'spec/**/*.js',
+        specs : 'spec/**/*.specs.js',
         keepRunner : true
+      }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',/*
+        files : [
+          {src: 'src/cts.js', served:true, included:false},
+          {src:'src/modules/**.js', served:true, included:false},
+          {src:'src/i18n/**.js', served:true, included:false},
+          {src:'src/plugins/**.js', served:true, included:false},
+          {src:'src/plugins/**.js', served:true, included:false},
+          {src:'spec/e2e/**.js', served:true, included:false},
+        ]*/
       }
     }
   });
@@ -69,6 +82,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-jslint');
+  grunt.loadNpmTasks('grunt-karma');
 
   // Default task. 
   grunt.registerTask('default', ['concat', 'uglify']);
