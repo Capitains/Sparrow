@@ -190,7 +190,12 @@
       Object.keys(_this.inputs).forEach(function(param) {
         var $input = _this.inputs[param];
         if(typeof $input === "string") {
-          data[param] = $($input).val();
+          var $input = $($input);
+          if($input.attr("type") === "checkbox") {
+            data[param] = $($input).is(":checked");
+          } else {
+            data[param] = $($input).val();
+          }
         } else if (typeof $input === "function") {
           data[param] = $input();
         } else if($input.is("[type='checkbox']")) {
