@@ -104,9 +104,9 @@
         if(object.html === "checkbox") {
           $input = $("<input />", {
             "type" : "checkbox",
-            "checked" : $default,
             "class" : _this.getClass("field-checkbox")
           });
+          $input[0].checked = $default;
         } else if (object.html === "input") {
           $input = $("<input />", {
             "type" : "text",
