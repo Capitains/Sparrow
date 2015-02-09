@@ -63,15 +63,10 @@ module.exports = function(grunt) {
     },
     karma: {
       unit: {
-        configFile: 'karma.conf.js',/*
-        files : [
-          {src: 'src/cts.js', served:true, included:false},
-          {src:'src/modules/**.js', served:true, included:false},
-          {src:'src/i18n/**.js', served:true, included:false},
-          {src:'src/plugins/**.js', served:true, included:false},
-          {src:'src/plugins/**.js', served:true, included:false},
-          {src:'spec/e2e/**.js', served:true, included:false},
-        ]*/
+        configFile: 'karma.conf.js',
+        options : {
+          browsers : ["PhantomJS"]
+        }
       }
     }
   });
