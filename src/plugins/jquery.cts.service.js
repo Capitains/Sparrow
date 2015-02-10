@@ -169,6 +169,7 @@
         } else if (_this.settings.click instanceof jQuery) {
           _this.settings.click.on("click", function () { _this.send(); });
         }
+
       }
       // Show / hide
       if(_this.settings.show === false) {
@@ -193,10 +194,13 @@
           data[param] = $input();
         } else if($input.is("[type='checkbox']")) {
           data[param] = $input.is(':checked');
-        } else if (_this.service.options[param].type === "list") {
-          data[param] = $input.val().replace(/\s+/g, '').split(",");
         } else{
           data[param] = $input.val();
+        }
+        if(_this.service.options[param].type === "boolean") {
+          data[param] = (data[param] === "true" || data[param] === true) ? true : false;
+        } else if (_this.service.options[param].type === "list") {
+          data[param] = data[param].replace(/\s+/g, '').split(",");
         }
       });
       return data;
