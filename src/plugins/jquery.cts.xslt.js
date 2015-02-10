@@ -199,7 +199,7 @@
         } else if (typeof $input === "function") {
           data[param] = $input();
         } else if($input.is("[type='checkbox']")) {
-          data[param] = $input.is(':checked').toString();
+          data[param] = $input.is(':checked');
         } else if (_this.xslt.options[param].type === "list") {
           data[param] = $input.val().replace(/\s+/g, '').split(",");
         } else {
