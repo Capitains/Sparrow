@@ -30,7 +30,10 @@
 				console.log(data);
 				$(".TEItext").val(data);
 			},
-			"show" : "SHOW_ME_THE_GONDOR"
+			"show" : "SHOW_ME_THE_GONDOR",
+        "names" : {
+            "xml" : "xml_for_llt"
+        }
 		});
 		$("#lltTokenizer").on("cts-service:llt.tokenizer:done", function() {
 			//console.log(data);

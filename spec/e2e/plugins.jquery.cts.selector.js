@@ -1,4 +1,4 @@
-describe('jQuery CTS Typeahead', function() {
+describe('jQuery CTS Selector', function() {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/spec/javascripts/fixtures';
     repo1 = jasmine.getFixtures().read('xml/repo.xml');
@@ -9,8 +9,8 @@ describe('jQuery CTS Typeahead', function() {
 
   afterEach(function() {
     $j("body > div").remove();
-  });
-  
+  })
+
   describe('Init', function () {
 
     /**
@@ -41,7 +41,7 @@ describe('jQuery CTS Typeahead', function() {
      */
 
     it("should init after loading", function() {
-        input.ctsTypeahead({
+        input.ctsSelector({
           "endpoint" : "base/spec/javascripts/fixtures/xml/repo.xml?",
           "version" : 3,
           "inventories" : {
@@ -55,7 +55,7 @@ describe('jQuery CTS Typeahead', function() {
           "responseXML" : (new DOMParser()).parseFromString(repo1, "text/xml"),
           "responseText" : repo1
         });
-        expect($j(".typeahead.tt-input").length).toEqual(1);
+        expect($j("select:visible").length).toBeGreaterThan(1);
     });
 
 
@@ -82,7 +82,7 @@ describe('jQuery CTS Typeahead', function() {
       $j("body").append(fixture);
 
       //Applying Plugin
-      input.ctsTypeahead({
+      input.ctsSelector({
         "endpoint" : "base/spec/javascripts/fixtures/xml/repo.xml?",
         "version" : 3,
         "inventories" : {
@@ -107,15 +107,13 @@ describe('jQuery CTS Typeahead', function() {
       });
 
       //Creating variables shortcut
-      instance = $j(".target").data("_cts_typeahead");
-      th = instance.typeahead.data("ttTypeahead");
+      instance = $j(".target").data("_cts_selector");
 
     });
     afterEach(function() {
       jasmine.Ajax.uninstall();
       fixture.remove();
       instance = null;
-      th = null;
     });
 
     /**
@@ -128,19 +126,30 @@ describe('jQuery CTS Typeahead', function() {
       var keys = Object.keys(instance.repository.inventories);
       expect(keys.length).toEqual(2);
     });
+
+    it("should show a repository selector", function() {
+      expect(fixture.find("select:visible").first().find("option").length).toEqual(2);
+      expect(fixture.find("select:visible").first().find("option").first().val()).toEqual("annotsrc");
+      expect(fixture.find("select:visible").first().find("option").last().val()).toEqual("pilots");
+    });
+
+    it("should show labels", function() {
+      expect(fixture.find("select:visible").first().find("option").length).toEqual(2);
+      expect(fixture.find("select:visible").first().find("option").first().text()).toEqual("Nice label for annotsrc");
+      expect(fixture.find("select:visible").first().find("option").last().text()).toEqual("?");
+    });
     
     it("should show data from 1st repository", function() {
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      expect($j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").length).toEqual(1);
+      //Fixture
+      fixture.find("select:visible").first().find("option").first()[0].selected = true;
+      fixture.find("select:visible").first().trigger("change");
+      expect(fixture.find("select:visible").eq(1).data("inventory")).toEqual("annotsrc");
     });
 
     it("should show data from 2nd repository", function(){
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      expect($j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").length).toEqual(1);
+      fixture.find("select:visible").first().find("option").last()[0].selected = true;
+      fixture.find("select:visible").first().trigger("change");
+      expect(fixture.find("select:visible").eq(1).data("inventory")).toEqual("pilots");
     });
   });
 
@@ -162,14 +171,15 @@ describe('jQuery CTS Typeahead', function() {
       $j("body").append(fixture);
 
       //Applying Plugin
-      input.ctsTypeahead({
+      input.ctsSelector({
         "endpoint" : "http://fakeRepo.com/CTS.xq?",
         "version" : 3,
         "inventories" : {
           "annotsrc" : "Nice label for annotsrc",
           "pilots" : "?"
         },
-        "retrieve" : ".TEItext"
+        "retrieve" : ".TEItext",
+        "passage" : true
       });
 
       //Getting AJAX
@@ -187,41 +197,99 @@ describe('jQuery CTS Typeahead', function() {
       });
 
       //Creating variables shortcut
-      instance = $j(".target").data("_cts_typeahead");
-      th = instance.typeahead.data("ttTypeahead");
+      instance = $j(".target").data("_cts_selector");
 
     });
     afterEach(function() {
       jasmine.Ajax.uninstall();
       fixture.remove();
       instance = null;
-      th = null;
     });
+
+    var selectCarta = function() {
+      //Fixtures
+      fixture.find("select:visible").eq(0).find("option").last()[0].selected = true;
+      fixture.find("select:visible").eq(0).trigger("change");
+
+      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(1).trigger("change");
+
+      fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(2).trigger("change");
+
+      fixture.find("select:visible").eq(3).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(3).trigger("change");
+    }
+
+    var passageCarta = function() {
+      $j(".cts-selector-passage").first().val(1);
+      $j(".cts-selector-passage").last().val(2);
+      $j(".cts-selector-passage").last().trigger("change");
+    }
+
+    var selectVirgil = function() {
+      //Fixtures
+      fixture.find("select:visible").eq(0).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(0).trigger("change");
+
+      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(1).trigger("change");
+
+      fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(2).trigger("change");
+
+      fixture.find("select:visible").eq(3).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(3).trigger("change");
+    }
+
+    var passageVirgil = function() {
+      $j(".cts-selector-passage").eq(0).val(1);
+      $j(".cts-selector-passage").eq(1).val(2);
+      $j(".cts-selector-passage").eq(2).val(3);
+      $j(".cts-selector-passage").eq(3).val(4);
+      $j(".cts-selector-passage").last().trigger("change");
+    }
+
+    var retrieve = function() {
+      $j("button:contains(Retrieve)").trigger("click");
+    }
 
     /**
      * 
      *  Tests
      *  
      */
+    it("should automatically trigger up to the end", function () {
+      selectVirgil();
+      //We select Virgil
+      fixture.find("select:visible").eq(1).find("option:contains(Ovid)")[0].selected = true;
+      fixture.find("select:visible").eq(1).trigger("change");
+      //fixture.find(".cts-selector-trigger").trigger("click");
+      expect(input.data("urn")).toEqual("urn:cts:latinLit:phi0959.phi006.perseus-lat1");
+    });
+
+    it("should trigger on cts-selector trigger", function () {
+      var spy = jasmine.createSpy("success");
+      selectVirgil();
+      //We select Virgil
+      fixture.find("select:visible").eq(1).find("option:contains(Lucan)")[0].selected = true;
+      fixture.find("select:visible").eq(1).trigger("change");
+      fixture.find("select:visible").eq(3).find("option").last()[0].selected = true;
+      fixture.find("select:visible").eq(3).on("change", spy);
+      $j(".cts-selector-trigger").trigger("click");
+
+      expect(spy).toHaveBeenCalled()
+      expect(input.data("urn")).toEqual("urn:cts:latinLit:phi0917.phi001.perseus-lat2");
+    });
     
     it("should set input urn on click", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      selectCarta();
       //Testing
       expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-lat1");
     });
     
     it("should set input inventory on click", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      selectCarta();
       //Testing
       expect(input.data("inventory")).toEqual("pilots");
     });
@@ -229,12 +297,7 @@ describe('jQuery CTS Typeahead', function() {
     it("should trigger cts-passage:urn-updated", function() {
       var spy = jasmine.createSpy("success");
       input.on("cts-passage:urn-updated", spy);
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      selectCarta();
       //Testing
       expect(spy).toHaveBeenCalled()
       var spy = null;
@@ -243,113 +306,74 @@ describe('jQuery CTS Typeahead', function() {
     it("should trigger cts-passage:urn-work", function() {
       var spy = jasmine.createSpy("success");
       input.on("cts-passage:urn-work", spy);
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      selectCarta();
       //Testing
       expect(spy).toHaveBeenCalled()
       var spy = null;
     });
 
     it("should have shown passage selection", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Selecting Carta
+      selectCarta();
       //Testing
-      expect($j(".cts-selector-passage-container").length).toEqual(2);
-      expect($j(".cts-selector-passage-number").length).toEqual(2);
+      expect($j(".cts-selector-citation").length).toEqual(2);
+      expect($j(".cts-selector-citation input").length).toEqual(2);
     });
 
     it("should have sent a retrieving trigger on target", function() {
       //Spy
       var spy = jasmine.createSpy("success");
       textarea.on("cts-passage:retrieving", spy)
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
+      //Selecting Carta
+      selectCarta();
+      //Selecting passage
+      passageCarta();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       expect(spy).toHaveBeenCalled();
       var spy = null;
     });
 
     it("should have called the right url", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
-      $j(".cts-selector-passage-number").last().trigger("change");
+      //Selecting Carta
+      selectCarta();
+      //Selecting passage
+      passageCarta();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       //Testing
       expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&inv=pilots&urn=urn:cts:pdlmc:cdf.flc.perseus-lat1:1-2")
     });
 
     it("should change value of input", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").eq(0).val(1);
-      $j(".cts-selector-passage-number").eq(1).val(2);
-      $j(".cts-selector-passage-number").eq(2).val(3);
-      $j(".cts-selector-passage-number").eq(3).val(4);
-      $j(".cts-selector-passage-number").trigger("change");
+      //Selecting Aeneid
+      selectVirgil();
+      //Selecting passage
+      passageVirgil();
+      //Asking for retrieval
+      retrieve();
       //Asking for retrieval
       expect(input.val()).toEqual("urn:cts:latinLit:phi0690.phi003.perseus-lat1:1.2-3.4")
     });
 
     it("should have called the right url with 2 levels", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").eq(0).val(1);
-      $j(".cts-selector-passage-number").eq(1).val(2);
-      $j(".cts-selector-passage-number").eq(2).val(3);
-      $j(".cts-selector-passage-number").eq(3).val(4);
-      $j(".cts-selector-passage-number").trigger("change");
+      //Selecting Aeneid
+      selectVirgil();
+      //Selecting passage
+      passageVirgil();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       //Testing
       expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&inv=annotsrc&urn=urn:cts:latinLit:phi0690.phi003.perseus-lat1:1.2-3.4")
     });
 
     it("should have try to retrieve text", function() {
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
+      //Selecting Carta
+      selectCarta();
+      //Selecting passage
+      passageCarta();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -365,17 +389,12 @@ describe('jQuery CTS Typeahead', function() {
       //Spy
       var spy = jasmine.createSpy("success");
       textarea.on("cts-passage:retrieved", spy)
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2)
+      //Selecting Carta
+      selectCarta();
+      //Selecting passage
+      passageCarta();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -392,17 +411,12 @@ describe('jQuery CTS Typeahead', function() {
       //Spy
       var spy = jasmine.createSpy("success");
       textarea.on("cts-passage:retrieving-error", spy)
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      //Clicking on one suggestion
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
+      //Selecting Carta
+      selectCarta();
+      //Selecting passage
+      passageCarta();
       //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
+      retrieve();
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 400,
@@ -415,7 +429,6 @@ describe('jQuery CTS Typeahead', function() {
       var spy = null;
     });
   });
-
   describe("Options", function() {
     var install = function(options) {
       jasmine.Ajax.install();
@@ -427,7 +440,7 @@ describe('jQuery CTS Typeahead', function() {
       fixture.append(textarea);
       $j("body").append(fixture);
       //Plugin
-      input.ctsTypeahead(options);
+      input.ctsSelector(options);
       //Getting AJAX
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -444,36 +457,37 @@ describe('jQuery CTS Typeahead', function() {
         });
       }
       //Creating variables shortcut
-      instance = $j(".target").data("_cts_typeahead");
-      th = instance.typeahead.data("ttTypeahead");
+      instance = $j(".target").data("_cts_selector");
     }
 
     var remove = function() {
       jasmine.Ajax.uninstall();
       fixture.remove();
       instance = null;
-      th = null;
+    }
+    var selectVirgil = function() {
+      //Fixtures
+      fixture.find("select:visible").eq(0).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(0).trigger("change");
+
+      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(1).trigger("change");
+
+      fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(2).trigger("change");
     }
 
-    it("should get theoretical work", function() {
-      install({
-        "endpoint" : "http://fakeRepo.com/CTS.xq?",
-        "version" : 3,
-        "inventories" : {
-          "annotsrc" : "Nice label for annotsrc"
-        },
-        "retrieve" : ".TEItext",
-        "theoretical" : true
-      });
-      //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      expect($j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").length).toEqual(2);
-      //-->Test
-      remove();
-    });
+    var passageVirgil = function() {
+      $j(".cts-selector-passage").eq(0).val(1);
+      $j(".cts-selector-passage").eq(1).val(2);
+      $j(".cts-selector-passage").eq(2).val(3);
+      $j(".cts-selector-passage").eq(3).val(4);
+      $j(".cts-selector-passage").last().trigger("change");
+    }
+
+    var retrieve = function() {
+      $j("button:contains(Retrieve)").trigger("click");
+    }
 
     it("should get not show retrieval", function() {
       install({
@@ -484,12 +498,9 @@ describe('jQuery CTS Typeahead', function() {
         },
         "retrieve" : false
       });
+      selectVirgil();
       //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      expect($j(".cts-selector-retriever").length).toEqual(0);
+      expect(fixture.find("button:contains(Retrieve)").length).toEqual(0);
       //-->Test
       remove();
     });
@@ -503,14 +514,9 @@ describe('jQuery CTS Typeahead', function() {
         },
         "passage" : false
       });
+      selectVirgil();
       //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("Aeneid");
-      th.input.setQuery("Aeneid");
-      th.input.trigger("upKeyed");
-      expect($j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").length).toEqual(1);
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      expect($j(".cts-selector-passage-number").length).toEqual(0);
+      expect($j(".cts-selector-citation").length).toEqual(0);
       //-->Test
       remove();
     });
@@ -525,17 +531,10 @@ describe('jQuery CTS Typeahead', function() {
         },
         "retrieve" : true
       });
+      selectVirgil()
+      passageVirgil();
+      retrieve();
       //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
-      //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -559,17 +558,10 @@ describe('jQuery CTS Typeahead', function() {
         "retrieve" : true,
         "retrieve_scope" : "seg"
       });
+      selectVirgil()
+      passageVirgil();
+      retrieve();
       //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
-      //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -595,25 +587,26 @@ describe('jQuery CTS Typeahead', function() {
         "css" : {
           "container" : ["container", "lala"],
           "retrieve-button" : ["retrieve-button"],
-          "retrieve-button-container" : ["retrieve-button-container"],
 
-          "citation" : ["citation"],
-          "citation-container" : ["citation-container"],
+          "select-inventory" : ["select-inventory"],
+          "select-textgroup" : ["select-textgroup"],
+          "select-work" : ["select-work"],
+          "select-text" : ["select-text"],
+
+          "trigger-button" : ["trigger-button"],
+
+          "citation-fieldset" : ["citation-fieldset"],
+          "citation-fieldset-legend" : ["citation-fieldset-legend"],
           "citation-container-legend" : ["citation-container-legend"],
+          "citation-label" : ["citation-label"],
           "citation-input" : ["citation-input", "citation-input-ohoh"],
+          "citation-input-container" : ["citation-input-container"]
         }
       });
+      selectVirgil()
+      passageVirgil();
+      retrieve();
       //<--Test
-      //Asking for Carta in typeahead
-      th.input.$input.val("carta");
-      th.input.setQuery("carta");
-      th.input.trigger("upKeyed");
-      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
-      //Giving some false passage identifier
-      $j(".cts-selector-passage-number").first().val(1);
-      $j(".cts-selector-passage-number").last().val(2);
-      //Asking for retrieval
-      $j(".cts-selector-retriever").trigger("click");
       //Mocking up ajax  
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -626,24 +619,25 @@ describe('jQuery CTS Typeahead', function() {
       expect($j(".cts-selector").hasClass("container")).toBe(true);
       expect($j(".cts-selector").hasClass("lala")).toBe(true); // Testing multiple values
 
-      expect($j(".cts-selector-retriever").hasClass("retrieve-button")).toBe(true);
+      expect(fixture.find("button:contains(Retrieve)").hasClass("retrieve-button")).toBe(true);
 
-      expect($j(".cts-selector-retriever").parent().hasClass("retrieve-button-container")).toBe(true);
+      expect($j(".cts-selector-inventory").hasClass("select-inventory")).toBe(true);
+      expect($j(".cts-selector-textgroup").hasClass("select-textgroup")).toBe(true);
+      expect($j(".cts-selector-work").hasClass("select-work")).toBe(true);
+      expect($j(".cts-selector-text").hasClass("select-text")).toBe(true);
+      expect($j(".cts-selector-trigger").hasClass("trigger-button")).toBe(true);
 
-      expect($j(".cts-selector-passage-container").parent().hasClass("citation")).toBe(true);
 
-      expect($j(".cts-selector-passage-container").hasClass("citation-container")).toBe(true);
-
-      expect($j(".cts-selector-passage-label").hasClass("citation-container-legend")).toBe(true);
-
-      expect($j(".cts-selector-passage-number").hasClass("citation-input")).toBe(true);
-      expect($j(".cts-selector-passage-number").hasClass("citation-input-ahah")).toBe(false);
-      expect($j(".cts-selector-passage-number").hasClass("citation-input-ohoh")).toBe(true);
-
+      expect($j(".cts-selector-citation").hasClass("citation-fieldset")).toBe(true);
+      expect($j(".cts-selector-citation > legend").hasClass("citation-fieldset-legend")).toBe(true);
+      expect($j(".cts-selector-citation label").hasClass("citation-label")).toBe(true);
+      expect($j(".cts-selector-input-container").hasClass("citation-input-container")).toBe(true);
+      expect($j(".cts-selector-passage").hasClass("citation-input")).toBe(true);
+      expect($j(".cts-selector-passage").hasClass("citation-input-ahah")).toBe(false);
+      expect($j(".cts-selector-passage").hasClass("citation-input-ohoh")).toBe(true);
 
       //-->Test
       remove();
     });
   });
-
 });
