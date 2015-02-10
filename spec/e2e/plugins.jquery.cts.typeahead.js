@@ -7,6 +7,10 @@ describe('jQuery CTS Typeahead', function() {
     text_parsed = (new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(text, "text/xml"));
   });
 
+  afterEach(function() {
+    $j("body > div").remove();
+  });
+  
   describe('Init', function () {
 
     /**

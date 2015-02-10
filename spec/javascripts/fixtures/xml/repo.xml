@@ -69,6 +69,20 @@
                 </online>
                 <memberof collection="Perseus:collection:Greco-Roman"/>
             </edition>
+            <edition projid="latinLit:perseus-lat2" urn="urn:cts:latinLit:phi0917.phi001.perseus-lat2">
+                <label xml:lang="eng">Pharsalia</label>
+                <description xml:lang="eng">Pharsaliae Libri X. M. Annaeus Lucanus. Carolus Hermannus Weise. Leipzig. G. Bassus. 1835.</description>
+                <online docname="/db/repository/latinLit/phi0917/phi001/phi0917.phi001.perseus-lat1.xml">
+                    <validate schema="teia.xsd"/>
+                    <namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                    <citationMapping>
+                        <citation label="book" xpath="/div1[@n='?']" scope="/TEI.2/text/body">
+                            <citation label="line" xpath="/l[@n='?']" scope="/TEI.2/text/body/div1[@n='?']"/>
+                        </citation>
+                    </citationMapping>
+                </online>
+                <memberof collection="Perseus:collection:Greco-Roman"/>
+            </edition>
         </work>
     </textgroup>
 </TextInventory>
