@@ -85,7 +85,7 @@
     },
     makeInput : function(key, object) {
       var _this = this,
-          $default = (key in this.settings.defaults) ? this.settings.defaults[param] : this.service.options[key].default,
+          $default = (key in this.settings.defaults) ? this.settings.defaults[key] : this.service.options[key].default,
           $input;
 
       if(object.html === "hidden") {
@@ -119,6 +119,7 @@
             "value" : $default,
             "class" : _this.getClass("field-textarea")
           });
+          $input.text($default)
         }
         $input.attr("id", _this.id + "-" + key);
         $inputContainer.append($input);
@@ -169,6 +170,7 @@
         } else if (_this.settings.click instanceof jQuery) {
           _this.settings.click.on("click", function () { _this.send(); });
         }
+
       }
       // Show / hide
       if(_this.settings.show === false) {
@@ -192,11 +194,16 @@
         } else if (typeof $input === "function") {
           data[param] = $input();
         } else if($input.is("[type='checkbox']")) {
-          data[param] = $input.is(':checked').toString();
-        } else if (_this.service.options[param].type === "list") {
-          data[param] = $input.val().replace(/\s+/g, '').split(",");
+          data[param] = $input.is(':checked');
         } else{
           data[param] = $input.val();
+        }
+        if(typeof data[param] === "string") {
+          if(_this.service.options[param].type === "boolean") {
+            data[param] = (data[param] === "true" || data[param] === true) ? true : false;
+          } else if (_this.service.options[param].type === "list") {
+            data[param] = data[param].replace(/\s+/g, '').split(",");
+          }
         }
       });
       return data;
