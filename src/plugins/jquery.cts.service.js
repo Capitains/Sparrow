@@ -85,7 +85,7 @@
     },
     makeInput : function(key, object) {
       var _this = this,
-          $default = (key in this.settings.defaults) ? this.settings.defaults[param] : this.service.options[key].default,
+          $default = (key in this.settings.defaults) ? this.settings.defaults[key] : this.service.options[key].default,
           $input;
 
       if(object.html === "hidden") {
@@ -119,6 +119,7 @@
             "value" : $default,
             "class" : _this.getClass("field-textarea")
           });
+          $input.text($default)
         }
         $input.attr("id", _this.id + "-" + key);
         $inputContainer.append($input);
