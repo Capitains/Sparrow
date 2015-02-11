@@ -197,10 +197,12 @@
         } else{
           data[param] = $input.val();
         }
-        if(_this.service.options[param].type === "boolean") {
-          data[param] = (data[param] === "true" || data[param] === true) ? true : false;
-        } else if (_this.service.options[param].type === "list") {
-          data[param] = data[param].replace(/\s+/g, '').split(",");
+        if(typeof data[param] === "string") {
+          if(_this.service.options[param].type === "boolean") {
+            data[param] = (data[param] === "true" || data[param] === true) ? true : false;
+          } else if (_this.service.options[param].type === "list") {
+            data[param] = data[param].replace(/\s+/g, '').split(",");
+          }
         }
       });
       return data;
