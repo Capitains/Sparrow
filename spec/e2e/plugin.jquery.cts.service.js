@@ -1,4 +1,4 @@
-describe('jQuery CTS Selector', function() {
+describe('jQuery CTS Service', function() {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/spec/javascripts/fixtures';
     repo1 = jasmine.getFixtures().read('xml/repo.xml');
