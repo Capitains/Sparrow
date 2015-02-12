@@ -22,6 +22,10 @@ See implemented services documentations.
 
 Options are set-up as the second argument of `$(element).ctsXSLT()`. It's a simple dictionary
 
+- `endpoint` (Type : string)
+Endpoint of the service.
+- `css` (Type : dictionary)
+See [below](#CSS-custom-classes)
 - `trigger` (Type : string)
 When given *trigger* is called on the original element, the service attached to it will be called.
 - `click` (Type : jQuery or string)
@@ -77,6 +81,8 @@ Callback is called when service is called and has answered. Parameter passed to 
 ### Recap
 | Key              | type           | Default       | Informations
 | ---------------- | -------------- | ------------- | -----------------------------------
+| endpoint         | string         | ""            | Endoint of the Service
+| css              | object         | {}            | See below [CSS custom classes](#css-custom-classes)
 | trigger          | string         | null          | Send request when trigger is trigger on original element
 | click            | string,element | false         | Send request when click is triggered on targeted element
 | driver           | dictionary     | {}            | Instead of generating DOM, reuse an element in the DOM or a function for a given parameter
@@ -84,7 +90,6 @@ Callback is called when service is called and has answered. Parameter passed to 
 | names            | dictionary     | {}            | When generating DOM inputs, give to a field a given name.
 | show             | boolean,string | true          | Hide/Show the element. If a string, $(target).trigger(the string) will toggle the visibility of the form
 | callback         | function       | null          | Function to call on service calling. Response from ajax request is passed as data to the callback function
-
 
 ## CSS custom classes
 
