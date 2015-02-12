@@ -16,6 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       //Libraries
+      'spec/javascripts/fixtures/XSLTProcessor.js',
       "./node_modules/handlebars/dist/handlebars.min.js",
       "./node_modules/typeahead.js/dist/typeahead.bundle.min.js",
       "node_modules/jasmine-ajax/lib/mock-ajax.js",
@@ -74,7 +75,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS', 'Firefox', 'Chrome'],
+    browsers: ['Firefox', 'Chrome'],
 
 
     // Continuous Integration mode
