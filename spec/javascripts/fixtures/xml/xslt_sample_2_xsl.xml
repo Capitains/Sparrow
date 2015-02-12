@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:param name="checkbox" />
+<xsl:param name="boolean" />
+<xsl:param name="textarea" />
+<xsl:param name="input" />
+<xsl:template match="/">
+  <options>
+    <checkbox><xsl:value-of select="$checkbox"/></checkbox>
+    <boolean><xsl:value-of select="$boolean"/></boolean>
+    <textarea><xsl:value-of select="$textarea"/></textarea>
+    <input><xsl:value-of select="$input"/></input>
+    <xsl:copy-of select="."/>
+  </options>
+</xsl:template>
+</xsl:stylesheet>
+

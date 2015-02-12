@@ -1,14 +1,36 @@
-describe('jQuery CTS Service', function() {
+describe('jQuery CTS XSLT', function() {
   beforeEach(function() {
+    jasmine.Ajax.uninstall();
     jasmine.getFixtures().fixturesPath = 'base/spec/javascripts/fixtures';
-    repo1 = jasmine.getFixtures().read('xml/repo.xml');
-    repo2 = jasmine.getFixtures().read('xml/repo2.xml');
-    text = jasmine.getFixtures().read('xml/text.xml');
-    text_parsed = (new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(text, "text/xml"));
+
+    xslt_sample_1_xslt = jasmine.getFixtures().read('xml/xslt_sample_1_xsl.xml');
+    xslt_sample_2_xslt = jasmine.getFixtures().read('xml/xslt_sample_2_xsl.xml');
+
+
+    xmlReparsing = function(string) {
+      var str = (new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(string, "text/xml")).replace(/(\r\n|\n|\r)/gm,"").replace('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />', '');
+      str = str.replace('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />', '')
+      str = str.replace('<?xml version="1.0" encoding="UTF-8"?>', '');
+      return str;
+    }
+
+    /*
+    Transformation fixtures
+     */
+    xslt_sample_1 = jasmine.getFixtures().read('xml/xslt_sample_1.xml');
+    xslt_sample_1_parsed = xmlReparsing(xslt_sample_1, "text/xml");
+    xslt_sample_1_transformed = jasmine.getFixtures().read('xml/xslt_sample_1_transformed.xml');
+    xslt_sample_1_transformed_parsed = xmlReparsing(xslt_sample_1_transformed);
+
+    xslt_sample_2 = jasmine.getFixtures().read('xml/xslt_sample_2.xml');
+    xslt_sample_2_parsed = xmlReparsing(xslt_sample_2, "text/xml");
+    xslt_sample_2_transformed = jasmine.getFixtures().read('xml/xslt_sample_2_transformed.xml');
+    xslt_sample_2_transformed_parsed = xmlReparsing(xslt_sample_2_transformed);
+
 
     //CTS Service mockup
-    CTS.service.services.fakeService = function(endpoint, options) {
-      CTS.service._service.call(this, endpoint, options);
+    CTS.xslt.stylesheets.fakeXSLT = function(endpoint, options) {
+      CTS.xslt.XSLT.call(this, endpoint, options);
       this.method = "POST";
       this.options = {
         "checkbox" : {
@@ -38,8 +60,8 @@ describe('jQuery CTS Service', function() {
       }
     }
     //CTS Service mockup
-    CTS.service.services.fakeService2 = function(endpoint, options) {
-      CTS.service._service.call(this, endpoint, options);
+    CTS.xslt.stylesheets.fakeXSLT2 = function(endpoint, options) {
+      CTS.xslt.XSLT.call(this, endpoint, options);
       this.method = "POST";
       this.options = {
         "checkbox" : {
@@ -56,25 +78,29 @@ describe('jQuery CTS Service', function() {
           "type" : "text", // Text unlinke string is a big thing
           "html" : "textarea"
         },
-        "list" : {
-          "type" : "list",
-          "html" : "input",
-          "default" : ["teiHeader","head","speaker","note","ref"]
-        },
         "input" : {
           "type" : "string",
           "html" : "input",
           "default" : "TEI"
         }
+      }
+    }
+    //CTS Service mockup
+    CTS.xslt.stylesheets.Simple = function(endpoint, options) {
+      CTS.xslt.XSLT.call(this, endpoint, options);
+      this.method = "POST";
+      this.options = {
       }
     }
   });
   afterEach(function() {
     $j("body > div").remove();
-    delete CTS.service.services.fakeService;
-    delete CTS.service.services.fakeService2;
+    delete CTS.xslt.stylesheets.fakeXSLT;
+    delete CTS.xslt.stylesheets.fakeXSLT2;
+    delete CTS.xslt.stylesheets.Simple;
   })
   var start = function(serviceName, options) {
+    jasmine.Ajax.install();
 
     if(typeof options === "undefined") {
       options = {
@@ -90,14 +116,19 @@ describe('jQuery CTS Service', function() {
         }
       }
     }
-    jasmine.Ajax.install();
     //Creating DOM ELEMENTS
     fixture = $j("<div />", {"class" : "fixture"});
     button = $j("<button />", {"class" : "button"});
-    fixture.append(fixture)
+    dom = $j("<textarea />", {"class" : "text"});
+    dom.val(xslt_sample_1)
+    dom.text(xslt_sample_1)
+    text_fixture =$j("<div />")
+    text_fixture.append(dom)
+    fixture.append(text_fixture)
     $j("body").append(fixture);
-    fixture.ctsService(serviceName, options)
-    instance = fixture.data("_cts_service_"+serviceName);
+    fixture.ctsXSLT(serviceName, options)
+    instance = fixture.data("_cts_xslt_"+serviceName);
+    instance.xslt.stylesheeting(xslt_sample_1_xslt);
   }
 
   var startFake = function(options) {
@@ -115,19 +146,26 @@ describe('jQuery CTS Service', function() {
         }
       }
     }
-    start("fakeService", options);
+    start("fakeXSLT", options);
+  }
+  var startSimple = function(options) {
+    if(typeof options === "undefined") {
+      options = {
+        "xml" : ".text"
+      }
+    }
+    start("Simple", options);
   }
 
   var remove = function() {
     fixture.remove();
   }
-
   describe("Types recognition", function() {
     afterEach(function() { remove(); });
     it("should create a CTS.Service object", function() {
       startFake();
-      expect(instance.service).toBeDefined();
-      expect(instance.service.getValues).toBeDefined()
+      expect(instance.xslt).toBeDefined();
+      expect(instance.xslt.getValues).toBeDefined()
     })
     it("should add checkbox", function() {
       startFake();
@@ -143,22 +181,114 @@ describe('jQuery CTS Service', function() {
     });
     it("should add textarea", function() {
       startFake();
-      expect(fixture.find("textarea").length).toEqual(1);
+      expect(fixture.find("textarea:not(.text)").length).toEqual(1);
     });
+  });
+
+  describe("Workflow", function() {
+    afterEach(function() { remove(); });
+
+    it("should call the callback", function() {
+      var spy = jasmine.createSpy("success");
+      startSimple({
+        callback : spy,
+        trigger : "trigger",
+        "xml" : ".text",
+      });
+      expect(spy).not.toHaveBeenCalled();
+      fixture.trigger("trigger")
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it("should transform stuff", function() {
+      //Mockup for phantomJS
+      window.expectedXML = xslt_sample_1_transformed;
+      //-->
+      var spy = jasmine.createSpy("success");
+      var cb = function(data) { 
+        expect(xmlReparsing(data)).toEqual(xslt_sample_1_transformed);
+        spy();
+      }
+      startSimple({
+        callback : cb,
+        trigger : "trigger",
+        "xml" : ".text",
+      });
+      fixture.trigger("trigger")
+      expect(spy).toHaveBeenCalled()
+    });
+
+    it("should take options in transform", function() {
+      var spy = jasmine.createSpy("success");
+      var cb = function(data) { 
+        expect(xmlReparsing(data)).toEqual(xslt_sample_2_transformed);
+        spy();
+      }
+      start("fakeXSLT2", {
+        callback : cb,
+        trigger : "trigger",
+        "xml" : ".text",
+      });
+      fixture.find("textarea:not(.text)").val("some text");
+      fixture.find("textarea:not(.text)").text("some text");
+      $j(".text").text(xslt_sample_2);
+      $j(".text").val(xslt_sample_2);
+      instance.xslt.stylesheeting(xslt_sample_2_xslt);
+      fixture.trigger("trigger")
+      expect(spy).toHaveBeenCalled()
+    });
+
+    it("should trigger doing", function() {
+      var spy = jasmine.createSpy("success");
+      startSimple({
+        trigger : "trigger",
+        "xml" : ".text"
+      });
+      fixture.on("cts-xslt:Simple:doing", spy)
+      fixture.trigger("trigger");
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
+    it("should trigger done", function() {
+      var spy = jasmine.createSpy("success");
+      startSimple({
+        trigger : "trigger",
+        "xml" : ".text"
+      });
+      fixture.on("cts-xslt:Simple:done", spy)
+      fixture.trigger("trigger");
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
+    it("should run on click", function() {
+      var spy = jasmine.createSpy("success");
+      var element = $j("<a />");
+      startSimple({
+        click : element,
+        callback : spy,
+        "xml" : ".text"
+      });
+      element.trigger("click")
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
+    /*
+*/
+
   });
 
   describe("Default recognition", function() {
     afterEach(function() { remove(); });
     it("should show true on hidden", function() {
-      start("fakeService");
+      start("fakeXSLT");
       expect(fixture.find("input[type='hidden']").val()).toEqual("true");
     });
     it("should show false on hidden", function() {
-      start("fakeService2");
+      start("fakeXSLT2");
       expect(fixture.find("input[type='hidden']").val()).toEqual("false");
     });
     it("should check on true for checkbox", function() {
-      start("fakeService2");
+      start("fakeXSLT2");
       expect(fixture.find("input[type='checkbox']:checked").length).toEqual(1);
     });
     it("should not check on false for checkbox", function() {
@@ -167,7 +297,7 @@ describe('jQuery CTS Service', function() {
     });
     it("should put nothing when default is empty", function() {
       startFake();
-      expect(fixture.find("textarea").val()).toEqual("");
+      expect(fixture.find("textarea:not(.text)").val()).toEqual("");
     });
     it("should put nothing when default is empty", function() {
       startFake();
@@ -206,78 +336,6 @@ describe('jQuery CTS Service', function() {
       instance.inputs.list.val("ahah, ohoh");
       expect(instance.getValues().list).toEqual(["ahah", "ohoh"]);
     })
-  });
-
-  describe("Workflow", function() {
-    afterEach(function() { remove(); });
-    it("should send to the right endpoint", function() {
-      startFake({
-        "endpoint" : "http://services.perseids.org/llt/segtok",
-        trigger : "trigger"
-      });
-      fixture.trigger("trigger")
-      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://services.perseids.org/llt/segtok")
-    });
-    it("should call the callback", function() {
-      var spy = jasmine.createSpy("success");
-      startFake({
-        callback : spy,
-        trigger : "trigger"
-      });
-      fixture.trigger("trigger");
-      jasmine.Ajax.requests.mostRecent().respondWith({
-        status : 200
-      })
-      expect(spy).toHaveBeenCalled();
-      spy = null;
-    });
-    it("should trigger doing", function() {
-      var spy = jasmine.createSpy("success");
-      startFake({
-        trigger : "trigger"
-      });
-      fixture.on("cts-service:fakeService:doing", spy)
-      fixture.trigger("trigger");
-      expect(spy).toHaveBeenCalled();
-      spy = null;
-    });
-    it("should trigger done", function() {
-      var spy = jasmine.createSpy("success");
-      startFake({
-        trigger : "trigger"
-      });
-      fixture.on("cts-service:fakeService:done", spy)
-      fixture.trigger("trigger");
-      jasmine.Ajax.requests.mostRecent().respondWith({
-        status : 200
-      })
-      expect(spy).toHaveBeenCalled();
-      spy = null;
-    });
-    it("should run on click", function() {
-      var spy = jasmine.createSpy("success");
-      var element = $j("<a />");
-      startFake({
-        click : element,
-        callback : spy
-      });
-      element.trigger("click")
-      //Need to answer to have callback
-      jasmine.Ajax.requests.mostRecent().respondWith({
-        status : 200
-      })
-      expect(spy).toHaveBeenCalled();
-      spy = null;
-    });
-    it("should pass data", function() {
-      var element = $j("<a />");
-      startFake({
-        click : element
-      });
-      element.trigger("click")
-      //Need to answer to have callback
-      expect(jasmine.Ajax.requests.mostRecent().params.length).toBeGreaterThan(0);
-    });
   });
 
   describe("Driver options", function() {
