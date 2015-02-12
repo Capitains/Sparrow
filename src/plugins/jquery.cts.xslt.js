@@ -14,7 +14,7 @@
     "trigger" : null,
     "click" : null,
     "xml" : null,
-    "DOM" : {},
+    "driver" : {},
     "defaults" : {},
     "show" : true,
     "callback" : null,
@@ -164,8 +164,8 @@
       //We create the input
       Object.keys(_this.xslt.options).forEach(function(param) {
         var $input;
-        if(param in _this.settings.DOM) {
-          $input = _this.settings.DOM[param];
+        if(param in _this.settings.driver) {
+          $input = _this.settings.driver[param];
         } else {
           $input = _this.makeInput(param, _this.xslt.options[param]);
         }

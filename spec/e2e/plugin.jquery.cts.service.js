@@ -285,7 +285,7 @@ describe('jQuery CTS Service', function() {
     it("should take element for values", function() {
       var a = $j("<input />", { type : "text"});
       startFake({
-        DOM : {
+        driver : {
           "input" : a
         }
       });
@@ -296,7 +296,7 @@ describe('jQuery CTS Service', function() {
     it("should take selector for values", function() {
       var a = $j("<input />", { type : "text", "class" : "element"});
       startFake({
-        DOM : {
+        driver : {
           "input" : ".element"
         }
       });
@@ -307,7 +307,7 @@ describe('jQuery CTS Service', function() {
     })
     it("should take callback for value", function() {
       startFake({
-        DOM : {
+        driver : {
           "input" : function() { return "foo"; }
         }
       });
@@ -315,7 +315,7 @@ describe('jQuery CTS Service', function() {
     })
     it("should take list", function() {
       startFake({
-        DOM : {
+        driver : {
           "list" : function() { return ["foo"]; }
         }
       });
@@ -324,7 +324,7 @@ describe('jQuery CTS Service', function() {
     it("should take boolean", function() {
       var foo = function() { return true; }
       startFake({
-        DOM : {
+        driver : {
           "boolean" : function() { return foo(); }
         }
       });
@@ -336,7 +336,7 @@ describe('jQuery CTS Service', function() {
       var a = $j("<input />", { type : "checkbox", "class" : "element"});
       a[0].checked = true;
       startFake({
-        DOM : {
+        driver : {
           "checkbox" : ".element"
         }
       });
@@ -349,7 +349,7 @@ describe('jQuery CTS Service', function() {
       var a = $j("<input />", { type : "checkbox", "class" : "element"});
       a[0].checked = true;
       startFake({
-        DOM : {
+        driver : {
           "boolean" : a
         }
       });

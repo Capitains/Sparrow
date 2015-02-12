@@ -23,7 +23,7 @@ See implemented services documentations.
 | ---------------- | -------------- | ------------- | -----------------------------------
 | trigger          | string         | null          | Send request when trigger is trigger on target element
 | click            | string,element | false         | Send request when click is triggered on given element
-| DOM              | dictionary     | {}            | Instead of generating DOM, reuse an element in the DOM for a given parameter
+| driver           | dictionary     | {}            | Instead of generating DOM, reuse an element in the DOM for a given parameter
 | defaults         | dictionary     | {}            | Override a default value of the service
 | names            | dictionary     | {}            | When generating DOM inputs, give to a field a given name.
 | show             | boolean,string | true          | Hide/Show the element. If a string, $(target).trigger(the string) will toggle the visibility of the form
@@ -65,7 +65,7 @@ Because so many plugins force you to dig the code or extend your already existin
 	$(document).ready(function() {
 		$("#lltTokenizer").ctsService("llt.tokenizer", {
 			"endpoint" : "http://services.perseids.org/llt/segtok",
-			"DOM" : {
+			"driver" : {
 				"text" : $(".TEItext")
 			},
 			"click" : ".button",
