@@ -69,10 +69,15 @@
       return $id;
     },
     send : function(xml, raw) {
-      if(typeof xml === "undefined") { xml = this.settings.xml.val()}
       var data = this.getValues(),
           _this = this;
-
+      if(typeof xml === "undefined") { 
+        if(this.settings.xml instanceof jQuery) {
+          xml = this.settings.xml.val();
+        } else if (typeof this.settings.xml === "string") {
+          xml = $(_this.settings.xml).val() || $(_this.settings.xml).text();
+        }
+      }
       //Setting values
       Object.keys(data).forEach(function(param) {
         _this.xslt.setValue(param, data[param]);
@@ -81,7 +86,7 @@
       //Sending data
       _this.element.trigger("cts-xslt:"+_this.xsltName+":doing");
       var transformed = _this.xslt.transform(xml);
-      if(raw !== true) {
+      if((typeof raw === "undefined" || raw !== true) && typeof transformed !== "string") {
         transformed = (new XMLSerializer()).serializeToString(transformed);
       }
       if(typeof _this.settings.callback === "function") {
@@ -92,7 +97,7 @@
     },
     makeInput : function(key, object) {
       var _this = this,
-          $default = (key in this.settings.defaults) ? this.settings.defaults[param] : this.xslt.options[key].default,
+          $default = (key in this.settings.defaults) ? this.settings.defaults[key] : this.xslt.options[key].default,
           $input;
 
       if(object.html === "hidden") {
@@ -111,9 +116,9 @@
         if(object.html === "checkbox") {
           $input = $("<input />", {
             "type" : "checkbox",
-            "checked" : $default,
             "class" : _this.getClass("field-checkbox")
           });
+          $input[0].checked = $default;
         } else if (object.html === "input") {
           $input = $("<input />", {
             "type" : "text",
@@ -126,6 +131,7 @@
             "value" : $default,
             "class" : _this.getClass("field-textarea")
           });
+          $input.text($default)
         }
         $input.attr("id", _this.id + "-" + key);
         $inputContainer.append($input);
@@ -200,10 +206,15 @@
           data[param] = $input();
         } else if($input.is("[type='checkbox']")) {
           data[param] = $input.is(':checked');
-        } else if (_this.xslt.options[param].type === "list") {
-          data[param] = $input.val().replace(/\s+/g, '').split(",");
-        } else {
+        } else{
           data[param] = $input.val();
+        }
+        if(typeof data[param] === "string") {
+          if(_this.xslt.options[param].type === "boolean") {
+            data[param] = (data[param] === "true" || data[param] === true) ? true : false;
+          } else if (_this.xslt.options[param].type === "list") {
+            data[param] = data[param].replace(/\s+/g, '').split(",");
+          }
         }
       });
       return data;
