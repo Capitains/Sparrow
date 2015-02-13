@@ -19,8 +19,19 @@ grunt build
 
 # Integrated plugins and relevant documentation
 
+## Services
+
+- [LLT.Tokenizer](./doc/services/llt.tokenizer.md) : A Service implementation for the Latin Language Toolkit Tokenizer API (Support more than Latin language !)
+- [Add your own](./doc/services/new.md)
+
+## XSLT
+
+- [LLT.Segtok_to_tb](./doc/xslt/llt.segtok_to_tb.md) : An xslt which transform a tokenized output of LLT.Tokenizer to an OpenAnnotation Treebank XML layout
+- [Add your own](./doc/xslt/new.md)
+
 ## jQuery
 
 - [jQuery.cts.selector](./doc/plugins/jquery.cts.selector.md) : A way to browse and construct an URN using `<select />`
 - [jQuery.cts.typeahead](./doc/plugins/jquery.cts.typeahead.md) : A way to search for an edition or translation
 - [jQuery.cts.service](./doc/plugins/jquery.cts.service.md) : A way to embed service parameters and form in your html
+- [jQuery.cts.xslt](./doc/plugins/jquery.cts.service.md) : A way to embed XSLT parameters and form in your html and transform the text
