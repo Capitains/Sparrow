@@ -72,64 +72,6 @@
   CTS.service._service.prototype.toString = function() { return "[object CTS.Service]"}
 
   /**
-   * LLT Tokenizer HTTP REST API
-   *
-   * @Github : https://github.com/latin-language-toolkit/llt
-   * 
-   */
-  CTS.service.services["llt.tokenizer"] = function(endpoint, options) {
-    CTS.service._service.call(this, endpoint, options);
-    this.method = "POST";
-    this.options = {
-      "xml" : {
-        "type" : "boolean",
-        "html" : "checkbox",
-        "default" : false
-      },
-      "inline" : {
-        "type" : "boolean",
-        "html" : "hidden",
-        "default" : true
-      },
-      "splitting" : {
-        "type" : "boolean",
-        "html" : "checkbox",
-        "default" : true
-      },
-      "merging" : {
-        "type" : "boolean",
-        "html" : "checkbox",
-        "default" : false
-      },
-      "shifting" : {
-        "type" : "boolean",
-        "html" : "checkbox",
-        "default" : false
-      },
-      "text" : {
-        "type" : "text", // Text unlinke string is a big thing
-        "html" : "textarea"
-      },
-      "remove_node" : {
-        "type" : "list",
-        "html" : "input",
-        "default" : ["teiHeader","head","speaker","note","ref"]
-      },
-      "go_to_root" : {
-        "type" : "string",
-        "html" : "input",
-        "default" : "TEI"
-      },
-      "ns" : {
-        "type" : "string",
-        "html" : "input",
-        "default" : "http://www.tei-c.org/ns/1.0"
-      }
-    }
-  }
-  CTS.service.services["llt.tokenizer"].prototype = Object.create(CTS.service._service)
-
-  /**
    *  Create a new service
    *
    *  @param

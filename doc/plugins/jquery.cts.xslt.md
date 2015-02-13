@@ -24,6 +24,8 @@ Options are set-up as the second argument of `$(element).ctsXSLT()`. It's a simp
 
 - `endpoint` (Type : string)
 Endpoint of XSLT is the URI of the XSLT sheet you want to use.
+- `xml` (Type . string or jQuery)
+The value of `xml` can either be a selector such as `".xml"` or a jQuery object such as `$(".xml")`. When transforming data, the plugin will used the targeted element value as the source fore the transformation.
 - `css` (Type : dictionary)
 See [below](#CSS-custom-classes)
 - `trigger` (Type : string)
@@ -82,6 +84,7 @@ Callback is called when XSLT is called and has answered. Parameter passed to thi
 | Key              | type           | Default       | Informations
 | ---------------- | -------------- | ------------- | -----------------------------------
 | endpoint         | string         | ""            | URI of the stylesheet
+| xml              | jQuery,string  |               | Element from which to retrieve the xml to transform
 | css              | object         | {}            | See below [CSS custom classes](#css-custom-classes)
 | trigger          | string         | null          | Send request when trigger is trigger on original element
 | click            | string,element | false         | Send request when click is triggered on targeted element

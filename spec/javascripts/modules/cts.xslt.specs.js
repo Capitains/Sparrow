@@ -46,6 +46,12 @@ describe('CTS.XSLT Helper', function(){
     });
 
   });
+
+  describe("Available plugins should be registered", function() {
+    it("should have segtok_to_tb", function() {
+      expect(CTS.xslt.stylesheets["llt.segtok_to_tb"]).toBeDefined();
+    })
+  });
   
   /**
    *
