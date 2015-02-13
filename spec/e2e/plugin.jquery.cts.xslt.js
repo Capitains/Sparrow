@@ -523,4 +523,12 @@ describe('jQuery CTS XSLT', function() {
       expect(instance.getValues().input).toEqual("Epidoc");
     });
   });
+
+  describe("API Access", function() {
+    afterEach(remove);
+    it("should return instance", function() {
+      startFake();
+      expect(fixture.ctsXSLT("fakeXSLT", "instance")).toEqual(instance.xslt);
+    })
+  });
 });

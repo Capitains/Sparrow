@@ -34,7 +34,7 @@
   }
   var $lang = {"en" : "en"};
 
-  function Plugin ( element, service, options ) {
+  function SparrowService ( element, service, options ) {
     this.element = $(element);
     // jQuery has an extend method which merges the contents of two or
     // more objects, storing the result in the first object. The first object
@@ -56,7 +56,7 @@
     this.init();
   }
 
-  $.extend(Plugin.prototype, {
+  $.extend(SparrowService.prototype, {
     generateId : function() {
       var $id = 1;
 
@@ -228,6 +228,9 @@
         }
       });
       return css;
+    },
+    instance : function() {
+      return this.service;
     }
   });
 
@@ -246,7 +249,7 @@
           // pass options to our plugin constructor,
           // and store the plugin instance
           // in the elements jQuery data object.
-          $.data(this, "_cts_service_"+serviceName, new Plugin( this, serviceName, options ));
+          $.data(this, "_cts_service_"+serviceName, new SparrowService( this, serviceName, options ));
         }
       });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
@@ -259,7 +262,7 @@
         var instance = $.data(this, "_cts_service_"+serviceName);
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
-        if (instance instanceof Plugin && typeof instance[options] === "function") {
+        if (instance instanceof SparrowService && typeof instance[options] === "function") {
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );

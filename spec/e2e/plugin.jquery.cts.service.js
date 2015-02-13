@@ -465,4 +465,12 @@ describe('jQuery CTS Service', function() {
       expect(instance.getValues().input).toEqual("Epidoc");
     });
   });
+
+  describe("API Access", function() {
+    afterEach(remove);
+    it("should return instance", function() {
+      startFake();
+      expect(fixture.ctsService("fakeService", "instance")).toEqual(instance.service);
+    })
+  });
 });
