@@ -323,7 +323,7 @@
             Object.keys(inventory[textgroup][work]).forEach(function(type) {
               Object.keys(inventory[textgroup][work][type]).forEach(function(text) {
                 texts.push({
-                  name : [textgroup, work, text, CTS.lang.get(type, _this.lang)].join(", "),
+                  name : [textgroup, work, text, CTS.lang.get(type, _this.lang), "lang:"+inventory[textgroup][work][type][text].lang].join(", "),
                   shortname : text,
                   type : CTS.lang.get(type, _this.lang),
                   fullname : [textgroup, work].join(", "),

@@ -3,6 +3,7 @@ describe('jQuery CTS Typeahead', function() {
     jasmine.getFixtures().fixturesPath = 'base/spec/javascripts/fixtures';
     repo1 = jasmine.getFixtures().read('xml/repo.xml');
     repo2 = jasmine.getFixtures().read('xml/repo2.xml');
+    repo3 = jasmine.getFixtures().read('xml/repo3.xml');
     text = jasmine.getFixtures().read('xml/text.xml');
     text_parsed = (new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(text, "text/xml"));
   });
@@ -413,6 +414,57 @@ describe('jQuery CTS Typeahead', function() {
       //Testing
       expect(spy).toHaveBeenCalled();
       var spy = null;
+    });
+  });
+
+  describe("Facet selection proccess", function() {
+    beforeEach(function() {
+      jasmine.Ajax.install();
+      //Creating DOM ELEMENTS
+      input = $j("<input />", { "class" : "target", "type" : "text"});
+      textarea = $j("<textarea />", { "class" : "TEItext"});
+      fixture = $j("<div />", {"class" : "fixture"});
+      fixture.append(input);
+      fixture.append(textarea);
+      $j("body").append(fixture);
+
+      //Applying Plugin
+      input.ctsTypeahead({
+        "endpoint" : "http://fakeRepo.com/CTS.xq?",
+        "version" : 3,
+        "inventories" : {
+          "pilots" : "?"
+        },
+        "retrieve" : ".TEItext"
+      });
+
+      jasmine.Ajax.requests.mostRecent().respondWith({
+        "status" : 200,
+        "contentType" : "text/xml",
+        "responseXML" : (new DOMParser()).parseFromString(repo3, "text/xml"),
+        "responseText" : repo3
+      });
+
+      //Creating variables shortcut
+      instance = $j(".target").data("_cts_typeahead");
+      th = instance.typeahead.data("ttTypeahead");
+
+    });
+    afterEach(function() {
+      jasmine.Ajax.uninstall();
+      fixture.remove();
+      instance = null;
+      th = null;
+    });
+    it("should handle language filter", function() {
+      //Asking for Carta in typeahead
+      th.input.$input.val("lang:cel");
+      th.input.setQuery("lang:cel");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Testing
+      expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-cel1");
     });
   });
 
