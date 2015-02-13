@@ -1,6 +1,7 @@
 describe( "Testing CTS Repository object", function () {
 
   xml = jasmine.getFixtures().read('xml/repo.xml');
+  translationRepo = jasmine.getFixtures().read('xml/repo3.xml');
 
   describe("Verifying its modules are available", function() {
       beforeEach(function(){
@@ -281,6 +282,17 @@ describe( "Testing CTS Repository object", function () {
       expect(work.urn).toEqual("urn:cts:latinLit:phi0690.phi003");
     });
 
+    it('should have a lang', function(){
+      expect(work.lang).toEqual("lat");
+    });
+
+    it('chould be converted to a theoretical object', function(){
+      var theoretical = work.toTheoretical()
+      expect(theoretical.urn).toEqual(work.urn);
+      expect(theoretical.lang).toEqual(work.lang);
+      expect(theoretical.getTitle()).toEqual(work.getTitle());
+    });
+
     it('should have at least one label', function(){
       var label = work.getTitle();
       expect(label).toBeDefined();
@@ -313,4 +325,38 @@ describe( "Testing CTS Repository object", function () {
     });
 
   });
+
+  describe('CTS3-Translation and CTS3-Edition', function() {
+
+    beforeEach(function() {
+        repo = new CTS.repository.repository("http://localhost") 
+        jasmine.Ajax.install();
+        repo.addInventory("annotsrc");
+        repo.load();
+        jasmine.Ajax.requests.mostRecent().respondWith({
+          "status": 200,
+          "contentType": 'text/xml',
+          "responseText": translationRepo
+        });
+        work = repo.inventories.annotsrc.textgroups[0].works[0];
+
+    });
+    afterEach(function() {
+        jasmine.Ajax.uninstall();
+    });
+
+    describe("Translation", function() {
+      it("should have a lang", function() {
+        expect(work.translations[0].lang).toEqual("eng")
+      })
+    })
+    describe("Edition", function() {
+      it("should have a lang", function() {
+        expect(work.editions[0].lang).toEqual("lat")
+      })
+      it("should have the lang of the parent", function() {
+        expect(work.editions[0].lang).toEqual(work.editions[0].lang)
+      })
+    })
+  })
 });

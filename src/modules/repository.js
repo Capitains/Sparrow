@@ -24,6 +24,7 @@
     this.defaultLangDesc;
     this.defaultLangLabel;
     this.type = type;
+    this.lang = "";
 
     /**
      * Get the description
@@ -62,6 +63,7 @@
     this.titles = {};
     this.urn = "";
     this.defaultLang = "";
+    this.lang = "";
 
     this.editions = [];
     this.translations = [];
@@ -88,8 +90,9 @@
     this.toTheoretical = function() {
       var theoretical = new CTS.repository.prototypes.Text();
       theoretical.urn = this.urn;
-      theoretical.defaultLang = this.defaultLang;
+      theoretical.defaultLangLabel = this.defaultLang;
       theoretical.titles = this.titles;
+      theoretical.lang = this.lang;
       return theoretical;
     }
   }
@@ -208,11 +211,13 @@
    * Instantiate CTS Edition from CTS3 XML
    * 
    * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   type  Type of Text
    * @param {string}   urn   URN of the parent
+   * @param {lang}     lang  Lang of the text
    */
-  CTS.repository.prototypes.cts3.Edition = function(nodes, urn) {
+  CTS.repository.prototypes.cts3.Edition = function(nodes, urn, lang) {
     CTS.repository.prototypes.cts3.Text.call(this, nodes, "edition", urn);
+    //Edition have the lang from their parent
+    this.lang = lang;
   }
   CTS.repository.prototypes.cts3.Edition.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
 
@@ -220,11 +225,12 @@
    * Instantiate CTS Translation from CTS3 XML
    * 
    * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   type  Type of Text
    * @param {string}   urn   URN of the parent
    */
   CTS.repository.prototypes.cts3.Translation = function(nodes, urn) {
     CTS.repository.prototypes.cts3.Text.call(this, nodes, "translation", urn);
+    //Translation get their lang from their body
+    this.lang = nodes.getAttribute("xml:lang");
   }
   CTS.repository.prototypes.cts3.Translation.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
 
@@ -236,8 +242,9 @@
    * @param {string}   urn   URN of the parent
    */
   CTS.repository.prototypes.cts3.Work = function(nodes, urn) {
-    CTS.repository.prototypes.Work.call(this, "translation");
+    CTS.repository.prototypes.Work.call(this);
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
+    this.lang = nodes.getAttribute("xml:lang");
 
     // We get the labels
     var groupnames = nodes.getElementsByTagName("title");
@@ -248,7 +255,7 @@
 
     var editions = nodes.getElementsByTagName("edition");
     for (var i = editions.length - 1; i >= 0; i--) {
-      this.editions.push(new CTS.repository.prototypes.cts3.Edition(editions[i], this.urn));
+      this.editions.push(new CTS.repository.prototypes.cts3.Edition(editions[i], this.urn, this.lang));
     };
 
     var translations = nodes.getElementsByTagName("translation");
