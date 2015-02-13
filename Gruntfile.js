@@ -31,6 +31,7 @@ module.exports = function(grunt) {
             'src/modules/text.js', 
             'src/modules/repository.js', 
             'src/modules/i18n.js', 
+            'src/services/*.js', 
             'src/i18n/en.js'
           ],
           'build/jquery.cts.selector.js' : ['src/plugins/jquery.cts.selector.js'],
@@ -47,7 +48,9 @@ module.exports = function(grunt) {
       src : [
         'src/cts.js',
         'src/modules/**.js',
-        'src/i18n/**.js'
+        'src/i18n/**.js', 
+        'src/services/**.js',
+        'src/xslt/**.js',
       ],
       options : {
         vendor: [

@@ -26,6 +26,7 @@ module.exports = function(config) {
       'src/cts.js',
       'src/modules/*.js',
       'src/i18n/*.js',
+      'src/services/*.js',
 
       //jQuery Plugins
       'src/plugins/*.js',

@@ -78,4 +78,10 @@ describe('CTS.Service Helper', function(){
     });
 
   });
+
+  describe("Available plugins should be registered", function() {
+    it("should have llt.tokenizer", function() {
+      expect(CTS.service.services["llt.tokenizer"]).toBeDefined();
+    })
+  });
 });
