@@ -35,7 +35,7 @@
   }
   var $lang = {"en" : "en"};
 
-  function Plugin ( element, xslt, options ) {
+  function SparrowXSLT ( element, xslt, options ) {
     this.element = $(element);
     // jQuery has an extend method which merges the contents of two or
     // more objects, storing the result in the first object. The first object
@@ -57,7 +57,7 @@
     this.init();
   }
 
-  $.extend(Plugin.prototype, {
+  $.extend(SparrowXSLT.prototype, {
     generateId : function() {
       var $id = 1;
 
@@ -239,6 +239,9 @@
         }
       });
       return css;
+    },
+    instance : function() {
+      return this.xslt;
     }
   });
 
@@ -257,7 +260,7 @@
           // pass options to our plugin constructor,
           // and store the plugin instance
           // in the elements jQuery data object.
-          $.data(this, "_cts_xslt_"+xsltName, new Plugin( this, xsltName, options ));
+          $.data(this, "_cts_xslt_"+xsltName, new SparrowXSLT( this, xsltName, options ));
         }
       });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
@@ -270,7 +273,7 @@
         var instance = $.data(this, "_cts_xslt_"+xsltName);
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
-        if (instance instanceof Plugin && typeof instance[options] === "function") {
+        if (instance instanceof SparrowXSLT && typeof instance[options] === "function") {
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
