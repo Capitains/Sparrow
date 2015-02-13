@@ -167,18 +167,18 @@ describe( "Testing CTS Repository object", function () {
     });
 
     it('should have at least one label', function(){
-      var label = text.getLabel();
+      var label = text.getTitle();
       expect(label).toBeDefined();
       expect(label).toBe("Aeneid");
     });
 
     it('should return other language label', function(){
-      var label = text.getLabel("fr");
+      var label = text.getTitle("fr");
       expect(label).toBe("Énéide")
     });
 
     it('should return default language label when one does not existing', function(){
-      var label = text.getLabel("nonExistingLanguage");
+      var label = text.getTitle("nonExistingLanguage");
       expect(label).toBe("Aeneid")
     });
 
@@ -224,18 +224,18 @@ describe( "Testing CTS Repository object", function () {
     });
 
     it('should have at least one label', function(){
-      var label = textgroup.getName();
+      var label = textgroup.getTitle();
       expect(label).toBeDefined();
       expect(label).toBe("Virgil");
     });
 
     it('should return other language label', function(){
-      var label = textgroup.getName("fr");
+      var label = textgroup.getTitle("fr");
       expect(label).toBe("Virgile")
     });
 
     it('should return default language label when one does not existing', function(){
-      var label = textgroup.getName("nonExistingLanguage");
+      var label = textgroup.getTitle("nonExistingLanguage");
       expect(label).toBe("Virgil")
     });
 
