@@ -151,7 +151,7 @@ var TextCTS3 = function(nodes, type, urn) {
   }
 
   // We create a function to have a name
-  object.getLabel = function(lang) {
+  object.getTitle = function(lang) {
     if(lang === "undefined") {
       lang = this.defaultLangLabel;
     } else if (!(lang in this.labels)) {
@@ -209,7 +209,7 @@ var TextGroupCTS3 = function(nodes) {
   });
 
   // We create a function to have a name
-  object.getName = function(lang) {
+  object.getTitle = function(lang) {
     if(lang === "undefined") {
       lang = this.defaultLang;
     } else if (!(lang in this.label)) {
@@ -251,16 +251,16 @@ var TextInventoryCTS3 = function (xml, namespace, uri) {
     }
     var r = {};
     object.textgroups.forEach(function(tg) {
-      var tgLabel = tg.getName(lang);
+      var tgLabel = tg.getTitle(lang);
       r[tgLabel] = {};
       tg.works.forEach(function(w) {
         var wLabel = w.getTitle(lang);
         r[tgLabel][wLabel] = {"edition" : {}, "translation" : {}};
         w.editions.forEach(function(e) {
-          r[tgLabel][wLabel]["edition"][e.getLabel(lang)] = e;
+          r[tgLabel][wLabel]["edition"][e.getTitle(lang)] = e;
         });
         w.translations.forEach(function(t) {
-          r[tgLabel][wLabel]["translation"][t.getLabel(lang)] = t;
+          r[tgLabel][wLabel]["translation"][t.getTitle(lang)] = t;
         });
         if(theoretical === true) {
           r[tgLabel][wLabel]["theoretical"] = {};

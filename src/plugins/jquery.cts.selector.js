@@ -42,7 +42,7 @@
   }
   var $lang = {};
 
-  function Plugin ( element, options ) {
+  function SparrowSelector ( element, options ) {
     this.element = $(element);
     // jQuery has an extend method which merges the contents of two or
     // more objects, storing the result in the first object. The first object
@@ -67,7 +67,7 @@
     }
   }
 
-  $.extend(Plugin.prototype, {
+  $.extend(SparrowSelector.prototype, {
     generateId : function() {
       var $id = 1;
 
@@ -384,7 +384,7 @@
           var $toption = $("<option />", {
             "value" : textgroup.urn
           });
-          $toption.text(textgroup.getName(_this.lang));
+          $toption.text(textgroup.getTitle(_this.lang));
 
           var $works = $("<select />", {
             "name" : "cts-selector-" + key + "-work",
@@ -422,7 +422,7 @@
                 "value" : text.urn
               });
               $txoption.data("citations", text.citations);
-              $txoption.text(CTS.lang.get(text.type, _this.lang) + " " + text.getLabel(_this.lang))
+              $txoption.text(CTS.lang.get(text.type, _this.lang) + " " + text.getTitle(_this.lang))
               $texts.append($txoption);
             });
 
@@ -484,7 +484,7 @@
           // pass options to our plugin constructor,
           // and store the plugin instance
           // in the elements jQuery data object.
-          $.data(this, "_cts_selector", new Plugin( this, options ));
+          $.data(this, "_cts_selector", new SparrowSelector( this, options ));
         }
       });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
@@ -497,7 +497,7 @@
         var instance = $.data(this, "_cts_selector");
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
-        if (instance instanceof Plugin && typeof instance[options] === "function") {
+        if (instance instanceof SparrowSelector && typeof instance[options] === "function") {
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
