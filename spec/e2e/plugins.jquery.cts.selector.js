@@ -141,13 +141,13 @@ describe('jQuery CTS Selector', function() {
     
     it("should show data from 1st repository", function() {
       //Fixture
-      fixture.find("select:visible").first().find("option").first()[0].selected = true;
+      fixture.find("select:visible").first().find("option[value='annotsrc']").first()[0].selected = true;
       fixture.find("select:visible").first().trigger("change");
       expect(fixture.find("select:visible").eq(1).data("inventory")).toEqual("annotsrc");
     });
 
     it("should show data from 2nd repository", function(){
-      fixture.find("select:visible").first().find("option").last()[0].selected = true;
+      fixture.find("select:visible").first().find("option[value='pilots']").last()[0].selected = true;
       fixture.find("select:visible").first().trigger("change");
       expect(fixture.find("select:visible").eq(1).data("inventory")).toEqual("pilots");
     });
@@ -203,6 +203,7 @@ describe('jQuery CTS Selector', function() {
     afterEach(function() {
       jasmine.Ajax.uninstall();
       fixture.remove();
+      $j("body > div").remove();
       instance = null;
     });
 
@@ -211,7 +212,7 @@ describe('jQuery CTS Selector', function() {
       fixture.find("select:visible").eq(0).find("option").last()[0].selected = true;
       fixture.find("select:visible").eq(0).trigger("change");
 
-      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(1).find("option:contains(carta)").first()[0].selected = true;
       fixture.find("select:visible").eq(1).trigger("change");
 
       fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
@@ -232,7 +233,7 @@ describe('jQuery CTS Selector', function() {
       fixture.find("select:visible").eq(0).find("option").first()[0].selected = true;
       fixture.find("select:visible").eq(0).trigger("change");
 
-      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+      fixture.find("select:visible").eq(1).find("option:contains(Virgil)").first()[0].selected = true;
       fixture.find("select:visible").eq(1).trigger("change");
 
       fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
@@ -279,7 +280,7 @@ describe('jQuery CTS Selector', function() {
       $j(".cts-selector-trigger").trigger("click");
 
       expect(spy).toHaveBeenCalled()
-      expect(input.data("urn")).toEqual("urn:cts:latinLit:phi0917.phi001.perseus-lat2");
+      expect(input.data("urn")).toEqual("urn:cts:latinLit:phi0917.phi001.perseus-lat1");
     });
     
     it("should set input urn on click", function() {
@@ -431,6 +432,7 @@ describe('jQuery CTS Selector', function() {
   });
   describe("Options", function() {
     var install = function(options) {
+      $j("body > div").remove();
       jasmine.Ajax.install();
       //Creating DOM ELEMENTS
       input = $j("<input />", { "class" : "target", "type" : "text"});
@@ -465,16 +467,30 @@ describe('jQuery CTS Selector', function() {
       fixture.remove();
       instance = null;
     }
-    var selectVirgil = function() {
+    var selectVirgil = function(selectors) {
+      if(selectors == 2) {
+        fixture.find("select:visible").eq(0).find("option").first()[0].selected = true;
+        fixture.find("select:visible").eq(0).trigger("change");
+
+        fixture.find("select:visible").eq(1).find("option:contains(Virgil)").first()[0].selected = true;
+        fixture.find("select:visible").eq(1).trigger("change");
+
+        fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
+        fixture.find("select:visible").eq(2).trigger("change");
+
+        fixture.find("select:visible").eq(3).find("option").first()[0].selected = true;
+        fixture.find("select:visible").eq(3).trigger("change");
+      } else {
+        fixture.find("select:visible").eq(0).find("option:contains(Virgil)").first()[0].selected = true;
+        fixture.find("select:visible").eq(0).trigger("change");
+
+        fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
+        fixture.find("select:visible").eq(1).trigger("change");
+
+        fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
+        fixture.find("select:visible").eq(2).trigger("change");
+      }
       //Fixtures
-      fixture.find("select:visible").eq(0).find("option").first()[0].selected = true;
-      fixture.find("select:visible").eq(0).trigger("change");
-
-      fixture.find("select:visible").eq(1).find("option").first()[0].selected = true;
-      fixture.find("select:visible").eq(1).trigger("change");
-
-      fixture.find("select:visible").eq(2).find("option").first()[0].selected = true;
-      fixture.find("select:visible").eq(2).trigger("change");
     }
 
     var passageVirgil = function() {
@@ -526,8 +542,7 @@ describe('jQuery CTS Selector', function() {
         "endpoint" : "http://fakeRepo.com/CTS.xq?",
         "version" : 3,
         "inventories" : {
-          "annotsrc" : "Nice label for annotsrc",
-          "label" : "Label"
+          "annotsrc" : "Nice label for annotsrc"
         },
         "retrieve" : true
       });
@@ -552,8 +567,7 @@ describe('jQuery CTS Selector', function() {
         "endpoint" : "http://fakeRepo.com/CTS.xq?",
         "version" : 3,
         "inventories" : {
-          "annotsrc" : "Nice label for annotsrc",
-          "label" : "Label"
+          "annotsrc" : "Nice label for annotsrc"
         },
         "retrieve" : true,
         "retrieve_scope" : "seg"
@@ -603,7 +617,7 @@ describe('jQuery CTS Selector', function() {
           "citation-input-container" : ["citation-input-container"]
         }
       });
-      selectVirgil()
+      selectVirgil(2)
       passageVirgil();
       retrieve();
       //<--Test

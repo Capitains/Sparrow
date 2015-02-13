@@ -4,13 +4,13 @@ describe( "Testing CTS Repository object", function () {
 
   describe("Verifying its modules are available", function() {
       beforeEach(function(){
-          repo = CTS.repository("http://localhost") 
+          repo = new CTS.repository.repository("http://localhost") 
       });
       afterEach(function() {
           repo = null;
       });
       it("should exist and be an object", function() {
-          expect(CTS.repository).toBeDefined();
+          expect(CTS.repository.repository).toBeDefined();
       });
       it("should create a defined object", function() {
           expect(repo).toBeDefined();
@@ -20,7 +20,7 @@ describe( "Testing CTS Repository object", function () {
   describe('checking DATA retrieval', function(){
 
     beforeEach(function() {
-        repo = CTS.repository("http://localhost") 
+        repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();
         successFN = jasmine.createSpy("success");
         repo.addInventory("annotsrc");
@@ -70,8 +70,19 @@ describe( "Testing CTS Repository object", function () {
     /** 
      * Fixtures
      **/
+    var instanceOf = function (object, constructor) {
+       while (object != null) {
+          if (object == constructor.prototype)
+             return true;
+          if (typeof object == 'xml') {
+            return constructor.prototype == XML.prototype;
+          }
+          object = object.__proto__;
+       }
+       return false;
+    }
     beforeEach(function() {
-        repo = CTS.repository("http://localhost") 
+        repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();
         repo.addInventory("annotsrc");
         repo.load();
@@ -80,6 +91,7 @@ describe( "Testing CTS Repository object", function () {
           "contentType": 'text/xml',
           "responseText": xml
         });
+
     });
     afterEach(function() {
         jasmine.Ajax.uninstall();
@@ -88,7 +100,7 @@ describe( "Testing CTS Repository object", function () {
     it('should have the basic level as textGroups titles', function(){
       var data = repo.inventories.annotsrc.getRaw();
       var textgroups = Object.keys(data);
-      expect(textgroups).toEqual(["Virgil", "Ovid", "Lucan"]);
+      expect(textgroups).toEqual(["Lucan", "Ovid", "Virgil"]);
     });
 
     it('should have a level n + 1 in Virgil being its works title', function(){
@@ -125,13 +137,13 @@ describe( "Testing CTS Repository object", function () {
       var data = repo.inventories.annotsrc.getRaw();
       var work = Object.keys(data.Virgil.Aeneid.edition);
       expect(work).toEqual(["Aeneid"]);
-      expect(data.Virgil.Aeneid.edition.Aeneid.prototype).toBe(CTS.repositoryPrototypes.Text);
+      expect(instanceOf(data.Virgil.Aeneid.edition.Aeneid, CTS.repository.prototypes.Text)).toBe(true);
     });
     
     it('should return given language when specified', function(){
       var data = repo.inventories.annotsrc.getRaw("fr");
       var work = Object.keys(data);
-      expect(work).toEqual(["Virgile", "Ovid", "Lucan"]);
+      expect(work).toEqual(["Lucan", "Ovid", "Virgile"]);
     });
 
   });
@@ -139,7 +151,7 @@ describe( "Testing CTS Repository object", function () {
   describe('CTS3-Text ', function(){
 
     beforeEach(function() {
-        repo = CTS.repository("http://localhost") 
+        repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();
         repo.addInventory("annotsrc");
         repo.load();
@@ -203,7 +215,7 @@ describe( "Testing CTS Repository object", function () {
   describe('CTS3-TextGroup ', function(){
 
     beforeEach(function() {
-        repo = CTS.repository("http://localhost") 
+        repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();
         repo.addInventory("annotsrc");
         repo.load();
@@ -212,7 +224,7 @@ describe( "Testing CTS Repository object", function () {
           "contentType": 'text/xml',
           "responseText": xml
         });
-        textgroup = repo.inventories.annotsrc.textgroups[0];
+        textgroup = repo.inventories.annotsrc.textgroups[2];
 
     });
     afterEach(function() {
@@ -249,7 +261,7 @@ describe( "Testing CTS Repository object", function () {
   describe('CTS3-Work ', function(){
 
     beforeEach(function() {
-        repo = CTS.repository("http://localhost") 
+        repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();
         repo.addInventory("annotsrc");
         repo.load();
@@ -258,7 +270,7 @@ describe( "Testing CTS Repository object", function () {
           "contentType": 'text/xml',
           "responseText": xml
         });
-        work = repo.inventories.annotsrc.textgroups[0].works[0];
+        work = repo.inventories.annotsrc.textgroups[2].works[0];
 
     });
     afterEach(function() {
