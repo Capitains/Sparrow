@@ -10,7 +10,7 @@ See implemented services documentations.
 ## API
 
 - `$(target).ctsService(serviceName, "getValues")` : returns a dictionary representing the form key-value's pair
-
+- `$(target).ctsService(XSLTName, "instance")` : return the CTS.Service abstraction object
 ## Events
 
 | Name                   | Description
