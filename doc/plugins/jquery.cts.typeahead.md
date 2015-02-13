@@ -9,9 +9,9 @@ If you are looking for the CTS Search field, this is here. -If you are looking f
 
 This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you a search box where your user can simply type to find !
 
-![List when typing](./img/screenshot.jquery.cts.typeahead.list.png)
+![List when typing](../img/screenshot.jquery.cts.typeahead.list.png)
 
-![After retrieval](./img/screenshot.jquery.cts.typeahead.retrieved.png)
+![After retrieval](../img/screenshot.jquery.cts.typeahead.retrieved.png)
 
 To use it, you will need to use compressed (or uncompressed) `cts.js`, 
 

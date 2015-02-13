@@ -9,7 +9,7 @@ If you are looking for the CTS Search field, this is [here](./jquery.cts.typeahe
 
 This plugins aims to provide a solid selector for passage or text in your front-end. Giving it a simple CTS API endpoint and one inventory to call, this plugin will generate for you, next to a given input, the whole DOM necessary for browsing your inventories !
 
-![This ain't pretty but you can give it some css love yourself](./img/screenshot.jquery.cts.selector.png)
+![This ain't pretty but you can give it some css love yourself](../img/screenshot.jquery.cts.selector.png)
 
 To use it, you will need to use compressed (or uncompressed) `cts.js`, 
 
