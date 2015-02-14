@@ -418,7 +418,17 @@ describe('jQuery CTS Typeahead', function() {
   });
 
   describe("Facet selection proccess", function() {
-    beforeEach(function() {
+    install = function(options) {
+      if(typeof options === "undefined") {
+        options = {
+          "endpoint" : "http://fakeRepo.com/CTS.xq?",
+          "version" : 3,
+          "inventories" : {
+            "pilots" : "?"
+          },
+          "retrieve" : ".TEItext"
+        };
+      }
       jasmine.Ajax.install();
       //Creating DOM ELEMENTS
       input = $j("<input />", { "class" : "target", "type" : "text"});
@@ -429,14 +439,7 @@ describe('jQuery CTS Typeahead', function() {
       $j("body").append(fixture);
 
       //Applying Plugin
-      input.ctsTypeahead({
-        "endpoint" : "http://fakeRepo.com/CTS.xq?",
-        "version" : 3,
-        "inventories" : {
-          "pilots" : "?"
-        },
-        "retrieve" : ".TEItext"
-      });
+      input.ctsTypeahead(options);
 
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status" : 200,
@@ -448,8 +451,7 @@ describe('jQuery CTS Typeahead', function() {
       //Creating variables shortcut
       instance = $j(".target").data("_cts_typeahead");
       th = instance.typeahead.data("ttTypeahead");
-
-    });
+    }
     afterEach(function() {
       jasmine.Ajax.uninstall();
       fixture.remove();
@@ -457,6 +459,7 @@ describe('jQuery CTS Typeahead', function() {
       th = null;
     });
     it("should handle language filter", function() {
+      install();
       //Asking for Carta in typeahead
       th.input.$input.val("lang:cel");
       th.input.setQuery("lang:cel");
@@ -465,6 +468,86 @@ describe('jQuery CTS Typeahead', function() {
       $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
       //Testing
       expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-cel1");
+    });
+    it("should handle tokenizer filter", function() {
+      install({
+        "endpoint" : "http://fakeRepo.com/CTS.xq?",
+        "version" : 3,
+        "inventories" : {
+          "pilots" : "?"
+        },
+        "retrieve" : ".TEItext",
+        "tokenizer" : function(query) {
+          return Bloodhound.tokenizers.whitespace(query + " lang:cel")
+        }
+      });
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Testing
+      expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-cel1");
+    });
+    it("should handle tokenizer filter second check", function() {
+      install({
+        "endpoint" : "http://fakeRepo.com/CTS.xq?",
+        "version" : 3,
+        "inventories" : {
+          "pilots" : "?"
+        },
+        "retrieve" : ".TEItext",
+        "tokenizer" : function(query) {
+          return Bloodhound.tokenizers.whitespace(query + " lang:eng")
+        }
+      });
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Testing
+      expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-eng1");
+    });
+    it("should handle languages pre-filter first check", function() {
+      install({
+        "endpoint" : "http://fakeRepo.com/CTS.xq?",
+        "version" : 3,
+        "inventories" : {
+          "pilots" : "?"
+        },
+        "retrieve" : ".TEItext",
+        "languages" : ["cel"]
+      });
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Testing
+      expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-cel1");
+    });
+    it("should handle languages pre-filter second check", function() {
+      install({
+        "endpoint" : "http://fakeRepo.com/CTS.xq?",
+        "version" : 3,
+        "inventories" : {
+          "pilots" : "?"
+        },
+        "retrieve" : ".TEItext",
+        "languages" : ["eng"]
+      });
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Testing
+      expect(input.data("urn")).toEqual("urn:cts:pdlmc:cdf.flc.perseus-eng1");
     });
   });
 

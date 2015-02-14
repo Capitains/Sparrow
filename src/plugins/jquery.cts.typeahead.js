@@ -17,7 +17,9 @@
     "retrieve" : false,
     "retrieve_scope" : null,
     "passage" : true, // Add the passage selector.
-    "theoretical" : false // Include theoretical works
+    "theoretical" : false, // Include theoretical works
+    "tokenizer" : Bloodhound.tokenizers.whitespace,
+    "languages" : []
   };
   // $css is the basic classes used for accessing DOM inside jQuery.cts.selector
   var $css = {
@@ -322,15 +324,17 @@
           Object.keys(inventory[textgroup]).forEach(function(work) {
             Object.keys(inventory[textgroup][work]).forEach(function(type) {
               Object.keys(inventory[textgroup][work][type]).forEach(function(text) {
-                texts.push({
-                  name : [textgroup, work, text, CTS.lang.get(type, _this.lang), "lang:"+inventory[textgroup][work][type][text].lang].join(", "),
-                  shortname : text,
-                  type : CTS.lang.get(type, _this.lang),
-                  fullname : [textgroup, work].join(", "),
-                  urn : inventory[textgroup][work][type][text].urn,
-                  citations : inventory[textgroup][work][type][text].citations,
-                  inventory : inventory_name
-                });
+                if((_this.settings.languages.length === 0) || (_this.settings.languages.length > 0 && $.inArray(inventory[textgroup][work][type][text].lang, _this.settings.languages) !== -1) ){
+                  texts.push({
+                    name : [textgroup, work, text, CTS.lang.get(type, _this.lang), "lang:"+inventory[textgroup][work][type][text].lang].join(", "),
+                    shortname : text,
+                    type : CTS.lang.get(type, _this.lang),
+                    fullname : [textgroup, work].join(", "),
+                    urn : inventory[textgroup][work][type][text].urn,
+                    citations : inventory[textgroup][work][type][text].citations,
+                    inventory : inventory_name
+                  });
+                }
               });
             });
           });
@@ -340,7 +344,7 @@
       // We instantiate Bloodhound
       var BHTexts = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: this.settings.tokenizer,
         limit: 10,
         local: texts 
       });

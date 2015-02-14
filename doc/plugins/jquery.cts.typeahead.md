@@ -63,16 +63,52 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 
 ## Basic parameters
 
-| Key            | Type              | Default | Required | Description
-|----------------|-------------------|---------|----------|------------------
-| endpoint       | string            |    ""   |    Yes   | CTS API endpoint (URI) finishing with "?"
-| css            | object            |    {}   |          | See below [CSS custom classes](#css-custom-classes)
-| version        | int               |    3    |          | Version of the CTS implementation (3 or 5)
-| inventories    | object            |    {}   |    Yes   | Object where keys are inventory's name and value are label to show
-| retrieve       | boolean or string | false   |          | If set to true, replace the content of plugin target by the plugins data on clicking retrieve. If it's a string, will use string as a jQuery selector to fill with retrieved passage
-| retrieve_scope | null or string    | null    |          | Element to retrieve from retrieved passage
-| passage        | boolean           |  true   |          | Show a passage selector
-| theoretical    | boolean           | false   |          | Show theoretical works
+| Key            | Type              | Default | Required | Description                                                        |  
+| -------------- | ----------------- | ------- | -------- | ----------------                                                   |  
+| endpoint       | string            | ""      | Yes      | CTS API endpoint (URI) finishing with "?"                          |  
+| css            | object            | {}      |          | See below [CSS custom classes](#css-custom-classes)                |  
+| version        | int               | 3       |          | Version of the CTS implementation (3 or 5)                         |  
+| inventories    | object            | {}      | Yes      | Object where keys are inventory's name and value are label to show |  
+| retrieve       | boolean or string | false   |          | If set to true, replace the content of plugin target by the plugins data on clicking retrieve. If it's a string, will use string as a jQuery selector to fill with retrieved passage |
+| retrieve_scope | null or string | null                             |  | Element to retrieve from retrieved passage |  
+| passage        | boolean        | true                             |  | Show a passage selector                    |  
+| theoretical    | boolean        | false                            |  | Show theoretical works                     |  
+| tokenizer      | function       | Bloodhound.tokenizers.whitespace |  | [Function to parse the query](#tokenizer). |  
+| languages      | Array          | []                               |  | If not empty, only languages code in the Array will be shown |  
+
+## Tokenizer
+
+The tokenizer parameter is a shortcut to defined the tokenizer of the [Bloodhound](https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md) object. The function should have the following parameters and returns
+
+```javascript
+/**
+ * Tokenize a query string into readable data for Bloodhound
+ *
+ * @param  {string}  query  The query string typed in the input of typeahead
+ * @return {Array}          A list of string
+ *
+ */
+function tokenizer(query) {
+  return query.split(" ");
+}
+```
+
+*eg* : You can use this ctsTypeahead param to automatically filter on language for example :
+
+```javascript
+/**
+ * Tokenize a query string into readable data for Bloodhound and accept only given language
+ *
+ * @param  {string}  query  The query string typed in the input of typeahead
+ * @return {Array}          A list of string
+ *
+ */
+function tokenizer(query) {
+  query = Bloodhound.tokenizers.whitespace(query);
+  query.push("lang:grc");
+  return query;
+}
+```
 
 ## CSS custom classes
 
