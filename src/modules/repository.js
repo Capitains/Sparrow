@@ -400,20 +400,19 @@
       var error_callback = function(e) { return; };
     }
 
-    xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], 
-      {
-        success : function(data) {
-          _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
-          if(inventories.length === 1) {
-            if(callback !== null) { callback(); }
-          } else {
-            inventories.shift();
-            _this.load(callback, error_callback, inventories);
-          }
-        },
-        type : "text/xml", 
-        error : error_callback
-      });
+    this.endpoint.getCapabilities(inventories[0], {
+      success : function(data) {
+        _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
+        if(inventories.length === 1) {
+          if(callback !== null) { callback(); }
+        } else {
+          inventories.shift();
+          _this.load(callback, error_callback, inventories);
+        }
+      },
+      error   : error_callback,
+      type    : "text/xml"
+    });
 
     return this;
   }
