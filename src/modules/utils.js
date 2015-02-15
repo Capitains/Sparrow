@@ -10,22 +10,26 @@
    * Just an XmlHttpRequest polyfill for different IE versions. Simple reuse of sigma.parsers.json
    *
    *
-   * @param  method    {string}     HTTP Method
-   * @param  url       {string}     HTTP URI to call
-   * @param  callback  {?function}  Function to call when request is done.
-   * @param  type      {string}     Type of data wished (default: text/xml)
-   * @param  data      {?}          Data to send
-   * @param  callback  {?function}  Function to call when request gave an error.
+   * @param  method             {string}     HTTP Method
+   * @param  url                {string}     HTTP URI to call
+   * @param  options.success    {?function}  Function to call when request is done.
+   * @param  options.type       {string}     Type of data wished (default: text/xml)
+   * @param  options.data       {?}          Data to send
+   * @param  options.error      {?function}  Function to call when request gave an error.
    *
    */
-  var _xhr = function(method, url, callback, type, data, error_callback) {
+  var _xhr = function(method, url, options) {
     var xhr,
         _this = this;
-    if(typeof type === "undefined") {
-      type = "text/xml";
+
+    if(typeof options === undefined) {
+      options = {}
     }
-    if(typeof async === "undefined") {
-      async = true;
+    if(typeof options.type === "undefined") {
+      options.type = "text/xml";
+    }
+    if(typeof options.async === "undefined") {
+      options.async = true;
     }
 
     if (window && window.XMLHttpRequest) {
@@ -51,43 +55,42 @@
       return null;
     }
     try {
-      xhr.open(method, url, async);
+      xhr.open(method, url, options.async);
 
       xhr.onerror = function() {
-        if(typeof error_callback !== "undefined") {
-          error_callback(xhr.status, xhr.statusText);
+        if(typeof options.error === "function") {
+          options.error(xhr.status, xhr.statusText);
         }
       }
 
       xhr.onreadystatechange = function() {
         if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404 || xhr.status === 400) {
-          if(typeof error_callback !== "undefined") {
-            error_callback(xhr.status, xhr.statusText);
+          if(typeof options.error === "function") {
+            options.error(xhr.status, xhr.statusText);
           }
         } else {
           if (xhr.readyState === 4) {
-            if(typeof callback === "function") {
-              if(type === "text/xml") {
-                callback(xhr.responseXML);
-              } else if (type === "text" || type === "plain/text") {
-                callback(xhr.responseText);
+            if(typeof options.success === "function") {
+              if(options.type === "text/xml") {
+                options.success(xhr.responseXML);
+              } else if (options.type === "text" || options.type === "plain/text") {
+                options.success(xhr.responseText);
               }
             }
           }
         }
       };
-
-      if((typeof data !== "undefined" || data !== null) && method === "POST") {
+      if((typeof options.data !== "undefined" || options.data !== null) && method === "POST") {
         xhr.overrideMimeType("multipart/form-data");
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
-        xhr.send(CTS.utils.dataEncode(data));
+        xhr.send(CTS.utils.dataEncode(options.data));
       } else {
         xhr.send();
       }
 
     } catch(err) {
-      if(typeof error_callback !== "undefined") {
-        error_callback(err);
+      if(typeof options.error === "function") {
+        options.error(err);
       }
     }
   }
