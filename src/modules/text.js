@@ -7,6 +7,8 @@
   }
 }(function(CTS) {
 
+  CTS.text = {};
+
   /**
    * Get the text, loading it if necessary
    *
@@ -139,14 +141,14 @@
   }
 
   /**
-   * Create a text object representing either a passage or a full text
+   * Create a Passage object representing part of a full text
    *
-   * @param  urn       {string}             URN identifying the text
-   * @param  endpoint  {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
-   * @param  endpoint  {?inventory}         Inventory Identifier
+   * @param  urn        {string}             URN identifying the text
+   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
+   * @param  inventory  {?inventory}         Inventory Identifier
    *
    */
-  var _Text = function(urn, endpoint, inventory) {
+  CTS.text.Passage = function(urn, endpoint, inventory) {
     var rest = false;
     if(endpoint === false) {
       //This means we have a uri instead of a urn
@@ -158,23 +160,59 @@
     if(typeof inventory !== "string") {
       inventory = null;
     }
-    return {
-      //DOM
-      document : null,
-      //Strings
-      xml : null,
-      text : null,
-      rest : rest,
-      urn : urn,
-      inventory : inventory,
-      endpoint : endpoint,
-      //Functions
-      retrieve : _retrieve,
-      setText : _setText,
-      getText : _getText,
-      getXml : _getXml,
-      checkXML : _checkXML
-    }
+
+    //DOM
+    this.document = null;
+    //Strings
+    this.xml = null;
+    this.text = null;
+    this.rest = rest;
+    this.urn = urn;
+    this.inventory = inventory;
+    this.endpoint = endpoint;
+    //Functions
+    this.retrieve = _retrieve;
+    this.setText = _setText;
+    this.getText = _getText;
+    this.getXml = _getXml;
+    this.checkXML = _checkXML;
   }
-  CTS.Text = _Text;
+
+  /**
+   * Create a text object representing either a passage or a full text
+   *
+   * @param  urn        {string}             URN identifying the text
+   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
+   * @param  inventory  {?inventory}         Inventory Identifier
+   *
+   */
+  CTS.text.Text = function(urn, endpoint, inventory) {
+    var rest = false;
+    if(endpoint === false) {
+      //This means we have a uri instead of a urn
+      rest = true;
+    }
+    if(typeof endpoint !== "string") {
+      endpoint = null;
+    }  
+    if(typeof inventory !== "string") {
+      inventory = null;
+    }
+
+    this.rest = rest;
+    this.urn = urn;
+    this.inventory = inventory;
+    this.endpoint = endpoint;
+    //Functions
+    this.reffs = {}
+    this.getPassage = function(ref1, ref2) {
+      if(typeof ref2 === "undefined") {
+        if(ref1.split("-").length == 2) {
+          ref1, ref2 = ref1.split("-");
+        }
+      }
+      return [ref1, ref2];
+    }
+    this.getValidReff = function() { throw "Not Implemented Yet"; }
+  }  
 }));
