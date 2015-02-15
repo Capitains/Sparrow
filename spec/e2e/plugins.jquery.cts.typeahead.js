@@ -241,6 +241,27 @@ describe('jQuery CTS Typeahead', function() {
       var spy = null;
     });
 
+    it("should trigger cts-passage:urn-updated with data", function() {
+      var spy = jasmine.createSpy("success");
+      var cb = function(event, data) {
+        spy();
+        expect(instanceOf(data, CTS.repository.prototypes.Text));
+      }
+      input.on("cts-passage:urn-updated", cb);
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Giving some false passage identifier
+      $j(".cts-selector-passage-number").first().val(1);
+      $j(".cts-selector-passage-number").last().val(2);
+      //Testing
+      expect(spy).toHaveBeenCalled()
+      var spy = null;
+    });
+
     it("should trigger cts-passage:urn-work", function() {
       var spy = jasmine.createSpy("success");
       input.on("cts-passage:urn-work", spy);
@@ -366,6 +387,38 @@ describe('jQuery CTS Typeahead', function() {
       //Spy
       var spy = jasmine.createSpy("success");
       textarea.on("cts-passage:retrieved", spy)
+      //Asking for Carta in typeahead
+      th.input.$input.val("carta");
+      th.input.setQuery("carta");
+      th.input.trigger("upKeyed");
+      //Clicking on one suggestion
+      $j(".tt-dataset-texts > .tt-suggestions > .tt-suggestion").trigger("click");
+      //Giving some false passage identifier
+      $j(".cts-selector-passage-number").first().val(1);
+      $j(".cts-selector-passage-number").last().val(2)
+      //Asking for retrieval
+      $j(".cts-selector-retriever").trigger("click");
+      //Mocking up ajax  
+      jasmine.Ajax.requests.mostRecent().respondWith({
+        "status" : 200,
+        "contentType" : "text/xml",
+        "responseXML" : (new DOMParser()).parseFromString(text, "text/xml"),
+        "responseText" : text
+      });
+      //Testing
+      expect(spy).toHaveBeenCalled();
+      var spy = null;
+    });
+
+    it("should have sent a retrieved trigger with data on target", function() {
+      //Spy
+      var spy = jasmine.createSpy("success");
+      var cb = function(event, data) {
+        expect(data).toBeDefined();
+        expect(typeof data.getXml).toEqual("function")
+        spy();
+      }
+      textarea.on("cts-passage:retrieved", function(event, data) { cb(event, data); })
       //Asking for Carta in typeahead
       th.input.$input.val("carta");
       th.input.setQuery("carta");

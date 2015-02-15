@@ -1,5 +1,4 @@
 describe( "Testing CTS Repository object", function () {
-
   xml = jasmine.getFixtures().read('xml/repo.xml');
   translationRepo = jasmine.getFixtures().read('xml/repo3.xml');
 
@@ -71,17 +70,6 @@ describe( "Testing CTS Repository object", function () {
     /** 
      * Fixtures
      **/
-    var instanceOf = function (object, constructor) {
-       while (object != null) {
-          if (object == constructor.prototype)
-             return true;
-          if (typeof object == 'xml') {
-            return constructor.prototype == XML.prototype;
-          }
-          object = object.__proto__;
-       }
-       return false;
-    }
     beforeEach(function() {
         repo = new CTS.repository.repository("http://localhost") 
         jasmine.Ajax.install();

@@ -21,6 +21,7 @@ module.exports = function(config) {
       "./node_modules/typeahead.js/dist/typeahead.bundle.min.js",
       "node_modules/jasmine-ajax/lib/mock-ajax.js",
       "node_modules/jasmine-jquery/lib/jasmine-jquery.js",
+      'spec/javascripts/.helper.js',
 
       //Abstractions
       'src/cts.js',

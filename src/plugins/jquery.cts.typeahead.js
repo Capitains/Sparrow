@@ -75,10 +75,10 @@
             //We feed our targer value
             $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
             //We reset legend of the button
-            $target.trigger("cts-passage:retrieved");
+            $target.trigger("cts-passage:retrieved", _this.text);
           } else {
             $target.val(data);
-            $target.trigger("cts-passage:retrieved");
+            $target.trigger("cts-passage:retrieved", _this.text);
           }
         }, function(status, statusText) {
           console.log(status, statusText); // For debug
@@ -124,7 +124,7 @@
             //We feed our targer value
             $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
             //We reset legend of the button
-            $target.trigger("cts-passage:retrieved");
+            $target.trigger("cts-passage:retrieved", _this.text);
           } else {
             console.log(0, "XML is empty");
             $target.trigger("cts-passage:passage-error");
@@ -213,7 +213,8 @@
         }
       }
       $element.val($urn);
-      _this.element.trigger("cts-passage:urn-updated");
+      $element.data("text").urn = $urn;
+      _this.element.trigger("cts-passage:urn-updated", $element.data("text"));
       _this.element.trigger("cts-passage:urn-passage");
     },
     generatePassage : function($urn, $citations) {
@@ -328,11 +329,13 @@
                   texts.push({
                     name : [textgroup, work, text, CTS.lang.get(type, _this.lang), "lang:"+inventory[textgroup][work][type][text].lang].join(", "),
                     shortname : text,
+                    lang : inventory[textgroup][work][type][text].lang,
                     type : CTS.lang.get(type, _this.lang),
                     fullname : [textgroup, work].join(", "),
                     urn : inventory[textgroup][work][type][text].urn,
                     citations : inventory[textgroup][work][type][text].citations,
-                    inventory : inventory_name
+                    inventory : inventory_name,
+                    passage : inventory[textgroup][work][type][text]
                   });
                 }
               });
@@ -372,8 +375,9 @@
       this.typeahead.on("typeahead:selected", function(event, suggestion, name) {
         _this.element.data("inventory", suggestion.inventory);
         _this.element.data("urn", suggestion.urn);
+        _this.element.data("text", suggestion.passage)
         _this.element.val(suggestion.urn);
-        _this.element.trigger("cts-passage:urn-updated");
+        _this.element.trigger("cts-passage:urn-updated", suggestion.passage);
         _this.element.trigger("cts-passage:urn-work");
         if(_this.settings.passage === true) {
           _this.element.data("citations", suggestion.citations);
