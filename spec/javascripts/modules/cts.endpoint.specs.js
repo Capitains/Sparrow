@@ -45,14 +45,14 @@ describe('Endpoint Abstraction', function(){
 
     it("should do GetCapabilities", function() {
       successFN = jasmine.createSpy("success");
-      API.getCapabilities("annotsrc", successFN);
+      API.getCapabilities("annotsrc", {success : successFN});
       expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://localhost?request=GetCapabilities&inv=annotsrc")
       response();
       expect(successFN).toHaveBeenCalled();
 
       //Without inventory
       successFN = jasmine.createSpy("success");
-      API.getCapabilities(successFN);
+      API.getCapabilities({success : successFN});
       expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://localhost?request=GetCapabilities")
       response();
       expect(successFN).toHaveBeenCalled();

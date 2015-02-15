@@ -26,11 +26,11 @@
 
     /**
      * Do a GetCapabilities request
-     * @param {?string}    inventory Inventory name
-     * @param {?function}  success   Success callback
-     * @param {?function}  error     Error callback
+     * @param {?string}    inventory         Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
      */
-    this.getCapabilities = function(urn, options) { throw "Unsupported request"; }
+    this.getCapabilities = function(inventory, options) { throw "Unsupported request"; }
     this.getDescription  = function() { throw "Unsupported request"; }
     this.getPrevNextUrn  = function(urn)  { throw "Unsupported request"; }
 
@@ -43,7 +43,7 @@
      * @param {?function}  options.success   Success callback
      * @param {?function}  options.error     Error callback
      */
-    this.getValidReff    = function(urn, level) { throw "Unsupported request"; }
+    this.getValidReff    = function(urn, options) { throw "Unsupported request"; }
 
     /**
      * Do a GetPassage request
@@ -52,7 +52,7 @@
      * @param {?function}  options.success   Success callback
      * @param {?function}  options.error     Error callback
      */
-    this.getPassage      = function(urn) { throw "Unsupported request"; }
+    this.getPassage      = function(urn, options) { throw "Unsupported request"; }
     this.getPassagePlus  = function(urn) { throw "Unsupported request"; }
 
     /**
@@ -64,7 +64,8 @@
     this.getRequest = function(url, options) {
       CTS.utils.xhr("GET", url, {
         success : options.success,
-        error   : options.error
+        error   : options.error,
+        type    : options.type
       });
     };
 
@@ -74,15 +75,18 @@
      * @param  {Function}  options.success  Success Callback function
      * @param  {Function}  options.error    Error Callback function
      * @param  {Function}  options.data     Error Callback function
+     * @param  {Function}  options.type     Data type
      */
     this.postRequest = function(url, options) {
       CTS.utils.xhr("POST", url, {
         success : options.success,
         error   : options.error,
-        data    : options.data
+        data    : options.data,
+        type    : options.type
       });
     };
   }
+  CTS.endpoint.Endpoint.prototype = Object.create(CTS.endpoint.Endpoint);
 
   /**
    * CTS API using simple xQuery rest system.
@@ -129,20 +133,16 @@
 
     /**
      * Do a GetCapabilities request
-     * @param {?string}    inventory Inventory name
-     * @param {?function}  success   Success callback
-     * @param {?function}  error     Error callback
+     * @param {?string}    inventory         Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
      */
-    this.getCapabilities = function(inventory, success, error) {
-      if(typeof inventory === "function") {
-        error = success;
-        success = inventory;
+    this.getCapabilities = function(inventory, options) {
+      if(typeof inventory !== "string") {
+        options = inventory;
         inventory = null;
       }
-      this.getRequest(this.getCapabilitiesURL(inventory), {
-        "success" : success,
-        "error" : error
-      });
+      this.getRequest(this.getCapabilitiesURL(inventory), options);
     }
 
     /**
@@ -174,10 +174,7 @@
       if(typeof options === "undefined") {
         options = {};
       }
-      this.getRequest(this.getPassageURL(urn, options.inventory), {
-        "success" : options.success,
-        "error" : options.error
-      });
+      this.getRequest(this.getPassageURL(urn, options.inventory), options);
     }
 
     /**
@@ -218,13 +215,10 @@
       if(typeof options === "undefined") {
         options = {};
       }
-      this.getRequest(this.getValidReffURL(urn, options), {
-        "success" : options.success,
-        "error" : options.error
-      });
+      this.getRequest(this.getValidReffURL(urn, options), options);
     }
   }
-  CTS.endpoint.XQ.prototype = Object.create(CTS.endpoint.Endpoint)
+  CTS.endpoint.XQ.prototype = Object.create(CTS.endpoint.Endpoint);
 
   CTS.endpoint.default = CTS.endpoint.XQ;
 }));
