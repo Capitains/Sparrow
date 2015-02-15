@@ -47,12 +47,15 @@
   }
 
   var send = function(callback, format) {
-    var _this = this;
     if (typeof format === "undefined") { format = "text/xml"; }
     //function(method, url, callback, type, async)
-    CTS.utils.xhr(_this.method, _this.endpoint, function(data) {
-      if(typeof callback === "function") { callback(data); }
-    }, format, _this.getValues());
+    CTS.utils.xhr(this.method, this.endpoint, {
+      success : function(data) {
+        if(typeof callback === "function") { callback(data); }
+      }, 
+      type : format, 
+      "data" : this.getValues()
+    });
   }
 
   /**

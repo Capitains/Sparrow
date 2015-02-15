@@ -62,13 +62,15 @@
     }
 
     try {
-      CTS.utils.xhr("GET", url, function(data) {
-
-        _this.xml = data;
-        _this.document = (new DOMParser()).parseFromString(data, "text/xml");
-        if(callback) { callback(data); }
-
-      }, "text", null, error_callback);
+      CTS.utils.xhr("GET", url, {
+        success : function(data) {
+          _this.xml = data;
+          _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+          if(callback) { callback(data); }
+        },
+        type : "text", 
+        error : error_callback
+      });
     } catch (e) {
       if(typeof error_callback === "function") {
         error_callback(e);
