@@ -59,7 +59,8 @@ module.exports = function(grunt) {
           'node_modules/jasmine-expect/dist/jasmine-matchers.js',
           'node_modules/jquery/dist/jquery.min.js',
           'node_modules/sinon/lib/sinon.js',
-          'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
+          'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+          'spec/javascripts/.helper.js'
         ],
         specs : 'spec/**/*.specs.js',
         keepRunner : true

@@ -61,6 +61,11 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 | cts-passage:passage-error    | Retrieved passage is empty
 | cts-passage:retrieving-error | An HTTP error occured during retrieval
 
+### Event data
+
+- `cts-passage:urn-updated` pass a CTS.repository.prototypes.Text sub-instance (Edition, Translation, etc.)
+- `cts-passage:retrieved` pass a CTS.text instance
+
 ## Basic parameters
 
 | Key            | Type              | Default | Required | Description                                                        |  
