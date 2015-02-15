@@ -110,21 +110,24 @@
         _this.text = new CTS.text.Passage(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
         //We load the text
 
-        _this.text.retrieve(function() {
-          if(_this.text.checkXML() === true) {
-            //We feed our targer value
-            $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
-            //We reset legend of the button
-            $target.trigger("cts-passage:retrieved");
-          } else {
-            console.log(0, "XML is empty");
-            $target.trigger("cts-passage:passage-error");
+        _this.text.retrieve({
+            success : function() {
+            if(_this.text.checkXML() === true) {
+              //We feed our targer value
+              $target.val(_this.text.getXml(_this.settings.retrieve_scope, "string"));
+              //We reset legend of the button
+              $target.trigger("cts-passage:retrieved");
+            } else {
+              console.log(0, "XML is empty");
+              $target.trigger("cts-passage:passage-error");
+            }
+            $button.text(CTS.lang.get("retrieve_passage", _this.lang));
+          },
+          error : function(status, statusText) {
+            console.log(status, statusText); // For debug
+            $target.trigger("cts-passage:retrieving-error");
+            $button.text(CTS.lang.get("retrieve_passage", _this.lang));
           }
-          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
-        }, function(status, statusText) {
-          console.log(status, statusText); // For debug
-          $target.trigger("cts-passage:retrieving-error");
-          $button.text(CTS.lang.get("retrieve_passage", _this.lang));
         });
 
       });

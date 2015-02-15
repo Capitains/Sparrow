@@ -321,7 +321,7 @@ describe('jQuery CTS Typeahead', function() {
       //Asking for retrieval
       $j(".cts-selector-retriever").trigger("click");
       //Testing
-      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&inv=pilots&urn=urn:cts:pdlmc:cdf.flc.perseus-lat1:1-2")
+      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&urn=urn:cts:pdlmc:cdf.flc.perseus-lat1:1-2&inv=pilots")
     });
 
     it("should change value of input", function() {
@@ -357,7 +357,7 @@ describe('jQuery CTS Typeahead', function() {
       //Asking for retrieval
       $j(".cts-selector-retriever").trigger("click");
       //Testing
-      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&inv=annotsrc&urn=urn:cts:latinLit:phi0690.phi003.perseus-lat1:1.2-3.4")
+      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://fakeRepo.com/CTS.xq?request=GetPassage&urn=urn:cts:latinLit:phi0690.phi003.perseus-lat1:1.2-3.4&inv=annotsrc")
     });
 
     it("should have try to retrieve text", function() {
