@@ -107,7 +107,7 @@
         $target.trigger("cts-passage:retrieving");
 
         //We create the text instance 
-        _this.text = CTS.Text(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
+        _this.text = new CTS.text.Passage(_this.element.val(), _this.repository.endpoint, _this.element.data("inventory"));
         //We load the text
 
         _this.text.retrieve(function() {

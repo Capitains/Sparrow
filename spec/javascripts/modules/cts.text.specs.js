@@ -2,7 +2,7 @@ describe( "Testing CTS Texts functions", function () {
 	//First, test the non AJAX functions
 	describe('Creation of the object', function(){
 	  it("should handle normal creation", function() {
-	  	var text = CTS.Text("urn:cts:lala", "http://endpoint", "annotsrc");
+	  	var text = new CTS.text.Passage("urn:cts:lala", "http://endpoint", "annotsrc");
 	  	expect(text.endpoint).toEqual("http://endpoint");
 	  	expect(text.urn).toEqual("urn:cts:lala");
 	  	expect(text.inventory).toEqual("annotsrc");
@@ -10,7 +10,7 @@ describe( "Testing CTS Texts functions", function () {
 	  });
 
 	  it("should handle normal creation", function() {
-	  	var text = CTS.Text("http://restservice/urn:cts:lala", false);
+	  	var text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
 	  	expect(text.endpoint).toEqual(null);
 	  	expect(text.urn).toEqual("http://restservice/urn:cts:lala");
 	  	expect(text.inventory).toEqual(null);
@@ -20,7 +20,7 @@ describe( "Testing CTS Texts functions", function () {
 	});
 
 	describe('Setters and getters for TEXT', function(){
-	  	var text = CTS.Text("http://restservice/urn:cts:lala", false);
+	  	var text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
 
 	  	it("shoud handle texts setters and getters", function() {
 		  	expect(text.text).toEqual(null);
@@ -30,7 +30,7 @@ describe( "Testing CTS Texts functions", function () {
 	});
 
 	describe('XML Helpers', function(){
-	  	var text = CTS.Text("http://restservice/urn:cts:lala", false);
+	  	var text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
 
 		beforeEach(function() {
 	    	xml = jasmine.getFixtures().read('xml/text.xml');
@@ -62,7 +62,7 @@ describe( "Testing CTS Texts functions", function () {
 
 
 	describe("Retrieving text from normal CTS endpoint", function() {
-		var text = CTS.Text(
+		var text = new CTS.text.Passage(
 			"urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-1.2",
 			"http://localhost:8080/exist/rest/db/xq/CTS.xq?",
 			"annotsrc"
@@ -123,7 +123,7 @@ describe( "Testing CTS Texts functions", function () {
 			jasmine.Ajax.install();
 			successFN = jasmine.createSpy("success");
 			errorFN = jasmine.createSpy("error");
-  			text = CTS.Text("http://restservice/urn:cts:lala", false);
+  			text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
 		});
 
 		afterEach(function() {

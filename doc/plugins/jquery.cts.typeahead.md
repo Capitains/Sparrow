@@ -64,7 +64,7 @@ To use it, you will need to use compressed (or uncompressed) `cts.js`,
 ### Event data
 
 - `cts-passage:urn-updated` pass a CTS.repository.prototypes.Text sub-instance (Edition, Translation, etc.)
-- `cts-passage:retrieved` pass a CTS.text instance
+- `cts-passage:retrieved` pass a CTS.text.Passage instance
 
 ## Basic parameters
 
