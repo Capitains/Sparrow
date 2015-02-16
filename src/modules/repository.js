@@ -8,15 +8,36 @@
 }(function(CTS) {
 "use strict";
 
+  /**
+   *  @namespace
+   */
   CTS.repository = {}
 
-  CTS.repository.prototypes = {}
+  /**
+   *  @namespace CTS.Repository.Prototypes
+   *  @name CTS.repository.Prototypes
+   *  @membreOf CTS.repository
+   */
+  CTS.repository.Prototypes = {}
 
   /**
    * Prototype for CTS Text (alias share practices between Edition and Translation)
-   * @param {string} type [description]
+   * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @param {string}   type  Type of Text
+   *  
+   *  @property  {string}                      urn                        URN of the Text
+   *  @property  {string}                      type                       Type of the Text
+   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.Text = function(type) {
+  CTS.repository.Prototypes.Text = function(type) {
     this.descriptions = {}
     this.titles = {}
     this.urn = "";
@@ -28,8 +49,11 @@
 
     /**
      * Get the description
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getDesc  = function(lang) {
       if(lang === "undefined") {
@@ -42,8 +66,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -58,8 +85,18 @@
   /**
    * Prototype for CTS Work
    * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @property  {string}                                               urn             URN of the Work
+   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                               defaultLang     Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.Work>}               texts           Texts available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.Edition>}            editions        Editions available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.Translation>}        translations    Translations available in the inventory
    */
-  CTS.repository.prototypes.Work = function() {
+  CTS.repository.Prototypes.Work = function() {
     this.titles = {};
     this.urn = "";
     this.defaultLang = "";
@@ -71,8 +108,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -85,10 +125,13 @@
 
     /**
      * Convert the work into a Theoritical Text
-     * @type {CTS}
+     * 
+     *  @function
+     *  
+     *  @returns {CTS.repository.Prototypes.Text}  Actual Work into a theoretical text
      */
     this.toTheoretical = function() {
-      var theoretical = new CTS.repository.prototypes.Text();
+      var theoretical = new CTS.repository.Prototypes.Text();
       theoretical.urn = this.urn;
       theoretical.defaultLangLabel = this.defaultLang;
       theoretical.titles = this.titles;
@@ -100,8 +143,15 @@
   /**
    * Prototype for CTS TextGroup
    * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @property  {string}                                       urn          URN of the TextGroup
+   *  @property  {Object.<string, string>}                      titles       <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                       defaultLang  Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.Work>}       works        Textgroup available in the inventory
    */
-  CTS.repository.prototypes.TextGroup = function() {
+  CTS.repository.Prototypes.TextGroup = function() {
     this.titles = {};
     this.urn = "";
     this.defaultLang = "";
@@ -109,8 +159,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -126,9 +179,16 @@
   /**
    * TextInventory Prototype
    * 
-   * @param {string} identifier Identifier, usually an URI
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @param     {string}                                            identifier  Identifier, usually an URI
+   *
+   *  @property  {string}                                            namespace   Namespace for nodes parsing
+   *  @property  {Node}                                              xml         XML node representing the TextInventory node
+   *  @property  {Array.<CTS.repository.Prototypes.TextGroup>}       textgroups  Textgroup available in the inventory
    */
-  CTS.repository.prototypes.TextInventory = function(identifier) {
+  CTS.repository.Prototypes.TextInventory = function(identifier) {
     this.identifier = identifier;
     this.namespace = "";
     this.textgroups = [];
@@ -137,9 +197,11 @@
      * Get a N-Dimensional object corresponding to your TextInventory
      * Hierarchy as following : TextGroup > Work > Edition | Translation | Theoretical
      * 
-     * @param  {string}  lang        Lang to chose for titles (keys in the dictionary)
-     * @param  {boolean} theoretical Include theoretical works
-     * @return {Object}              Dictionary with hierarchy such as TextGroup > Work > Edition | Translation | Theoretical
+     *  @function
+     *  
+     *  @param   {string}  lang        Lang to chose for titles (keys in the dictionary)
+     *  @param   {boolean} theoretical Include theoretical works
+     *  @returns {Object}              Dictionary with hierarchy such as TextGroup > Work > Edition | Translation | Theoretical
      */
     this.getRaw = function(lang, theoretical) {
       if(typeof theoretical === "undefined") {
@@ -174,18 +236,33 @@
    * CTS 3 Implementations
    */
 
-  //Namespace
-  CTS.repository.prototypes.cts3 = {};
+  /**
+   *  @namespace
+   *  @name CTS.repository.Prototypes.cts3
+   */
+  CTS.repository.Prototypes.cts3 = {};
 
   /**
    * Instantiate CTS Text from CTS3 XML (CTS Text is the abstract model shared by Edition and Translation)
-   * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   type  Type of Text
-   * @param {string}   urn   URN of the parent
+   *
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Text
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   type  Type of Text
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Text
+   *  @property  {string}                      type                       Type of the Text
+   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Text = function (nodes, type, urn) {
-    CTS.repository.prototypes.Text.call(this, type);
+  CTS.repository.Prototypes.cts3.Text = function (nodes, type, urn) {
+    CTS.repository.Prototypes.Text.call(this, type);
 
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
@@ -205,44 +282,77 @@
       this.titles[this.defaultLangLabel] = labels[i].textContent;
     };
   }
-  CTS.repository.prototypes.cts3.Text.prototype = Object.create(CTS.repository.prototypes.Text.prototype)
+  CTS.repository.Prototypes.cts3.Text.prototype = Object.create(CTS.repository.Prototypes.Text.prototype)
 
   /**
    * Instantiate CTS Edition from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
-   * @param {lang}     lang  Lang of the text
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.Text
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  @param {lang}     lang  Lang of the text
+   *  
+   *  @property  {string}                      urn                        URN of the Edition
+   *  @property  {string}                      lang                       Lang of the Edition
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Edition = function(nodes, urn, lang) {
-    CTS.repository.prototypes.cts3.Text.call(this, nodes, "edition", urn);
+  CTS.repository.Prototypes.cts3.Edition = function(nodes, urn, lang) {
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "edition", urn);
     //Edition have the lang from their parent
     this.lang = lang;
   }
-  CTS.repository.prototypes.cts3.Edition.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
+  CTS.repository.Prototypes.cts3.Edition.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
   /**
    * Instantiate CTS Translation from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.Text
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Translation
+   *  @property  {string}                      lang                       Lang of the Translation
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Translation = function(nodes, urn) {
-    CTS.repository.prototypes.cts3.Text.call(this, nodes, "translation", urn);
+  CTS.repository.Prototypes.cts3.Translation = function(nodes, urn) {
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "translation", urn);
     //Translation get their lang from their body
     this.lang = nodes.getAttribute("xml:lang");
   }
-  CTS.repository.prototypes.cts3.Translation.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
+  CTS.repository.Prototypes.cts3.Translation.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
 
   /**
    * Instantiate CTS Work from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Work
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                                               urn             URN of the Work
+   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                               defaultLang     Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Text>}          texts           Texts available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Edition>}       editions        Editions available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Translation>}   translations    Translations available in the inventory
    */
-  CTS.repository.prototypes.cts3.Work = function(nodes, urn) {
-    CTS.repository.prototypes.Work.call(this);
+  CTS.repository.Prototypes.cts3.Work = function(nodes, urn) {
+    CTS.repository.Prototypes.Work.call(this);
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
     this.lang = nodes.getAttribute("xml:lang");
 
@@ -255,25 +365,33 @@
 
     var editions = nodes.getElementsByTagName("edition");
     for (var i = editions.length - 1; i >= 0; i--) {
-      this.editions.push(new CTS.repository.prototypes.cts3.Edition(editions[i], this.urn, this.lang));
+      this.editions.push(new CTS.repository.Prototypes.cts3.Edition(editions[i], this.urn, this.lang));
     };
 
     var translations = nodes.getElementsByTagName("translation");
     for (var i = translations.length - 1; i >= 0; i--) {
-      this.translations.push(new CTS.repository.prototypes.cts3.Translation(translations[i], this.urn));
+      this.translations.push(new CTS.repository.Prototypes.cts3.Translation(translations[i], this.urn));
     };
 
     this.texts = this.translations.concat(this.editions);
   }
-  CTS.repository.prototypes.cts3.Work.prototype = Object.create(CTS.repository.prototypes.Work.prototype)
+  CTS.repository.Prototypes.cts3.Work.prototype = Object.create(CTS.repository.Prototypes.Work.prototype)
 
   /**
    * Instantiate CTS TextGroup from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.TextGroup
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *
+   *  @property  {string}                                       urn          URN of the TextGroup
+   *  @property  {Object.<string, string>}                      titles       <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                       defaultLang  Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Work>}  works        Textgroup available in the inventory
    */
-  CTS.repository.prototypes.cts3.TextGroup = function(nodes) {
-    CTS.repository.prototypes.TextGroup.call(this);
+  CTS.repository.Prototypes.cts3.TextGroup = function(nodes) {
+    CTS.repository.Prototypes.TextGroup.call(this);
     this.urn = "urn:cts:" + nodes.getAttribute("projid");
 
     // We get the labels
@@ -285,20 +403,27 @@
 
     var works = nodes.getElementsByTagName("work");
     for (var i = works.length - 1; i >= 0; i--) {
-      this.works.push(new CTS.repository.prototypes.cts3.Work(works[i], this.urn))
+      this.works.push(new CTS.repository.Prototypes.cts3.Work(works[i], this.urn))
     };
   }
-  CTS.repository.prototypes.cts3.TextGroup.prototype = Object.create(CTS.repository.prototypes.TextGroup.prototype)
+  CTS.repository.Prototypes.cts3.TextGroup.prototype = Object.create(CTS.repository.Prototypes.TextGroup.prototype)
 
   /**
    * Instantiate CTS TextInventory from CTS3 XML
    * 
-   * @param {document} xml          Parsed XML representing the inventory
-   * @param {string}   namespace    Namespace to use
-   * @param {string}   identifier   Identifier, usually an URI
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.TextInventory
+   *  
+   *  @param {document} xml          Parsed XML representing the inventory
+   *  @param {string}   namespace    Namespace to use
+   *  @param {string}   identifier   Identifier, usually an URI
+   *
+   *  @property  {string}                                            namespace   Namespace for nodes parsing
+   *  @property  {Node}                                              xml         XML node representing the TextInventory node
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.TextGroup>}  textgroups  Textgroup available in the inventory
    */
-  CTS.repository.prototypes.cts3.TextInventory = function(xml, namespace, identifier) {
-    CTS.repository.prototypes.TextInventory.call(this, identifier);
+  CTS.repository.Prototypes.cts3.TextInventory = function(xml, namespace, identifier) {
+    CTS.repository.Prototypes.TextInventory.call(this, identifier);
     this.xml = xml;
     this.namespace = namespace;
     this.xml = this.xml.getElementsByTagNameNS(this.namespace, "TextInventory");
@@ -306,11 +431,11 @@
     if(this.xml.length == 1) {
       var textgroups = this.xml[0].getElementsByTagNameNS(this.namespace, "textgroup");
       for (var i = textgroups.length - 1; i >= 0; i--) {
-        this.textgroups.push(new CTS.repository.prototypes.cts3.TextGroup(textgroups[i]))
+        this.textgroups.push(new CTS.repository.Prototypes.cts3.TextGroup(textgroups[i]))
       };
     }
   }
-  CTS.repository.prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.prototypes.TextInventory.prototype)
+  CTS.repository.Prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.Prototypes.TextInventory.prototype)
 
   /**
    * Repository Object
@@ -320,9 +445,12 @@
 
   /**
    * Set the endpoint URL of the object
-   *
+   * 
+   *  @memberOf  CTS.repository.repository
+   *  @name setEndpoint
+   *  @method
+   *  
    *  @param    {list|string}  url  A url for the repository
-   *
    */
   var _setEndpoint = function(url) {
     if(typeof url === "string") {
@@ -335,8 +463,11 @@
   /**
    * Set the inventories
    *
+   *  @memberOf  CTS.repository.repository
+   *  @name setInventory
+   *  @method
+   *  
    *  @param  {dict}  dict  A dictionary where keys are inventory's name and value a label
-   *
    */
 
   var _setInventory = function(dict) {
@@ -346,8 +477,12 @@
   /**
    * Add an inventory to the Repository Object
    * 
-   * @param {string}  name  Database name of the inventory
-   * @param {?string} label Pretty name for UI (optional)
+   *  @memberOf  CTS.repository.repository
+   *  @name addInventory
+   *  @method
+   * 
+   *  @param  {string}   name   Database name of the inventory
+   *  @param  {?string}  label  Pretty name for UI (optional)
    */
   var _addInventory = function(name, label) {
     if(typeof name === "string") {
@@ -364,7 +499,11 @@
   /**
    * Remove an inventory
    * 
-   * @param  {string} name Database name of the inventory
+   *  @memberOf  CTS.repository.repository
+   *  @name delInventory
+   *  @method
+   *  
+   *  @param  {string} name Database name of the inventory
    */
   var _delInventory = function(name) {
     if(typeof name === "string" && name in self.inventory) {
@@ -377,9 +516,13 @@
   /**
    * Get the repository from source url
    *
-   * @param  {?function}       callback        Function to call when data are loaded
-   * @param  {?function}       error_callback  Function to call when data are not loaded
-   * @param  {?list}           inventory_name  Name of the inventory to load
+   *  @memberOf  CTS.repository.repository
+   *  @name load
+   *  @method
+   *  
+   *  @param  {?function}       callback        Function to call when data are loaded
+   *  @param  {?function}       error_callback  Function to call when data are not loaded
+   *  @param  {?list}           inventory_name  Name of the inventory to load
    *
    */
   var _load = function(callback, error_callback, inventories) {
@@ -419,10 +562,18 @@
 
   /**
    * CTS Repository object
-   * 
-   * @param  {string}  endpoint  Endpoint of the repository
-   * @param  {integer} version   Version used by CTS API
-   * @param  {string}  namespace Namespace for xml nodes
+   *
+   *  @constructor
+   *  
+   *  @param  {string}  endpoint  Endpoint of the repository
+   *  @param  {integer} version   Version used by CTS API
+   *  @param  {string}  namespace Namespace for xml nodes
+   *
+   *  @property  {integer}                version      Version used by CTS API
+   *  @property  {namespace}              namespace    Namespace used for XML parsing
+   *  @property  {dict}                   inventory    Dictionaries of inventory's label
+   *  @property  {dict}                   inventories  Dictionaries of inventory object
+   *  @property  {CTS.endpoint.Endpoint}  endpoint     Endpoint instance where the repository should make request
    * 
    */
   CTS.repository.repository = function (endpoint, version, namespace) {
@@ -450,7 +601,7 @@
       this.delInventory = _delInventory;
       this.load = _load;
 
-      this.TextInventory = CTS.repository.prototypes["cts"+this.version].TextInventory;
+      this.TextInventory = CTS.repository.Prototypes["cts"+this.version].TextInventory;
   }
 
 }));
