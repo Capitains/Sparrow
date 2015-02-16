@@ -32,6 +32,7 @@
    * Prototype of CTS.endpoint
    * 
    * @constructor
+   * @memberOf  CTS.endpoint
    * 
    * @param  {string}   api_endpoint  URL of the API endpoint
    * @param  {?string}  inventory     Default inventory
@@ -148,8 +149,8 @@
    * CTS API using simple xQuery rest system.
    * 
    * @constructor
-   * @implements  CTS.endpoint.Endpoint
    * @augments    CTS.endpoint.Endpoint
+   * @memberOf  CTS.endpoint
    * 
    * @param  {string}   api_endpoint  URL of the API endpoint
    * @param  {?string}  inventory     Default inventory
@@ -291,6 +292,7 @@
    * Default to {@link CTS.endpoint.XQ}
    * 
    * @type     {CTS.endpoint.Endpoint}
+   * @memberOf  CTS.endpoint
    */
   CTS.endpoint.default = CTS.endpoint.XQ;
 }));
