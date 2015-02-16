@@ -26,7 +26,7 @@
   /**
    *  @namespace CTS.Repository.Prototypes
    *  @name CTS.repository.Prototypes
-   *  @membreOf CTS.repository
+   *  @memberOf CTS.repository
    */
   CTS.repository.Prototypes = {}
 
