@@ -80,7 +80,7 @@ module.exports = function(grunt) {
     markdown: {
       all: {
         files: [
-          {src: ['README.md'], dest: 'doc_html/index.html'},
+          {src: ['README.md'], dest: 'index.html'},
           {src: ['./doc/i18n.md'], dest: 'doc_html/i18n.html'},
           {src: ['./doc/plugins/jquery.cts.selector.md'],  dest: 'doc_html/plugins.jquery.cts.selector.html'},
           {src: ['./doc/plugins/jquery.cts.typeahead.md'], dest: 'doc_html/plugins.jquery.cts.typeahead.html'},
@@ -102,7 +102,6 @@ module.exports = function(grunt) {
     jsdoc : {
       dist : {
         src: [
-          'doc/html/README.html',
           'src/cts.js', 
           'src/modules/*.js'
           ],
@@ -112,6 +111,87 @@ module.exports = function(grunt) {
           template: './node_modules/grunt-jsdoc/node_modules/ink-docstrap/template'
         }
       }
+    },
+    replace: {
+      index : {
+        src : './index.html', 
+        dest : 'index.html',
+        replacements: [{
+          from: 'doc/plugins/',                   // string replacement
+          to: '/doc_html/plugins.'
+        },{
+          from: 'doc/services/',                   // string replacement
+          to: '/doc_html/services.'
+        },{
+          from: 'doc/xslt/',                   // string replacement
+          to: '/doc_html/xslt.'
+        },{
+          from: '../plugins/',                   // string replacement
+          to: '/doc_html/plugins.'
+        },{
+          from: '../services/',                   // string replacement
+          to: '/doc_html/services.'
+        },{
+          from: '../xslt/',                   // string replacement
+          to: '/doc_html/xslt.'
+        },{
+          from: 'doc/',                   // string replacement
+          to: '/doc_html/'
+        },{
+          from: 'README.md',                   // string replacement
+          to: '/index.html'
+        },{
+          from: '../',                   // string replacement
+          to: ''
+        },{
+          from: '.md',                   // string replacement
+          to: '.html'
+        }]
+      },
+      htmlpages: {
+        src : './doc_html/*.html',
+        dest : './doc_html/',
+        replacements: [{
+          from: 'doc/plugins/',                   // string replacement
+          to: 'plugins.'
+        },{
+          from: 'doc/services/',                   // string replacement
+          to: 'services.'
+        },{
+          from: 'doc/xslt/',                   // string replacement
+          to: 'xslt.'
+        },{
+          from: '../plugins/',                   // string replacement
+          to: 'plugins.'
+        },{
+          from: '../services/',                   // string replacement
+          to: 'services.'
+        },{
+          from: '../xslt/',                   // string replacement
+          to: 'xslt.'
+        },{
+          from: 'doc/',                   // string replacement
+          to: ''
+        },{
+          from: 'README.md',                   // string replacement
+          to: '/index.html'
+        },{
+          from: '../',                   // string replacement
+          to: ''
+        },{
+          from: '.md',                   // string replacement
+          to: '.html'
+        },{
+          from: 'src/',                   // string replacement
+          to: 'https://github.com/PerseusDL/Capitains-Sparrow/blob/master/src/'
+        },{
+          from: '/https',                   // string replacement
+          to: 'https'
+        }]
+      }
+    },
+    'gh-pages': {
+      src: ['**']
     }
   });
 
@@ -124,11 +204,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-jsdoc");
   grunt.loadNpmTasks("grunt-markdown");
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-gh-pages');
 
   // Default task. 
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('build', ['default']);
   //grunt.registerTask('jshint', ['jshint']);
   grunt.registerTask('test', ['jasmine', 'karma']);
-  grunt.registerTask('doc', ['jsdoc', 'markdown', 'replace'])
+  grunt.registerTask('doc', ['markdown', 'replace', 'jsdoc'])
+  grunt.registerTask('page', ['doc', 'gh-pages'])
 };
