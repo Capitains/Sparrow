@@ -17,7 +17,10 @@
   }
 }(function(CTS) {
 
-  /** @namespace */
+  /** 
+   * @namespace CTS.endpoint
+   * @name CTS.endpoint
+   */
   CTS.endpoint = {}
 
   /**

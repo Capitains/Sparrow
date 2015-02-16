@@ -22,6 +22,7 @@
 
   /**
    * @namespace CTS.xslt
+   * @name CTS.xslt
    */
   CTS.xslt = {};
 

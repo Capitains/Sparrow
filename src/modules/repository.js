@@ -25,14 +25,15 @@
 "use strict";
 
   /**
-   *  @namespace
+   *  @namespace CTS.repository
+   *  @name CTS.repository
+   *  
    */
   CTS.repository = {}
 
   /**
    *  @namespace CTS.Repository.Prototypes
    *  @name CTS.repository.Prototypes
-   *  @memberOf CTS.repository
    */
   CTS.repository.Prototypes = {}
 

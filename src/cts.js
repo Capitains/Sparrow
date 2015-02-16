@@ -24,7 +24,8 @@
 	"use strict";
 
   /**
-   * @namespace
+   * @namespace CTS
+   * @name  CTS
    */
 	var CTS = function() {
 		return {
