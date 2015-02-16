@@ -15,6 +15,10 @@
     "grunt-contrib-jasmine": "~0.6.x",
     "grunt-karma": "~0.10",
     "grunt-jslint": "~1.1",
+    "grunt-jsdoc" : "~0.5",
+    "grunt-markdown" : "~0.7",
+    "grunt-text-replace" : "~0.4",
+    "grunt-gh-pages" : "~0.10",
 
     "jasmine": "~2.2",
     "jasmine-ajax": "~2",

@@ -1,3 +1,12 @@
+/**
+ * CTS
+ *
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -14,6 +23,10 @@
 }(this, function() {
 	"use strict";
 
+  /**
+   * @namespace CTS
+   * @name  CTS
+   */
 	var CTS = function() {
 		return {
 		}
