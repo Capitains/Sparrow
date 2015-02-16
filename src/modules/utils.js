@@ -1,3 +1,17 @@
+/**
+ * CTS.utils
+ *
+ * @module   CTS.utils
+ * 
+ * @requires CTS
+ * @requires CTS.endpoint
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -7,15 +21,18 @@
   }
 }(function(CTS) {
   /**
-   * Just an XmlHttpRequest polyfill for different IE versions. Simple reuse of sigma.parsers.json
+   * Just an XmlHttpRequest helper
    *
+   * @function
+   * @memberOf CTS.utils
+   * @name xhr
    *
-   * @param  method             {string}     HTTP Method
-   * @param  url                {string}     HTTP URI to call
-   * @param  options.success    {?function}  Function to call when request is done.
-   * @param  options.type       {string}     Type of data wished (default: text/xml)
-   * @param  options.data       {?}          Data to send
-   * @param  options.error      {?function}  Function to call when request gave an error.
+   * @param  {string}     method             HTTP Method
+   * @param  {string}     url                HTTP URI to call
+   * @param  {?function}  options.success    Function to call when request is done.
+   * @param  {string}     options.type       Type of data wished (default: text/xml)
+   * @param  {any}        options.data       Data to send
+   * @param  {?function}  options.error      Function to call when request gave an error.
    *
    */
   var _xhr = function(method, url, options) {
@@ -98,7 +115,13 @@
   /**
    * Return a correct endpoint url
    *
-   * @param  endpoint  {string}  The CTS API endpoint
+   * @function
+   * @memberOf CTS.utils
+   * @name checkEndpoint
+   * 
+   * @param  {string|CTS.endpoint.Endpoint}  endpoint  The CTS API endpoint
+   * 
+   * @returns {?CTS.endpoint.Endpoint}  An endpoint
    *
    */
   var _checkEndpoint = function(endpoint) {
@@ -114,7 +137,13 @@
   /**
    * Encode data for XHR
    *
-   * @param  data  {dict}  A dictionary where keys are string
+   * @function
+   * @memberOf CTS.utils
+   * @name dataEncode
+   *
+   * @param  {Object.<string, any>}  data  A dictionary where keys are string
+   * 
+   * @returns  {string}  The url encoded parameters
    *
    */
   var _dataEncode = function(data) {
@@ -137,6 +166,20 @@
     return urlEncodedData;
   }
 
+
+  /**
+   * Parse an urn identifier into an int for comparison
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name parseInt
+   * @deprecated  Not use anymore as technically, passage don't have to be in ascending order
+   *
+   * @param  {string|integer|Array.<string|integer>}  str  Data to be parsed
+   * 
+   * @returns  {integer}  Integer representing the urn identifier
+   *
+   */
   var _parseInt = function(str) {
     if(typeof str === "string") { var isString = str.toLowerCase().match("[a-z]{1}"); } else { isString === null; }
     if (!isNaN(str)) {
@@ -163,6 +206,20 @@
     return 0;
   }
 
+  /**
+   * Check if passage identifier are valid
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name validPassage
+   * @deprecated  Not use anymore as technically, passage don't have to be in ascending order
+   *
+   * @param  {Array.<string|integer|Array>}  $start  Start element 
+   * @param  {Array.<string|integer|Array>}  $end    End element
+   * 
+   * @returns  {boolean}  Boolean indicating if the passage is valid
+   *
+   */
   var _ValidPassage = function ($start, $end) {
     var bigger = false,
         s,
@@ -187,6 +244,17 @@
     return bigger;
   }
 
+
+  /**
+   * Get the window location parameters (GET parameters)
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name uriParam
+   * 
+   * @returns  {Object.<string, any>}  Boolean indicating if the passage is valid
+   *
+   */
   var _uriParam = function() {
       var result = {},
           params = window.location.search.split(/\?|\&/);
@@ -200,6 +268,10 @@
       return result;
   }
 
+  /**
+   * @namespace CTS.utils
+   * @name CTS.utils
+   */
   CTS.utils = {
     xhr : _xhr,
     dataEncode : _dataEncode,
