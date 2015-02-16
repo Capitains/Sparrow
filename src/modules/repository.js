@@ -1,5 +1,5 @@
 /**
- * CTS.endpoint.repository
+ * CTS.repository
  *
  * @module   CTS.repository
  * 
