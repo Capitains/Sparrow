@@ -1,6 +1,12 @@
 /**
  * CTS.endpoint.repository
  *
+ * @module   CTS.repository
+ * 
+ * @requires CTS.utils
+ * @requires CTS.endpoint
+ * @requires CTS
+ * 
  * @link https://github.com/PerseusDL/Capitains-Sparrow
  * @author PonteIneptique (Thibault Clérice)
  * @version 1.0.0
