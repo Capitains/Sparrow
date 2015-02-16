@@ -61,7 +61,6 @@ module.exports = function(grunt) {
           'node_modules/jasmine-ajax/lib/mock-ajax.js',
           'node_modules/jasmine-expect/dist/jasmine-matchers.js',
           'node_modules/jquery/dist/jquery.min.js',
-          'node_modules/sinon/lib/sinon.js',
           'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
           'spec/javascripts/.helper.js'
         ],
@@ -77,6 +76,42 @@ module.exports = function(grunt) {
           browsers : ["PhantomJS"]
         }
       }
+    },
+    markdown: {
+      all: {
+        files: [
+          {src: ['README.md'], dest: 'doc_html/index.html'},
+          {src: ['./doc/i18n.md'], dest: 'doc_html/i18n.html'},
+          {src: ['./doc/plugins/jquery.cts.selector.md'],  dest: 'doc_html/plugins.jquery.cts.selector.html'},
+          {src: ['./doc/plugins/jquery.cts.typeahead.md'], dest: 'doc_html/plugins.jquery.cts.typeahead.html'},
+          {src: ['./doc/plugins/jquery.cts.xslt.md'],      dest: 'doc_html/plugins.jquery.cts.xslt.html'},
+          {src: ['./doc/plugins/jquery.cts.service.md'],   dest: 'doc_html/plugins.jquery.cts.service.html'},
+
+          {src: ['./doc/services/llt.tokenizer.md'],       dest: 'doc_html/services.llt.tokenizer.html'},
+          {src: ['./doc/services/new.md'],                 dest: 'doc_html/services.new.html'},
+
+          {src: ['./doc/xslt/llt.segtok_to_tb.md'],        dest: 'doc_html/xslt.llt.segtok_to_tb.html'},
+          {src: ['./doc/xslt/new.md'],                     dest: 'doc_html/xslt.new.html'}
+
+        ],
+        options : {
+          template : "./doc/template/template.html"
+        }
+      }
+    },
+    jsdoc : {
+      dist : {
+        src: [
+          'doc/html/README.html',
+          'src/cts.js', 
+          'src/modules/*.js'
+          ],
+        options: {
+          destination: 'doc_html/api',
+          configure : "jsdoc.conf.json",
+          template: './node_modules/grunt-jsdoc/node_modules/ink-docstrap/template'
+        }
+      }
     }
   });
 
@@ -86,10 +121,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-jslint');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks("grunt-jsdoc");
+  grunt.loadNpmTasks("grunt-markdown");
+  grunt.loadNpmTasks('grunt-text-replace');
 
   // Default task. 
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('build', ['default']);
   //grunt.registerTask('jshint', ['jshint']);
   grunt.registerTask('test', ['jasmine', 'karma']);
+  grunt.registerTask('doc', ['jsdoc', 'markdown', 'replace'])
 };
