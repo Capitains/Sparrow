@@ -146,6 +146,9 @@ module.exports = function(grunt) {
         },{
           from: '.md',                   // string replacement
           to: '.html'
+        },{
+          from: '"/',                   // string replacement
+          to: '"/Capitains-Sparrow'
         }]
       },
       htmlpages: {
@@ -187,6 +190,9 @@ module.exports = function(grunt) {
         },{
           from: '/https',                   // string replacement
           to: 'https'
+        },{
+          from: '"/',                   // string replacement
+          to: '"/Capitains-Sparrow'
         }]
       }
     },
