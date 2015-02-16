@@ -245,7 +245,7 @@ describe('jQuery CTS Typeahead', function() {
       var spy = jasmine.createSpy("success");
       var cb = function(event, data) {
         spy();
-        expect(instanceOf(data, CTS.repository.prototypes.Text));
+        expect(instanceOf(data, CTS.repository.Prototypes.Text));
       }
       input.on("cts-passage:urn-updated", cb);
       //Asking for Carta in typeahead

@@ -126,7 +126,7 @@ describe( "Testing CTS Repository object", function () {
       var data = repo.inventories.annotsrc.getRaw();
       var work = Object.keys(data.Virgil.Aeneid.edition);
       expect(work).toEqual(["Aeneid"]);
-      expect(instanceOf(data.Virgil.Aeneid.edition.Aeneid, CTS.repository.prototypes.Text)).toBe(true);
+      expect(instanceOf(data.Virgil.Aeneid.edition.Aeneid, CTS.repository.Prototypes.Text)).toBe(true);
     });
     
     it('should return given language when specified', function(){
