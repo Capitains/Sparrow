@@ -1,4 +1,14 @@
-(function (factory) {
+/**
+ * CTS.endpoint
+ *
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
+
+/* global define */(function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['cts'], factory);
@@ -7,13 +17,19 @@
   }
 }(function(CTS) {
 
+  /** @namespace */
   CTS.endpoint = {}
 
   /**
    * Prototype of CTS.endpoint
    * 
+   * @constructor
+   * 
    * @param  {string}   api_endpoint  URL of the API endpoint
    * @param  {?string}  inventory     Default inventory
+   *
+   * @property  {string}   url         Url of the Endpoint
+   * @property  {?string}  inventory   Default inventory to fallback on
    */
   CTS.endpoint.Endpoint = function(api_endpoint, inventory) {
     this.url = api_endpoint;
@@ -21,9 +37,10 @@
 
     /**
      * Create the GetCapabilities URL
-     * @param  {?string} inventory Name of the inventory
      * 
-     * @returns {string}            URL of the request
+     * @param  {?string}  inventory  Name of the inventory
+     * 
+     * @returns {string}             URL of the request
      */
     this.getCapabilitiesURL = function(inventory) { throw "Unsupported request"; }
     this.getDescriptionURL  = function() { throw "Unsupported request"; }
@@ -31,6 +48,7 @@
 
     /**
      * Create the GetValidReff URL
+     * 
      * @param  {string}    urn                Urn of the text's passage
      * @param  {?string}   options.level      Level of reference to retrieve
      * @param  {?string}   options.inventory  Name of the inventory
@@ -41,8 +59,9 @@
 
     /**
      * Create the GetPassage URL
-     * @param  {urn}     urn       Urn of the Text's passage
-     * @param  {?string} inventory Name of the inventory
+     * 
+     * @param  {urn}      urn        Urn of the Text's passage
+     * @param  {?string}  inventory  Name of the inventory
      * 
      * @returns {string}            URL of the request
      */
@@ -51,6 +70,7 @@
 
     /**
      * Do a GetCapabilities request
+     * 
      * @param {?string}    inventory         Inventory name
      * @param {?function}  options.success   Success callback
      * @param {?function}  options.error     Error callback
@@ -62,16 +82,17 @@
     /**
      * Do a GetValidReff request
      * 
-     * @param {string}     urn               Urn of the text's passage
-     * @param {?string}    options.level     Level of reference to retrieve
-     * @param {?string}    options.inventory Inventory name
-     * @param {?function}  options.success   Success callback
-     * @param {?function}  options.error     Error callback
+     * @param {string}     urn                Urn of the text's passage
+     * @param {?string}    options.level      Level of reference to retrieve
+     * @param {?string}    options.inventory  Inventory name
+     * @param {?function}  options.success    Success callback
+     * @param {?function}  options.error      Error callback
      */
     this.getValidReff    = function(urn, options) { throw "Unsupported request"; }
 
     /**
      * Do a GetPassage request
+     * 
      * @param {string}     urn               Urn of the text's passage
      * @param {?string}    options.inventory Inventory name
      * @param {?function}  options.success   Success callback
@@ -82,6 +103,7 @@
 
     /**
      * Make an XHR Request using CTS.utils.xhr
+     * 
      * @param  {string}    url              URL to call
      * @param  {Function}  options.success  Success Callback function
      * @param  {Function}  options.error    Error Callback function
@@ -96,6 +118,7 @@
 
     /**
      * Make an XHR POST Request using CTS.utils.xhr
+     * 
      * @param  {string}    url              URL to call
      * @param  {Function}  options.success  Success Callback function
      * @param  {Function}  options.error    Error Callback function
@@ -116,6 +139,10 @@
   /**
    * CTS API using simple xQuery rest system.
    * 
+   * @constructor
+   * @implements  CTS.endpoint.Endpoint
+   * @augments    CTS.endpoint.Endpoint
+   * 
    * @param  {string}   api_endpoint  URL of the API endpoint
    * @param  {?string}  inventory     Default inventory
    *
@@ -130,7 +157,10 @@
 
     /**
      * Small helper to create urls
-     * @param {object}  params  Object representing parameters name
+     * 
+     * @param    {Object.<string, any>}  params  Object representing parameters name
+     * 
+     * @returns  {string}                        The URL
      */
     this.getUrl = function(params) {
       var urlParams = [];
@@ -142,9 +172,10 @@
 
     /**
      * Create the GetCapabilities URL
-     * @param  {?string} inventory Name of the inventory
      * 
-     * @returns {string}            URL of the request
+     * @param   {?string} inventory  Name of the inventory
+     * 
+     * @returns {string}             URL of the request
      */
     this.getCapabilitiesURL = function(inventory) {
       var params = {
@@ -158,6 +189,7 @@
 
     /**
      * Do a GetCapabilities request
+     * 
      * @param {?string}    inventory         Inventory name
      * @param {?function}  options.success   Success callback
      * @param {?function}  options.error     Error callback
@@ -172,6 +204,7 @@
 
     /**
      * Create the GetPassage URL
+     * 
      * @param  {urn}     urn       Urn of the Text's passage
      * @param  {?string} inventory Name of the inventory
      * 
@@ -245,5 +278,11 @@
   }
   CTS.endpoint.XQ.prototype = Object.create(CTS.endpoint.Endpoint);
 
+  /**
+   * Default Endpoint type to use for plugins
+   * Default to {@link CTS.endpoint.XQ}
+   * 
+   * @type     {CTS.endpoint.Endpoint}
+   */
   CTS.endpoint.default = CTS.endpoint.XQ;
 }));
