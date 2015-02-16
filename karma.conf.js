@@ -29,6 +29,7 @@ module.exports = function(config) {
       'src/i18n/*.js',
       'src/services/*.js',
       'src/xslt/*.js',
+      'src/endpoints/**.js', 
 
       //jQuery Plugins
       'src/plugins/*.js',

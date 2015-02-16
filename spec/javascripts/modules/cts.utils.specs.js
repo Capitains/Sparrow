@@ -46,19 +46,19 @@ describe( "Testing CTS Utils functions", function () {
     describe('Checking Endpoint Checking properly ', function(){
     	it('should be null when not a string', function() {
     		expect(CTS.utils.checkEndpoint(null)).toEqual(null);
-    		expect(CTS.utils.checkEndpoint([])).toEqual(null);
-    		expect(CTS.utils.checkEndpoint({})).toEqual(null);
     		expect(CTS.utils.checkEndpoint()).toEqual(null);
     		expect(CTS.utils.checkEndpoint(true)).toEqual(null);
     	});
 
-    	it('should add a ? at the end when there is none', function() {
-    		expect(CTS.utils.checkEndpoint("http://lala.com")).toEqual("http://lala.com?");
-    	});
+      it('should return a CTS.endpoint.default', function() {
+        endpoint = CTS.utils.checkEndpoint("http://lala.com?");
+        expect(endpoint.url).toEqual("http://lala.com?")
+      });
 
-    	it('should return the string as it is when there is a ?', function() {
-    		expect(CTS.utils.checkEndpoint("http://lala.com?")).toEqual("http://lala.com?");
-    	});
+      it('should return a CTS.endpoint when it is one', function() {
+        endpoint = new CTS.endpoint.default("la")
+        expect(CTS.utils.checkEndpoint(endpoint)).toEqual(endpoint)
+      });
     });
     
 

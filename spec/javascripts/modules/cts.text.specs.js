@@ -3,10 +3,9 @@ describe( "Testing CTS Texts functions", function () {
 	describe('Creation of the object', function(){
 	  it("should handle normal creation", function() {
 	  	var text = new CTS.text.Passage("urn:cts:lala", "http://endpoint", "annotsrc");
-	  	expect(text.endpoint).toEqual("http://endpoint");
+	  	expect(text.endpoint.url).toEqual("http://endpoint?");
 	  	expect(text.urn).toEqual("urn:cts:lala");
 	  	expect(text.inventory).toEqual("annotsrc");
-	  	expect(text.rest).toEqual(false);
 	  });
 
 	  it("should handle normal creation", function() {
@@ -14,7 +13,6 @@ describe( "Testing CTS Texts functions", function () {
 	  	expect(text.endpoint).toEqual(null);
 	  	expect(text.urn).toEqual("http://restservice/urn:cts:lala");
 	  	expect(text.inventory).toEqual(null);
-	  	expect(text.rest).toEqual(true);
 	  });
 
 	});
@@ -71,7 +69,7 @@ describe( "Testing CTS Texts functions", function () {
 			jasmine.Ajax.install();
 			successFN = jasmine.createSpy("success");
 			errorFN = jasmine.createSpy("error");
-	    	xml = jasmine.getFixtures().read('xml/text.xml');
+    	xml = jasmine.getFixtures().read('xml/text.xml');
 		});
 		afterEach(function() {
 			jasmine.Ajax.uninstall();
@@ -79,11 +77,11 @@ describe( "Testing CTS Texts functions", function () {
 
 		it("should call the object endpoint with the right URL", function() {
 			text.retrieve();
-			expect(jasmine.Ajax.requests.mostRecent().url).toBe('http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetPassage&inv=annotsrc&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-1.2');
+			expect(jasmine.Ajax.requests.mostRecent().url).toBe('http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetPassage&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-1.2&inv=annotsrc');
 		});
 
 		it("should call it and answer an error on 400", function() {
-			text.retrieve(successFN, errorFN);
+			text.retrieve({success : successFN, error : errorFN});
       		expect(successFN).not.toHaveBeenCalled();
       		expect(errorFN).not.toHaveBeenCalled();
 
@@ -96,23 +94,26 @@ describe( "Testing CTS Texts functions", function () {
 		});
 
 		it("should success on XML data", function() {
-			text.retrieve(successFN, errorFN);
+			text.retrieve({
+				"success" : successFN,
+				"error" : errorFN
+			});
 
-      		jasmine.Ajax.requests.mostRecent().respondWith({
-      			"status": 200,
-      			"contentType": 'text/xml',
-      			"responseText": xml
-      		});
-      		expect(successFN).toHaveBeenCalled();
-      		expect(errorFN).not.toHaveBeenCalled();
-      		expect(text.getXml(false, "string")).toEqual(
-      			(new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(xml, "text/xml"))
-  			);
+  		jasmine.Ajax.requests.mostRecent().respondWith({
+  			"status": 200,
+  			"contentType": 'text/xml',
+  			"responseText": xml
+  		});
+  		expect(successFN).toHaveBeenCalled();
+  		expect(errorFN).not.toHaveBeenCalled();
+  		expect(text.getXml(false, "string")).toEqual(
+  			(new XMLSerializer()).serializeToString((new DOMParser()).parseFromString(xml, "text/xml"))
+			);
 		});
 
 		it("should take new endpoint url", function() {
-			text.retrieve(successFN, errorFN, "http://localhost:8181?");
-			expect(jasmine.Ajax.requests.mostRecent().url).toBe('http://localhost:8181?request=GetPassage&inv=annotsrc&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-1.2');
+			text.retrieve({success : successFN, error : errorFN, endpoint : "http://localhost:8181"});
+			expect(jasmine.Ajax.requests.mostRecent().url).toBe('http://localhost:8181?request=GetPassage&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-1.2&inv=annotsrc');
 		});
 	});
 
@@ -123,7 +124,7 @@ describe( "Testing CTS Texts functions", function () {
 			jasmine.Ajax.install();
 			successFN = jasmine.createSpy("success");
 			errorFN = jasmine.createSpy("error");
-  			text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
+			text = new CTS.text.Passage("http://restservice/urn:cts:lala", new CTS.endpoint.simpleUrl("http://restservice/urn:cts:lala"));
 		});
 
 		afterEach(function() {
@@ -131,7 +132,7 @@ describe( "Testing CTS Texts functions", function () {
 		});
 
 		it("should handle REST citations", function() {
-			text.retrieve(successFN, errorFN);
+			text.retrieve({success : successFN, error : errorFN});
 			expect(jasmine.Ajax.requests.mostRecent().url).toBe('http://restservice/urn:cts:lala');
 		});
 		

@@ -30,52 +30,33 @@
   /**
    * Load the text from the endpoint
    *
-   * @param  callback        {?function}    Function to call when text is retrieved
-   * @param  error_callback  {?function}    Function to call when an error occured
-   * @param  endpoint        {?string}      CTS API Endpoint
+   * @param  options.success   {?function}    Function to call when text is retrieved
+   * @param  options.error     {?function}    Function to call when an error occured
+   * @param  options.endpoint  {?string}      CTS API Endpoint
    *
    */
-  var _retrieve = function(callback, error_callback, endpoint) {
+  var _retrieve = function(options) {
     var _this = this,
         url;
-    // If the callback is the endpoint
-    if (typeof callback === "string") {
-      endpoint = CTS.utils.checkEndpoint(callback);
-      callback = null;
-    } else if (typeof error_callback === "string") {
-      endpoint = CTS.utils.checkEndpoint(error_callback);
-      error_callback = null;
-    } else if(typeof endpoint !== "string") {
-      if(_this.endpoint === null && _this.rest !== true) {
-        throw "No endpoint given";
-      }
-      endpoint = _this.endpoint;
-    } 
-    if (typeof callback !== "function") {
-      callback = null;
-    }
 
-    if(_this.rest === true) {
-      url = _this.urn;
+    if(typeof options === "undefined") { options = {}; }
+    if(typeof options.endpoint === "undefined") {
+      endpoint = this.endpoint;
     } else {
-      url = endpoint + "request=GetPassage&inv=" + _this.inventory + "&urn=" + _this.urn;
+      endpoint = CTS.utils.checkEndpoint(options.endpoint);
     }
 
-    try {
-      CTS.utils.xhr("GET", url, {
-        success : function(data) {
-          _this.xml = data;
-          _this.document = (new DOMParser()).parseFromString(data, "text/xml");
-          if(callback) { callback(data); }
-        },
-        type : "text", 
-        error : error_callback
-      });
-    } catch (e) {
-      if(typeof error_callback === "function") {
-        error_callback(e);
-      }
-    }
+    endpoint.getPassage(this.urn, {
+      inventory : this.inventory,
+      success : function(data) {
+        _this.xml = data;
+        _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+        if(typeof options.success === "function") { options.success(data); }
+      
+      },
+      type : "plain/text",
+      error : options.error
+    });
 
     //And here we should load the stuff through cts.utils.ajax
   }
@@ -151,14 +132,6 @@
    *
    */
   CTS.text.Passage = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
-    if(typeof endpoint !== "string") {
-      endpoint = null;
-    }  
     if(typeof inventory !== "string") {
       inventory = null;
     }
@@ -168,10 +141,9 @@
     //Strings
     this.xml = null;
     this.text = null;
-    this.rest = rest;
     this.urn = urn;
     this.inventory = inventory;
-    this.endpoint = endpoint;
+    this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.retrieve = _retrieve;
     this.setText = _setText;
@@ -189,22 +161,13 @@
    *
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
-    if(typeof endpoint !== "string") {
-      endpoint = null;
-    }  
     if(typeof inventory !== "string") {
       inventory = null;
     }
 
-    this.rest = rest;
     this.urn = urn;
     this.inventory = inventory;
-    this.endpoint = endpoint;
+    this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
     this.getPassage = function(ref1, ref2) {
