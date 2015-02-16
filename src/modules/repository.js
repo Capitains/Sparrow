@@ -467,7 +467,7 @@
    *  @name setEndpoint
    *  @method
    *  
-   *  @param    {list|string}  url  A url for the repository
+   *  @param    {Array.<string>}  url  A url for the repository
    */
   var _setEndpoint = function(url) {
     if(typeof url === "string") {
@@ -537,9 +537,9 @@
    *  @name load
    *  @method
    *  
-   *  @param  {?function}       callback        Function to call when data are loaded
-   *  @param  {?function}       error_callback  Function to call when data are not loaded
-   *  @param  {?list}           inventory_name  Name of the inventory to load
+   *  @param  {?function}                callback        Function to call when data are loaded
+   *  @param  {?function}                error_callback  Function to call when data are not loaded
+   *  @param  {?Array.<string>}           inventory_name  Name of the inventory to load
    *
    */
   var _load = function(callback, error_callback, inventories) {
