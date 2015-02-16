@@ -1,3 +1,18 @@
+/**
+ * CTS.text
+ *
+ * @module   CTS.text
+ * 
+ * @requires CTS
+ * @requires CTS.utils
+ * @requires CTS.endpoint
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -7,11 +22,22 @@
   }
 }(function(CTS) {
 
+
+  /**
+   * Text related functions
+   * @namespace CTS.text
+   * @name CTS.text
+   */
   CTS.text = {};
 
   /**
    * Get the text, loading it if necessary
    *
+   *  @function
+   *  @memberOf CTS.text.Passage
+   *  @name getText
+   *
+   *  @returns  {string}  Instance text
    */
   var _getText = function() {
     return this.text;
@@ -19,6 +45,10 @@
 
   /**
    * Set the text for the Text instance
+   *
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name setText
    *
    * @param  text  {string}    Text embodied by object.urn
    *
@@ -29,6 +59,10 @@
 
   /**
    * Load the text from the endpoint
+   *
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name retrieve
    *
    * @param  options.success   {?function}    Function to call when text is retrieved
    * @param  options.error     {?function}    Function to call when an error occured
@@ -64,7 +98,11 @@
   /**
    * Check if the body of the XML is not empty
    *
-   * @return  {boolean} Indicator of success
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name getXML
+   *
+   * @returns  {boolean}  Boolean indecating if we got xml or not.
    *
    */
   var _checkXML = function() {
@@ -87,10 +125,14 @@
   /**
    *  Gets the xml using the URN
    *
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name getXml
+   *
    *  @param  elementName  {?string}  The name of the element to retrieve. Should be null to access format and still get whole document
    *  @param  format       {?string}  Type of data to retrieve. Default : xml. Available : xml, string
    *
-   *  @return      {Document|string}  Asked dom
+   *  @returns      {Document|string}  Asked dom
    *
    */
   var _getXml = function(elementName, format) {
@@ -126,9 +168,19 @@
   /**
    * Create a Passage object representing part of a full text
    *
-   * @param  urn        {string}             URN identifying the text
-   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
-   * @param  inventory  {?inventory}         Inventory Identifier
+   * @constructor
+   * @memberOf CTS.text
+   *
+   * @param  urn        {string}                           URN identifying the text
+   * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
+   * @param  inventory  {?inventory}                       Inventory Identifier
+   *
+   * @property  {Document}               document   The XML document representing the passage
+   * @property  {string}                 xml        String representation of the XML representing the passage
+   * @property  {string}                 text       Text of the passage
+   * @property  {string}                 urn        URN identifying the passage
+   * @property  {?inventory}             inventory  Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}  endpoint  Endpoint to get the text
    *
    */
   CTS.text.Passage = function(urn, endpoint, inventory) {
@@ -155,10 +207,16 @@
   /**
    * Create a text object representing either a passage or a full text
    *
-   * @param  urn        {string}             URN identifying the text
-   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
-   * @param  inventory  {?inventory}         Inventory Identifier
+   * @constructor
+   * @memberOf CTS.text
+   * 
+   * @param  urn        {string}                           URN identifying the text
+   * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
+   * @param  inventory  {?inventory}                       Inventory Identifier
    *
+   * @property  {string}                 urn        URN identifying the passage
+   * @property  {?inventory}             inventory  Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}  endpoint  Endpoint to get the text
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
     if(typeof inventory !== "string") {
