@@ -33,6 +33,7 @@ module.exports = function(grunt) {
             'src/modules/repository.js', 
             'src/modules/i18n.js', 
             'src/services/*.js', 
+            'src/endpoints/*.js', 
             'src/xslt/*.js',
             'src/i18n/en.js'
           ],
@@ -52,6 +53,7 @@ module.exports = function(grunt) {
         'src/modules/**.js',
         'src/i18n/**.js', 
         'src/services/**.js',
+        'src/endpoints/**.js', 
         'src/xslt/**.js',
       ],
       options : {

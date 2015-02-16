@@ -6,7 +6,6 @@ describe( "Testing CTS Texts functions", function () {
 	  	expect(text.endpoint.url).toEqual("http://endpoint?");
 	  	expect(text.urn).toEqual("urn:cts:lala");
 	  	expect(text.inventory).toEqual("annotsrc");
-	  	expect(text.rest).toEqual(false);
 	  });
 
 	  it("should handle normal creation", function() {
@@ -14,7 +13,6 @@ describe( "Testing CTS Texts functions", function () {
 	  	expect(text.endpoint).toEqual(null);
 	  	expect(text.urn).toEqual("http://restservice/urn:cts:lala");
 	  	expect(text.inventory).toEqual(null);
-	  	expect(text.rest).toEqual(true);
 	  });
 
 	});
@@ -126,7 +124,7 @@ describe( "Testing CTS Texts functions", function () {
 			jasmine.Ajax.install();
 			successFN = jasmine.createSpy("success");
 			errorFN = jasmine.createSpy("error");
-  			text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
+			text = new CTS.text.Passage("http://restservice/urn:cts:lala", new CTS.endpoint.simpleUrl("http://restservice/urn:cts:lala"));
 		});
 
 		afterEach(function() {

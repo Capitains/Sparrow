@@ -11,17 +11,42 @@
 
   /**
    * Prototype of CTS.endpoint
+   * 
+   * @param  {string}   api_endpoint  URL of the API endpoint
+   * @param  {?string}  inventory     Default inventory
    */
-  CTS.endpoint.Endpoint = function() {
+  CTS.endpoint.Endpoint = function(api_endpoint, inventory) {
+    this.url = api_endpoint;
+    this.inventory = (typeof inventory !== "undefined") ? inventory : null;
+
     /**
-     * [GetCapabilitiesURL description]
-     * @param {[type]}
+     * Create the GetCapabilities URL
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
      */
     this.getCapabilitiesURL = function(inventory) { throw "Unsupported request"; }
     this.getDescriptionURL  = function() { throw "Unsupported request"; }
     this.getPrevNextUrnURL  = function(urn)  { throw "Unsupported request"; }
-    this.getValidReffURL    = function(urn, level) { throw "Unsupported request"; }
-    this.getPassageURL      = function(urn) { throw "Unsupported request"; }
+
+    /**
+     * Create the GetValidReff URL
+     * @param  {string}    urn                Urn of the text's passage
+     * @param  {?string}   options.level      Level of reference to retrieve
+     * @param  {?string}   options.inventory  Name of the inventory
+     * 
+     * @returns {string}                       URL of the request
+     */
+    this.getValidReffURL = function(urn, options) { throw "Unsupported request"; }
+
+    /**
+     * Create the GetPassage URL
+     * @param  {urn}     urn       Urn of the Text's passage
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassageURL = function(urn, inventory)  { throw "Unsupported request"; }
     this.getPassagePlusURL  = function(urn) { throw "Unsupported request"; }
 
     /**
@@ -119,7 +144,7 @@
      * Create the GetCapabilities URL
      * @param  {?string} inventory Name of the inventory
      * 
-     * @return {string}            URL of the request
+     * @returns {string}            URL of the request
      */
     this.getCapabilitiesURL = function(inventory) {
       var params = {
@@ -150,7 +175,7 @@
      * @param  {urn}     urn       Urn of the Text's passage
      * @param  {?string} inventory Name of the inventory
      * 
-     * @return {string}            URL of the request
+     * @returns {string}            URL of the request
      */
     this.getPassageURL = function(urn, inventory) {
       var params = {
@@ -183,7 +208,7 @@
      * @param  {?string}   options.level      Level of reference to retrieve
      * @param  {?string}   options.inventory  Name of the inventory
      * 
-     * @return {string}                       URL of the request
+     * @returns {string}                       URL of the request
      */
     this.getValidReffURL = function(urn, options) {
       var params = {

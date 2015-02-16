@@ -46,27 +46,17 @@
       endpoint = CTS.utils.checkEndpoint(options.endpoint);
     }
 
-    var cb_success = function(data) {
-      _this.xml = data;
-      _this.document = (new DOMParser()).parseFromString(data, "text/xml");
-      if(typeof options.success === "function") { options.success(data); }
-    };
-
-    if(_this.rest === true) {
-      url = _this.urn;
-      CTS.utils.xhr("GET", url, {
-        success : cb_success,
-        type : "plain/text", 
-        error : options.error
-      });
-    } else {
-      endpoint.getPassage(this.urn, {
-        inventory : this.inventory,
-        success : cb_success,
-        type : "plain/text",
-        error : options.error
-      })
-    }
+    endpoint.getPassage(this.urn, {
+      inventory : this.inventory,
+      success : function(data) {
+        _this.xml = data;
+        _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+        if(typeof options.success === "function") { options.success(data); }
+      
+      },
+      type : "plain/text",
+      error : options.error
+    });
 
     //And here we should load the stuff through cts.utils.ajax
   }
@@ -142,11 +132,6 @@
    *
    */
   CTS.text.Passage = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
     if(typeof inventory !== "string") {
       inventory = null;
     }
@@ -156,7 +141,6 @@
     //Strings
     this.xml = null;
     this.text = null;
-    this.rest = rest;
     this.urn = urn;
     this.inventory = inventory;
     this.endpoint = CTS.utils.checkEndpoint(endpoint);
@@ -177,22 +161,13 @@
    *
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
-    if(typeof endpoint !== "string") {
-      endpoint = null;
-    }  
     if(typeof inventory !== "string") {
       inventory = null;
     }
 
-    this.rest = rest;
     this.urn = urn;
     this.inventory = inventory;
-    this.endpoint = endpoint;
+    this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
     this.getPassage = function(ref1, ref2) {
