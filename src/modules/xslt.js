@@ -28,7 +28,8 @@
 
   /**
    * @namespace CTS.xslt.stylesheets
-   * @memberOf CTS.xslt.stylesheets
+   * @name  CTS.xslt.stylesheets
+   * @memberOf CTS.xslt
    */
   CTS.xslt.stylesheets = {};
 
