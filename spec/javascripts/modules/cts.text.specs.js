@@ -49,6 +49,12 @@ describe( "Testing CTS Texts functions", function () {
 	  		);
 	  	});
 
+	  	it("should return text", function() {
+	  		text.document = xml;
+	  		expect(text.getText()).toEqual(
+	  			"Ho ! Saki, pass around and offer the bowl (of love for God) : --- "
+	  		);
+	  	});
 	  	it("should return xml nodes in XML", function() {
 	  		text.document = xml;
 	  		var ret = text.getXml("seg", "xml");
