@@ -31,16 +31,31 @@
   CTS.text = {};
 
   /**
-   * Get the text, loading it if necessary
+   * Get the text, removing nodes if necessary. if the instance has the text.property set, returns it.
    *
    *  @function
    *  @memberOf CTS.text.Passage
    *  @name getText
    *
+   *  @param    {Array.<string>}   removedNodes   List of nodes' tagname to remove
+   *
    *  @returns  {string}  Instance text
    */
-  var _getText = function() {
-    return this.text;
+  var _getText = function(removedNodes) {
+    var xml = this.document,
+        text;
+    if(this.text !== null) { return this.text; }
+    if(typeof removedNodes === "undefined") {
+      removedNodes = ["note", "bibl", "head"];
+    }
+
+    removedNodes.forEach(function(nodeName) { 
+      var elements = xml.getElementsByTagName(nodeName);
+      while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+    });
+
+    text = xml.getElementsByTagName("text")[0].textContent;
+    return text;
   }
 
   /**
