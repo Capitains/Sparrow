@@ -1,7 +1,7 @@
 {
   "name": "capitains-sparrow",
   "description": "Javascript abstractions and plugins for the CITE/CTS specification",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "CITE",
     "CTS",
@@ -20,7 +20,7 @@
     "grunt-contrib-concat": "~0.1.2",
     "grunt-contrib-uglify": "~0.4.x",
     "grunt-contrib-jasmine": "~0.6.x",
-    "grunt-contrib-clean" : "~0.6",
+    "grunt-contrib-clean": "~0.6",
     "grunt-karma": "~0.10",
     "grunt-jslint": "~1.1",
     "grunt-jsdoc": "~0.5",
