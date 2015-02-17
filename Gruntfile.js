@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: ["./build"],
     uglify: {
       options : {
         //beautify : true -> Need to figure out this stuff
@@ -202,6 +203,7 @@ module.exports = function(grunt) {
   });
 
   // Register tasks.
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -220,4 +222,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jasmine', 'karma']);
   grunt.registerTask('doc', ['markdown', 'replace', 'jsdoc'])
   grunt.registerTask('page', ['doc', 'gh-pages'])
+
+  grunt.registerTask('rel', ['build', 'clean', 'release']);
 };
