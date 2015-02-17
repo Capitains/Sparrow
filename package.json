@@ -1,7 +1,14 @@
 {
-  "name": "CapitainsSparrow",
-  "description": " Capitains-Sparrow provide a suite of CTS abstraction in JS but also jQuery plugins ",
-  "version": "0.0.1",
+  "name": "Capitains-Sparrow",
+  "description": "Javascript abstractions and plugins for the CITE/CTS specification",
+  "version": "1.0.0",
+  "keywords": [
+    "CITE",
+    "CTS",
+    "Perseus",
+    "API",
+    "Capitains"
+  ],
   "dependencies": {
     "typeahead.js": "~0.10.5",
     "jquery": "~2",
@@ -37,10 +44,49 @@
     "test": "grunt test",
     "build": "grunt build"
   },
-  "repository": [
+  "contributors": [
+    {
+      "name": "Thibault Clérice",
+      "email": "",
+      "web": "http://github.com/PonteIneptique"
+    },
+    {
+      "name": "Bridget Almas",
+      "email": "",
+      "web": "http://github.com/Balmas"
+    },
+    {
+      "name": "",
+      "email": "",
+      "web": ""
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Thibault Clérice",
+      "email": "",
+      "web": "http://github.com/PonteIneptique"
+    },
+    {
+      "name": "PerseusDL",
+      "email": "",
+      "web": "http://github.com/PerseusDL"
+    }
+  ],
+  "bugs": {
+    "web": "https://github.com/PerseusDL/Capitains-Sparrow/issues"
+  },
+  "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/PerseusDL/Capitains-Sparrow"
+      "url": "https://github.com/PerseusDL/Capitains-Sparrow.git"
     }
-  ]
+  ],
+  "licenses": [
+    {
+      "name": "GNU GPL 3.0",
+      "url": "http://www.gnu.org/copyleft/gpl.html"
+    }
+  ],
+  "homepage": "http://perseusdl.github.io/Capitains-Sparrow/"
 }
