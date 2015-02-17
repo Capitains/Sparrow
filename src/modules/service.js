@@ -60,7 +60,7 @@
     var data = {},
         _this = this;
     Object.keys(_this.options).forEach(function(key) {
-      data[key] = _this.options[key]["value"] || _this.options[key]["default"];
+      data[key] = (typeof _this.options[key]["value"] !== "undefined") ? _this.options[key]["value"] : _this.options[key]["default"];
     });
     return data;
   }

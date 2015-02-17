@@ -114,7 +114,7 @@
       } else {
         $default = $this.options[key]["default"];
       }
-      data[key] = $this.options[key]["value"] || $default;
+      data[key] = (typeof $this.options[key]["value"] !== "undefined") ? $this.options[key]["value"] : $default;
     });
     return data;
   }
