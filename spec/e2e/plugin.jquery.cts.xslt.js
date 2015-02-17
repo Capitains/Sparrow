@@ -290,6 +290,22 @@ describe('jQuery CTS XSLT', function() {
       expect(spy).toHaveBeenCalled();
       spy = null;
     });
+    it("should give the element as this in the callback", function() {
+      var cb = function(data) {
+        expect($j(this).hasClass("fixture")).toBe(true);
+        spy();
+      }
+      var spy = jasmine.createSpy("success");
+      var element = $j("<a />");
+      startSimple({
+        click : element,
+        callback : cb,
+        "xml" : ".text"
+      });
+      element.trigger("click")
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
     /*
 */
 

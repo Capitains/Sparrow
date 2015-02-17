@@ -92,7 +92,7 @@
         transformed = (new XMLSerializer()).serializeToString(transformed);
       }
       if(typeof _this.settings.callback === "function") {
-        _this.settings.callback(transformed);
+        _this.settings.callback.call(_this.element, transformed);
       }
       _this.element.trigger("cts-xslt:"+_this.xsltName+":done");
       return transformed;
