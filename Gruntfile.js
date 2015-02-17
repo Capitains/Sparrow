@@ -211,6 +211,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-markdown");
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-release');
 
   // Default task. 
   grunt.registerTask('default', ['concat', 'uglify']);
