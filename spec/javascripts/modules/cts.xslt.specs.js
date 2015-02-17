@@ -8,6 +8,36 @@
   }
 */
 describe('CTS.XSLT Helper', function(){
+
+  describe("Main plugin", function() {
+    describe("new temporary XSLT", function() {
+      it("should create a temporary XSLT", function() {
+        CTS.xslt.register("fake", {
+          "foo" : {
+            "type" : "string",
+            "html" : "input",
+            "default" : "bar"
+          }
+        });
+
+        expect(CTS.xslt.stylesheets.fake).toBeDefined();
+      });
+      it("should create a callable temporary XSLT", function() {
+        CTS.xslt.register("fake", {
+          "foo" : {
+            "type" : "string",
+            "html" : "input",
+            "default" : "bar"
+          }
+        });
+
+        var x = CTS.xslt.new("fake", "endpoint");
+
+        expect(x.getValues()).toEqual({foo : "bar"});
+      });
+    });
+  });
+
   describe('Helper making', function(){
     beforeEach(function() {
       CTS.xslt.stylesheets.fakeXSLT = function(endpoint, options) {

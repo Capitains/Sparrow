@@ -24,7 +24,7 @@ Options are set-up as the second argument of `$(element).ctsXSLT()`. It's a simp
 
 - `endpoint` (Type : string)
 Endpoint of XSLT is the URI of the XSLT sheet you want to use.
-- `xml` (Type . string or jQuery)
+- `xml` (Type . string or jQuery or function)
 The value of `xml` can either be a selector such as `".xml"` or a jQuery object such as `$(".xml")`. When transforming data, the plugin will used the targeted element value as the source fore the transformation.
 - `css` (Type : dictionary)
 See [below](#CSS-custom-classes)
