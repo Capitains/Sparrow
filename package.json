@@ -1,7 +1,7 @@
 {
   "name": "capitains-sparrow",
   "description": "Javascript abstractions and plugins for the CITE/CTS specification",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "keywords": [
     "CITE",
     "CTS",
