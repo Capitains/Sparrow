@@ -29,7 +29,7 @@
     "field-container" : [], // 
     "field-label" : [], // 
     "field-input-container" : [], //
-    "field-text" : [], //
+    "field-text" : [], //.xm
     "field-textarea" : [], //
     "field-checkbox" : [] //
   }
@@ -72,10 +72,12 @@
       var data = this.getValues(),
           _this = this;
       if(typeof xml === "undefined") { 
-        if(this.settings.xml instanceof jQuery) {
+        if(this.settingsll instanceof jQuery) {
           xml = this.settings.xml.val();
         } else if (typeof this.settings.xml === "string") {
           xml = $(_this.settings.xml).val() || $(_this.settings.xml).text();
+        } else if (typeof this.settings.xml === "function") {
+          xml = this.settings.xml();
         }
       }
       //Setting values
