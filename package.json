@@ -1,7 +1,7 @@
 {
   "name": "Capitains-Sparrow",
   "description": "Javascript abstractions and plugins for the CITE/CTS specification",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "CITE",
     "CTS",
@@ -22,17 +22,16 @@
     "grunt-contrib-jasmine": "~0.6.x",
     "grunt-karma": "~0.10",
     "grunt-jslint": "~1.1",
-    "grunt-jsdoc" : "~0.5",
-    "grunt-markdown" : "~0.7",
-    "grunt-text-replace" : "~0.4",
-    "grunt-gh-pages" : "~0.10",
-
+    "grunt-jsdoc": "~0.5",
+    "grunt-markdown": "~0.7",
+    "grunt-text-replace": "~0.4",
+    "grunt-gh-pages": "~0.10",
+    "grunt-release": "0.11.0",
     "jasmine": "~2.2",
     "jasmine-ajax": "~2",
     "jasmine-jquery": "~2",
     "jasmine-expect": "~1",
     "phantomjs": "~1.9",
-
     "karma": "~0.12.0",
     "karma-jasmine": "~0.2.0",
     "karma-jasmine-jquery": "~0.1",
@@ -54,11 +53,6 @@
       "name": "Bridget Almas",
       "email": "",
       "web": "http://github.com/Balmas"
-    },
-    {
-      "name": "",
-      "email": "",
-      "web": ""
     }
   ],
   "maintainers": [
