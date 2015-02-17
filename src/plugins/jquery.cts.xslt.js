@@ -79,7 +79,6 @@
         } else if (typeof this.settings.xml === "function") {
           xml = this.settings.xml();
         }
-        console.log(xml);
       }
       //Setting values
       Object.keys(data).forEach(function(param) {
