@@ -1,8 +1,6 @@
 node_modules
 .grunt
 .grunt/*
-build
-build/*
 _SpecRunner.html
 doc/*.html
 doc/html
