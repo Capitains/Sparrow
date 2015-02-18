@@ -223,5 +223,5 @@ module.exports = function(grunt) {
   grunt.registerTask('doc', ['markdown', 'replace', 'jsdoc'])
   grunt.registerTask('page', ['doc', 'gh-pages'])
 
-  grunt.registerTask('rel', ['build', 'clean', 'release']);
+  grunt.registerTask('rel', ['build', 'release']);
 };
