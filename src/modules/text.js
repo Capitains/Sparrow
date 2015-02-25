@@ -289,7 +289,9 @@
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
           var ref = xml.getElementsByTagName("current")[0].innerHtml;
           _this.passages[ref] = new CTS.text.Passage(_this.urn, _this.endpoint, _this.inventory)
-          if(typeof options.success === "function") { options.success(data); }
+          _this.passages[ref].document = xml;
+
+          if(typeof options.success === "function") { options.success(ref, data); }
         
         },
         type : "plain/text",
