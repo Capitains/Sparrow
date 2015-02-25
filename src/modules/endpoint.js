@@ -111,6 +111,16 @@
     this.getPassagePlus  = function(urn) { throw "Unsupported request"; }
 
     /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.GetFirstPassagePlus  = function(urn, options) { throw "Unsupported request"; }
+
+    /**
      * Make an XHR Request using CTS.utils.xhr
      * 
      * @param  {string}    url              URL to call
@@ -267,6 +277,42 @@
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetFirstPassagePlus url
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlusURL  = function(urn, options) {
+      var params = {
+        request : "GetFirstPassagePlus",
+        urn : urn
+      }
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+    /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlus  = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getFirstPassagePlusURL(urn, options), options);
     }
 
     /**

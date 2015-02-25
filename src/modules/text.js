@@ -281,15 +281,17 @@
 
       return this.passages[ref];
     }
-    this.getFirstPassagePlus = function() {
+    this.getFirstPassagePlus = function(options) {
+      var self = this;
+      options.endpoint = this.endpoint;
       endpoint = CTS.utils.checkEndpoint(options.endpoint);
       endpoint.getFirstPassagePlus(this.urn, {
         inventory : this.inventory,
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
-          var ref = xml.getElementsByTagName("current")[0].innerHtml;
-          _this.passages[ref] = new CTS.text.Passage(_this.urn, _this.endpoint, _this.inventory)
-          _this.passages[ref].document = xml;
+          var ref = xml.getElementsByTagName("current")[0].textContent;
+          self.passages[ref] = new CTS.text.Passage(self.urn, self.endpoint, self.inventory)
+          self.passages[ref].document = xml;
 
           if(typeof options.success === "function") { options.success(ref, data); }
         

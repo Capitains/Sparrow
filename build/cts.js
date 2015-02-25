@@ -824,6 +824,16 @@
     this.getPassagePlus  = function(urn) { throw "Unsupported request"; }
 
     /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.GetFirstPassagePlus  = function(urn, options) { throw "Unsupported request"; }
+
+    /**
      * Make an XHR Request using CTS.utils.xhr
      * 
      * @param  {string}    url              URL to call
@@ -980,6 +990,42 @@
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetFirstPassagePlus url
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlusURL  = function(urn, options) {
+      var params = {
+        request : "GetFirstPassagePlus",
+        urn : urn
+      }
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+    /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlus  = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getFirstPassagePlusURL(urn, options), options);
     }
 
     /**
@@ -1292,15 +1338,17 @@
 
       return this.passages[ref];
     }
-    this.getFirstPassagePlus = function() {
+    this.getFirstPassagePlus = function(options) {
+      var self = this;
+      options.endpoint = this.endpoint;
       endpoint = CTS.utils.checkEndpoint(options.endpoint);
       endpoint.getFirstPassagePlus(this.urn, {
         inventory : this.inventory,
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
-          var ref = xml.getElementsByTagName("current")[0].innerHtml;
-          _this.passages[ref] = new CTS.text.Passage(_this.urn, _this.endpoint, _this.inventory)
-          _this.passages[ref].document = xml;
+          var ref = xml.getElementsByTagName("current")[0].textContent;
+          self.passages[ref] = new CTS.text.Passage(self.urn, self.endpoint, self.inventory)
+          self.passages[ref].document = xml;
 
           if(typeof options.success === "function") { options.success(ref, data); }
         
