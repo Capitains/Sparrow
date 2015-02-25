@@ -243,13 +243,58 @@
     this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
-    this.getPassage = function(ref1, ref2) {
-      if(typeof ref2 === "undefined") {
-        if(ref1.split("-").length == 2) {
-          ref1, ref2 = ref1.split("-");
+    this.passages = {}
+
+    this.makePassageUrn = function(ref1, ref2) {
+      if(typeof ref2 === "undefined") { var ref2 = []; }
+      var r1 = []
+      var r2 = []
+      for (var i = 0; i < ref1.length; i++) {
+        if(typeof ref1[i] === "undefined") {
+          break;
+        } else {
+          r1.push(ref1[i]);
         }
+      };
+
+      for (var i = 0; i < ref2.length; i++) {
+        if(i >= r1.length) {
+          break;
+        }
+        if(typeof ref2[i] === "undefined") {
+          break;
+        } else {
+          r2.push(ref2[i]);
+        }
+      };
+
+      var ref = this.urn + ":" + r1.join(".")
+      if(r2.length == r1.length) {
+        ref = ref + "-" + r2.join(".");
       }
-      return [ref1, ref2];
+      return ref;
+    }
+
+    this.getPassage = function(ref1, ref2) {
+      var ref = this.makePassageUrn(ref1, ref2);
+      this.passages[ref] = new CTS.text.Passage(ref, this.endpoint, this.inventory);
+
+      return this.passages[ref];
+    }
+    this.getFirstPassagePlus = function() {
+      endpoint = CTS.utils.checkEndpoint(options.endpoint);
+      endpoint.getFirstPassagePlus(this.urn, {
+        inventory : this.inventory,
+        success : function(data) {
+          var xml = (new DOMParser()).parseFromString(data, "text/xml");
+          var ref = xml.getElementsByTagName("current")[0].innerHtml;
+          _this.passages[ref] = new CTS.text.Passage(_this.urn, _this.endpoint, _this.inventory)
+          if(typeof options.success === "function") { options.success(data); }
+        
+        },
+        type : "plain/text",
+        error : options.error
+      });
     }
     this.getValidReff = function() { throw "Not Implemented Yet"; }
   }  
