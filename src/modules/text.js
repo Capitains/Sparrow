@@ -229,9 +229,12 @@
    * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
    * @param  inventory  {?inventory}                       Inventory Identifier
    *
-   * @property  {string}                 urn        URN identifying the passage
-   * @property  {?inventory}             inventory  Inventory containing the text
-   * @property  {CTS.endpoint.Endpoint}  endpoint  Endpoint to get the text
+   * @property  {string}                                           urn               URN identifying the passage
+   * @property  {Object.<string, CTS.text.Passage}                 reffs             Passage and reffs
+   * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
+   * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
+   * @property  {?inventory}                                       inventory         Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}                            endpoint          Endpoint to get the text
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
     if(typeof inventory !== "string") {
@@ -243,6 +246,7 @@
     this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
+    this.validReffs = {}
     this.passages = {}
 
     /**
@@ -330,6 +334,12 @@
         error : options.error
       });
     }
+    /**
+     * Make a getValidReff request
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
+     */ 
     this.getValidReff = function(options) { throw "Not Implemented Yet"; }
   }  
 }));
