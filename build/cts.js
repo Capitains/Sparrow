@@ -1310,7 +1310,9 @@
         if(typeof ref1[i] === "undefined") {
           break;
         } else {
-          r1.push(ref1[i]);
+          if(ref1[i].length > 0) {
+            r1.push(ref1[i]);
+          }
         }
       };
 
@@ -1321,7 +1323,9 @@
         if(typeof ref2[i] === "undefined") {
           break;
         } else {
-          r2.push(ref2[i]);
+          if(ref2[i].length > 0) {
+            r2.push(ref2[i]);
+          }
         }
       };
 

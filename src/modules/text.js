@@ -245,36 +245,40 @@
     this.reffs = {}
     this.passages = {}
 
-    this.makePassageUrn = function(ref1, ref2) {
-      if(typeof ref2 === "undefined") { var ref2 = []; }
-      var r1 = []
-      var r2 = []
-      for (var i = 0; i < ref1.length; i++) {
-        if(typeof ref1[i] === "undefined") {
+    this.makePassageUrn = function(start, end) {
+      if(typeof end === "undefined") { var end = []; }
+      var s = []
+      var e = []
+      for (var i = 0; i < start.length; i++) {
+        if(typeof start[i] === "undefined") {
           break;
         } else {
-          if(ref1[i].length > 0) {
-            r1.push(ref1[i]);
+          if(start[i].length > 0 || start[i] > 0) {
+            s.push(start[i]);
           }
         }
       };
 
-      for (var i = 0; i < ref2.length; i++) {
-        if(i >= r1.length) {
+      for (var i = 0; i < end.length; i++) {
+        if(i >= s.length) {
           break;
         }
-        if(typeof ref2[i] === "undefined") {
+        if(typeof end[i] === "undefined") {
           break;
         } else {
-          if(ref2[i].length > 0) {
-            r2.push(ref2[i]);
+          if(end[i].length > 0 ||end[i] > 0) {
+            e.push(end[i]);
           }
         }
       };
 
-      var ref = this.urn + ":" + r1.join(".")
-      if(r2.length == r1.length) {
-        ref = ref + "-" + r2.join(".");
+      var ref = this.urn;
+      if(s.length > 0) {
+        ref = ref + ":" + s.join(".");
+        
+        if(e.length == s.length) {
+          ref = ref + "-" + e.join(".");
+        }
       }
       return ref;
     }
