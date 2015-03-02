@@ -54,7 +54,7 @@
       while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
     });
 
-    text = xml.getElementsByTagName("text")[0].textContent;
+    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
     return text;
   }
 
@@ -307,9 +307,9 @@
 
     /**
      * Make a request for the first passage on the API
-     * @param  {Object.<String, function>} options  Options object
-     * @param  {function}                  success  Success callback (Pass the urn and the xml as arguments)
-     * @param  {function}                  error    Error Callback
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
      */ 
     this.getFirstPassagePlus = function(options) {
       var self = this;
@@ -320,10 +320,10 @@
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
           var ref = xml.getElementsByTagName("current")[0].textContent;
-          self.passages[ref] = new CTS.text.Passage(self.urn, self.endpoint, self.inventory)
+          self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
           self.passages[ref].document = xml;
 
-          if(typeof options.success === "function") { options.success(ref, data); }
+          if(typeof options.success === "function") { options.success(ref, self.passages[ref]); }
         
         },
         type : "plain/text",

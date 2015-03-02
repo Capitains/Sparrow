@@ -1,4 +1,6 @@
 describe( "Testing CTS Texts functions", function () {
+
+  getFirstPassagePlus = jasmine.getFixtures().read('xml/getFirstPassagePlus.xml');
   //First, test the non AJAX functions
   describe('Passage', function(){
     describe('Creation of the object', function(){
@@ -146,10 +148,14 @@ describe( "Testing CTS Texts functions", function () {
     });
   });
 
-  describe('Text', function(){
+  describe('Text', function() {
+  	beforeEach(function() {
+  		endpoint = "http://localhost:8080/exist/rest/db/xq/CTS.xq?";
+  	});
+
     describe('Have helpers for passage', function(){
     	beforeEach(function() {
-      	T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", "annotsrc", endpoint)
+      	T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
     	});
 
     	it('Should make urn from lists', function(){
@@ -166,8 +172,80 @@ describe( "Testing CTS Texts functions", function () {
     		expect(passage).toBeDefined();
     		expect(passage.urn).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-2.2");
     	})
-    	
+
     });
+
+  	describe('getFirstPassagePlus', function(){
+  	  
+    	beforeEach(function() {
+      	T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
+        jasmine.Ajax.install();
+        successFN = jasmine.createSpy("success");
+        repo.addInventory("annotsrc");
+        repo.load(successFN);
+	    });
+	    afterEach(function() {
+	        jasmine.Ajax.uninstall();
+	    });
+
+    	it('Should be able to call a getFirstPassagePlus and make success callback', function(){
+    	  T.getFirstPassagePlus({
+    	  	success : successFN,
+    	  	error : errorFN
+    	  });
+	      expect(successFN).not.toHaveBeenCalled();
+	      jasmine.Ajax.requests.mostRecent().respondWith({
+	        "status": 200,
+	        "contentType": 'text/xml',
+	        "responseText": getFirstPassagePlus
+	      });
+	      expect(successFN).toHaveBeenCalled();
+    	});
+
+    	it('Should be able to call a getFirstPassagePlus and make error callback', function(){
+    	  T.getFirstPassagePlus({
+    	  	success : successFN,
+    	  	error : errorFN
+    	  });
+	      expect(successFN).not.toHaveBeenCalled();
+	      jasmine.Ajax.requests.mostRecent().respondWith({
+	        "status": 400,
+	        "contentType": 'text/xml',
+	        "responseText": getFirstPassagePlus
+	      });
+	      expect(successFN).not.toHaveBeenCalled();
+	      expect(errorFN).toHaveBeenCalled();
+    	});
+
+    	it('Should be able to call a getFirstPassagePlus and make a Passage with given body', function(){
+    		var text = null;
+    	  T.getFirstPassagePlus({
+    	  	success : function(ref, data) {
+    	  		text = data;
+    	  		successFN();
+    	  	},
+    	  	error : errorFN
+    	  });
+	      expect(successFN).not.toHaveBeenCalled();
+	      expect(jasmine.Ajax.requests.mostRecent().url).toBe("http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetFirstPassagePlus&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1&inv=annotsrc")
+	      jasmine.Ajax.requests.mostRecent().respondWith({
+	        "status": 200,
+	        "contentType": 'text/xml',
+	        "responseText": getFirstPassagePlus
+	      });
+
+	      expect(successFN).toHaveBeenCalled();
+	      expect(text.urn).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1")
+	      expect(text.getText()).toEqual("μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος")
+    	});
+
+  	});
+
+	
+		describe('GetValidReff', function(){
+//http://sosol.perseids.org/exist/rest/db/xq/CTS.xq?request=GetValidReff&inv=annotsrc&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1
+		});
+
   });
   
 
