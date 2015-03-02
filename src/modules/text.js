@@ -238,13 +238,19 @@
       inventory = null;
     }
 
-    this.urn = urn;
+    this.urn = urn.split(":").slice(0,4).join(":");
     this.inventory = inventory;
     this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
     this.passages = {}
 
+    /**
+     * Create a Passage urn given two lists of identifiers for start and end of the passage
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {string}           CTS Urn of the passage
+     */
     this.makePassageUrn = function(start, end) {
       if(typeof end === "undefined") { var end = []; }
       var s = []
@@ -275,7 +281,7 @@
       var ref = this.urn;
       if(s.length > 0) {
         ref = ref + ":" + s.join(".");
-        
+
         if(e.length == s.length) {
           ref = ref + "-" + e.join(".");
         }
@@ -283,12 +289,28 @@
       return ref;
     }
 
+    /**
+     * Get the passage from a test
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {CTS.text.Passage}      Passage object 
+     */
     this.getPassage = function(ref1, ref2) {
       var ref = this.makePassageUrn(ref1, ref2);
+      if(this.passages[ref]) {
+        return this.passages[ref];
+      }
       this.passages[ref] = new CTS.text.Passage(ref, this.endpoint, this.inventory);
 
       return this.passages[ref];
     }
+
+    /**
+     * Make a request for the first passage on the API
+     * @param  {Object.<String, function>} options  Options object
+     * @param  {function}                  success  Success callback (Pass the urn and the xml as arguments)
+     * @param  {function}                  error    Error Callback
+     */ 
     this.getFirstPassagePlus = function(options) {
       var self = this;
       options.endpoint = this.endpoint;
