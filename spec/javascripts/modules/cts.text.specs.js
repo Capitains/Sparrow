@@ -160,6 +160,12 @@ describe( "Testing CTS Texts functions", function () {
     	  expect(T.makePassageUrn([], [])).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1")
     	  expect(T.makePassageUrn(["1"], [])).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1")
     	});
+
+    	it("Should create a passage with good urn", function() {
+    		var passage = T.getPassage([1,1], [2,2]);
+    		expect(passage).toBeDefined();
+    		expect(passage.urn).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1.1-2.2");
+    	})
     	
     });
   });
