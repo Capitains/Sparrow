@@ -330,6 +330,6 @@
         error : options.error
       });
     }
-    this.getValidReff = function() { throw "Not Implemented Yet"; }
+    this.getValidReff = function(options) { throw "Not Implemented Yet"; }
   }  
 }));

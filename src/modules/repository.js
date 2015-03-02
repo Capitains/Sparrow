@@ -624,6 +624,18 @@
       this.delInventory = _delInventory;
       this.load = _load;
 
+      /**
+       * Converts a json Object to CTS Abstractions
+       * @param  {Object.<string, Object>} object List of inventories
+       */
+      this.fromObject = function(object) {
+        var self = this;
+        Object.keys(object).forEach(function(inventory_name) {
+          self.inventories[inventory_name] = CTS.repository.helpers.TextInventory(object[inventory_name]);
+          self.inventory[inventory_name] = inventory_name;
+        })
+      }
+
       this.TextInventory = CTS.repository.Prototypes["cts"+this.version].TextInventory;
   }
 
@@ -644,9 +656,9 @@
   CTS.repository.helpers.Text = function(object) {
     var text = new CTS.repository.Prototypes.Text();
     Object.keys(object).forEach(function(key) {
-      work[key] = object[key];
+      text[key] = object[key];
     });
-    return work;
+    return text;
   }
 
   /**
