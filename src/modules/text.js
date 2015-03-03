@@ -337,9 +337,40 @@
     /**
      * Make a getValidReff request
      * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.level    Level depth
      * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
      * @param  {function}                  options.error    Error Callback
      */ 
-    this.getValidReff = function(options) { throw "Not Implemented Yet"; }
+    this.getValidReff = function(options) {
+      var self = this;
+      if(typeof options.level === "undefined") { options.level = 1; }
+
+      //Need to copy the callback system
+      if(typeof self.validReffs[options.level] !== "undefined") {
+        if(typeof options.success === "function") {
+          options.success(self.validReffs[options.level]);
+        }
+        return;
+      } else {
+        self.endpoint.getValidReff(self.urn, {
+          inventory : self.inventory,
+          success : function(data) {
+            var urns = data.getElementsByTagName("reff")[0].getElementsByTagName("urn");
+            urns = [].map.call(urns, function(node) { return node.childNodes[0].nodeValue; });
+            var object = {}
+            urns.forEach(function(val) {
+              var s = val.split(":");
+              object[s[s.length - 1]] = val;
+            });
+            self.validReffs[options.level] = object;
+            if(typeof options.success === "function") {
+              options.success(object);
+            }
+          },
+          type : "text/xml",
+          error : options.error
+        })
+      }
+    }
   }  
 }));

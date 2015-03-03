@@ -1,6 +1,7 @@
 describe( "Testing CTS Texts functions", function () {
 
   getFirstPassagePlus = jasmine.getFixtures().read('xml/getFirstPassagePlus.xml');
+  getValidReff = jasmine.getFixtures().read('xml/getValidReff.xml');
   //First, test the non AJAX functions
   describe('Passage', function(){
     describe('Creation of the object', function(){
@@ -181,8 +182,7 @@ describe( "Testing CTS Texts functions", function () {
       	T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
         jasmine.Ajax.install();
         successFN = jasmine.createSpy("success");
-        repo.addInventory("annotsrc");
-        repo.load(successFN);
+        errorFN = jasmine.createSpy("error");
 	    });
 	    afterEach(function() {
 	        jasmine.Ajax.uninstall();
@@ -243,6 +243,46 @@ describe( "Testing CTS Texts functions", function () {
 
 	
 		describe('GetValidReff', function(){
+  	  
+    	beforeEach(function() {
+      	T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
+        jasmine.Ajax.install();
+        successFN = jasmine.createSpy("success");
+        successFN2 = jasmine.createSpy("success");
+        errorFN = jasmine.createSpy("error");
+	    });
+	    afterEach(function() {
+	        jasmine.Ajax.uninstall();
+	    });
+
+    	it('Should be able to call a getFirstPassagePlus and make a Passage with given body', function(){
+    		var text = null;
+    	  T.getValidReff({
+    	  	success : function(data) {
+    	  		expect(data["1"]).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1")
+    	  		successFN();
+    	  	},
+    	  	error : errorFN
+    	  });
+	      expect(successFN).not.toHaveBeenCalled();
+	      expect(jasmine.Ajax.requests.mostRecent().url).toBe("http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetValidReff&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1&inv=annotsrc")
+	      jasmine.Ajax.requests.mostRecent().respondWith({
+	        "status": 200,
+	        "contentType": 'text/xml',
+	        "responseText": getValidReff
+	      });
+
+	      expect(successFN).toHaveBeenCalled();
+    	  T.getValidReff({
+    	  	success : function(data) {
+    	  		expect(data["1"]).toEqual("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1:1")
+    	  		successFN2();
+    	  	},
+    	  	error : errorFN
+    	  });
+    	  expect(successFN2).toHaveBeenCalled();
+    	});
+			
 //http://sosol.perseids.org/exist/rest/db/xq/CTS.xq?request=GetValidReff&inv=annotsrc&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1
 		});
 
