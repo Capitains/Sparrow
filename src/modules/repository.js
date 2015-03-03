@@ -26,14 +26,12 @@
 
   /**
    *  @namespace CTS.repository
-   *  @name CTS.repository
    *  
    */
   CTS.repository = {}
 
   /**
-   *  @namespace CTS.Repository.Prototypes
-   *  @name CTS.repository.Prototypes
+   *  @namespace CTS.repository.Prototypes
    */
   CTS.repository.Prototypes = {}
 
@@ -104,6 +102,7 @@
    * 
    *  @constructor
    *  @memberOf  CTS.repository.Prototypes
+   *  @name  Work
    *  
    *  @property  {string}                                               urn             URN of the Work
    *  @property  {string}                                               lang            Lang of the Work
@@ -254,8 +253,7 @@
    */
 
   /**
-   *  @namespace
-   *  @name CTS.repository.Prototypes.cts3
+   *  @namespace CTS.repository.Prototypes.cts3
    */
   CTS.repository.Prototypes.cts3 = {};
 
@@ -264,6 +262,7 @@
    *
    *  @constructor
    *  @augments CTS.repository.Prototypes.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {NodeList} nodes DOM element to use for completion of the instance
    *  @param {string}   type  Type of Text
@@ -306,6 +305,7 @@
    * 
    *  @constructor
    *  @augments CTS.repository.Prototypes.cts3.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {NodeList} nodes DOM element to use for completion of the instance
    *  @param {string}   urn   URN of the parent
@@ -331,6 +331,7 @@
    * 
    *  @constructor
    *  @augments CTS.repository.Prototypes.cts3.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {NodeList} nodes DOM element to use for completion of the instance
    *  @param {string}   urn   URN of the parent
@@ -356,6 +357,7 @@
    * 
    *  @constructor
    *  @augments CTS.repository.Prototypes.Work
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {NodeList} nodes DOM element to use for completion of the instance
    *  @param {string}   urn   URN of the parent
@@ -399,6 +401,7 @@
    * 
    *  @constructor
    *  @augments CTS.repository.Prototypes.cts3.TextGroup
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {NodeList} nodes DOM element to use for completion of the instance
    *
@@ -430,6 +433,7 @@
    * 
    *  @constructor
    *  @augments CTS.repository.Prototypes.cts3.TextInventory
+   *  @memberOf  CTS.repository.Prototypes.cts3
    *  
    *  @param {document} xml          Parsed XML representing the inventory
    *  @param {string}   namespace    Namespace to use
@@ -453,6 +457,7 @@
     }
   }
   CTS.repository.Prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.Prototypes.TextInventory.prototype)
+
 
   /**
    * Repository Object
@@ -581,6 +586,7 @@
    * CTS Repository object
    *
    *  @constructor
+   *  @memberOf  CTS.repository
    *  
    *  @param  {string}  endpoint  Endpoint of the repository
    *  @param  {integer} version   Version used by CTS API
@@ -618,7 +624,101 @@
       this.delInventory = _delInventory;
       this.load = _load;
 
+      /**
+       * Converts a json Object to CTS Abstractions
+       * @param  {Object.<string, Object>} object List of inventories
+       */
+      this.fromObject = function(object) {
+        var self = this;
+        Object.keys(object).forEach(function(inventory_name) {
+          self.inventories[inventory_name] = CTS.repository.helpers.TextInventory(object[inventory_name]);
+          self.inventory[inventory_name] = inventory_name;
+        })
+      }
+
       this.TextInventory = CTS.repository.Prototypes["cts"+this.version].TextInventory;
+  }
+
+  /**
+   * @namespace CTS.repository.helpers
+   * @memberof CTS.repository
+   */
+  CTS.repository.helpers = {}
+
+  /**
+   * Create a Text object given a Text structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.Prototypes.Work}  
+   */
+  CTS.repository.helpers.Text = function(object) {
+    var text = new CTS.repository.Prototypes.Text();
+    Object.keys(object).forEach(function(key) {
+      text[key] = object[key];
+    });
+    return text;
+  }
+
+  /**
+   * Create a Work object given a Work structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.Prototypes.Work}  
+   */
+  CTS.repository.helpers.Work = function(object) {
+    var work = new CTS.repository.Prototypes.Work();
+    Object.keys(object).forEach(function(key) {
+      if(key === "editions" || key === "translations" || key === "texts") {
+        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
+      } else {
+        work[key] = object[key];
+      }
+    });
+    return work;
+  }
+
+  /**
+   * Create a TextGroup object given a TextGroup structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.TextInventory}  
+   */
+  CTS.repository.helpers.TextGroup = function(object) {
+    var textgroup = new CTS.repository.Prototypes.TextGroup();
+    Object.keys(object).forEach(function(key) {
+      if(key !== "works") {
+        textgroup[key] = object[key];
+      } else {
+        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
+      }
+    });
+    return textgroup;
+  }
+  
+  /**
+   * Create a TextInventory object given a TextInventory structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.TextInventory}  
+   */
+  CTS.repository.helpers.TextInventory = function(object) {
+    var inventory = new CTS.repository.Prototypes.TextInventory();
+    Object.keys(object).forEach(function(key) {
+      if(key !== "textgroups") {
+        inventory[key] = object[key];
+      } else {
+        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
+      }
+    });
+    return inventory;
   }
 
 }));

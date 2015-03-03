@@ -218,6 +218,24 @@ describe('jQuery CTS XSLT', function() {
       expect(spy).toHaveBeenCalled()
     });
 
+    it("should transform stuff when xml is a function", function() {
+      //Mockup for phantomJS
+      window.expectedXML = xslt_sample_1_transformed;
+      //-->
+      var spy = jasmine.createSpy("success");
+      var cb = function(data) { 
+        expect(xmlReparsing(data)).toEqual(xslt_sample_1_transformed);
+        spy();
+      }
+      startSimple({
+        callback : cb,
+        trigger : "trigger",
+        "xml" : function() { return $j(".text").val(); },
+      });
+      fixture.trigger("trigger")
+      expect(spy).toHaveBeenCalled()
+    });
+
     it("should take options in transform", function() {
       var spy = jasmine.createSpy("success");
       var cb = function(data) { 
@@ -266,6 +284,22 @@ describe('jQuery CTS XSLT', function() {
       startSimple({
         click : element,
         callback : spy,
+        "xml" : ".text"
+      });
+      element.trigger("click")
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
+    it("should give the element as this in the callback", function() {
+      var cb = function(data) {
+        expect($j(this).hasClass("fixture")).toBe(true);
+        spy();
+      }
+      var spy = jasmine.createSpy("success");
+      var element = $j("<a />");
+      startSimple({
+        click : element,
+        callback : cb,
         "xml" : ".text"
       });
       element.trigger("click")

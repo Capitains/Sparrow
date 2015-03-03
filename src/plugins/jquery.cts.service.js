@@ -79,7 +79,9 @@
       //Sending data
       _this.element.trigger("cts-service:"+_this.serviceName+":doing");
       _this.service.send(function(data) {
-        if(typeof _this.settings.callback === "function") { _this.settings.callback(data); }
+        if(typeof _this.settings.callback === "function") {
+          _this.settings.callback.call(_this.element, data);
+        }
         _this.element.trigger("cts-service:"+_this.serviceName+":done");
       }, "text");
     },

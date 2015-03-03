@@ -1,0 +1,25 @@
+{
+  "name": "capitains-sparrow",
+  "version": "1.0.3",
+  "homepage": "https://github.com/PerseusDL/Capitains-Sparrow",
+  "authors": [
+    "Thibault Clérice <leponteineptique@gmail.com>"
+  ],
+  "description": "CTS API abstractions and jQuery plugin",
+  "main": "build/cts.min.js",
+  "keywords": [
+    "cts"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "spec",
+    "examples",
+    "doc",
+    "doc_html"
+  ]
+}

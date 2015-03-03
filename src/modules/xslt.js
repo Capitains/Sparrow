@@ -114,7 +114,7 @@
       } else {
         $default = $this.options[key]["default"];
       }
-      data[key] = $this.options[key]["value"] || $default;
+      data[key] = (typeof $this.options[key]["value"] !== "undefined") ? $this.options[key]["value"] : $default;
     });
     return data;
   }
@@ -194,9 +194,9 @@
    *  @function
    *  @memberOf CTS.xslt
    *  
-   *  @param  {string}                xslt      Name of the XSLT stylesheet (Available in {@link CTS.xslt.stylesheets})
-   *  @param  {string}                endpoint  Url of the stylesheet
-   *  @param  {Object.<string, any>}  options   Any options to reuse inside
+   *  @param  {string}                        xslt      Name of the XSLT stylesheet (Available in {@link CTS.xslt.stylesheets})
+   *  @param  {string}                        endpoint  Url of the stylesheet
+   *  @param  {Object.<string, any>}          options   Any options to reuse inside
    *
    *  @returns {CTS.xslt.XSLT}  A CTS.XSLT intance with given options
    *
@@ -209,7 +209,34 @@
         throw xslt + " is Unknown."
       }
     } else {
-      //Place holder
+      throw "@param xslt is not a string";
     }
+  }
+
+  /**
+   * Register a XSLT stylesheets available in {@link CTS.xslt.new}
+   *
+   * @function
+   * @memberOf CTS.xslt
+   * 
+   * @param  {string}                           name                        Name of the xslt stylesheet
+   * @param  {Object.<string, object>}          options                     Options in Instance.options (For transformations). Keys are parameters of the XSLT stylesheet
+   * @param  {Object.<string, Any>}             options[fieldname]          Informations about the transformation parameter
+   * @param  {string}                           options[fieldname].type     Type of the parameter : boolean, string
+   * @param  {string}                           options[fieldname].html     HTML representation (for plugins) : input (for type=text), checkbox, textarea, hidden
+   * @param  {string|integer|boolean|function}  options[fieldname].default  Default value for the option
+   * 
+   * @returns {constructor}             Returns the constructor for the new xslt
+   */
+  CTS.xslt.register = function(name, options) {
+    //If the XSLT is an object, then we just create the
+    var tempXSLT = function(endpoint) {
+      CTS.xslt.XSLT.call(this);
+      this.options = options;
+    };
+    tempXSLT.prototype = Object.create(CTS.xslt.XSLT);
+
+    CTS.xslt.stylesheets[name] = tempXSLT;
+    return CTS.xslt.stylesheets[name];
   }
 }));

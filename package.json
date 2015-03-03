@@ -1,7 +1,14 @@
 {
-  "name": "CapitainsSparrow",
-  "description": " Capitains-Sparrow provide a suite of CTS abstraction in JS but also jQuery plugins ",
-  "version": "0.0.1",
+  "name": "capitains-sparrow",
+  "description": "Javascript abstractions and plugins for the CITE/CTS specification",
+  "version": "1.0.5",
+  "keywords": [
+    "CITE",
+    "CTS",
+    "Perseus",
+    "API",
+    "Capitains"
+  ],
   "dependencies": {
     "typeahead.js": "~0.10.5",
     "jquery": "~2",
@@ -13,19 +20,19 @@
     "grunt-contrib-concat": "~0.1.2",
     "grunt-contrib-uglify": "~0.4.x",
     "grunt-contrib-jasmine": "~0.6.x",
+    "grunt-contrib-clean": "~0.6",
     "grunt-karma": "~0.10",
     "grunt-jslint": "~1.1",
-    "grunt-jsdoc" : "~0.5",
-    "grunt-markdown" : "~0.7",
-    "grunt-text-replace" : "~0.4",
-    "grunt-gh-pages" : "~0.10",
-
+    "grunt-jsdoc": "~0.5",
+    "grunt-markdown": "~0.7",
+    "grunt-text-replace": "~0.4",
+    "grunt-gh-pages": "~0.10",
+    "grunt-release": "0.11.0",
     "jasmine": "~2.2",
     "jasmine-ajax": "~2",
     "jasmine-jquery": "~2",
     "jasmine-expect": "~1",
     "phantomjs": "~1.9",
-
     "karma": "~0.12.0",
     "karma-jasmine": "~0.2.0",
     "karma-jasmine-jquery": "~0.1",
@@ -37,10 +44,44 @@
     "test": "grunt test",
     "build": "grunt build"
   },
-  "repository": [
+  "contributors": [
+    {
+      "name": "Thibault Clérice",
+      "email": "",
+      "web": "http://github.com/PonteIneptique"
+    },
+    {
+      "name": "Bridget Almas",
+      "email": "",
+      "web": "http://github.com/Balmas"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Thibault Clérice",
+      "email": "",
+      "web": "http://github.com/PonteIneptique"
+    },
+    {
+      "name": "PerseusDL",
+      "email": "",
+      "web": "http://github.com/PerseusDL"
+    }
+  ],
+  "bugs": {
+    "web": "https://github.com/PerseusDL/Capitains-Sparrow/issues"
+  },
+  "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/PerseusDL/Capitains-Sparrow"
+      "url": "https://github.com/PerseusDL/Capitains-Sparrow.git"
     }
-  ]
+  ],
+  "licenses": [
+    {
+      "name": "GNU GPL 3.0",
+      "url": "http://www.gnu.org/copyleft/gpl.html"
+    }
+  ],
+  "homepage": "http://perseusdl.github.io/Capitains-Sparrow/"
 }

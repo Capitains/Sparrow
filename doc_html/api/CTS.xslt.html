@@ -44,6 +44,10 @@
 						</li>
 						
 						<li>
+							<a href="CTS.repository.helpers.html">CTS.repository.helpers</a>
+						</li>
+						
+						<li>
 							<a href="CTS.repository.Prototypes.html">CTS.repository.Prototypes</a>
 						</li>
 						
@@ -132,31 +136,27 @@
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Edition.html">CTS.repository~CTS.repository.Prototypes.cts3.Edition</a>
+							<a href="CTS.repository.Prototypes.cts3.Edition.html">CTS.repository.Prototypes.cts3.Edition</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Text.html">CTS.repository~CTS.repository.Prototypes.cts3.Text</a>
+							<a href="CTS.repository.Prototypes.cts3.Text.html">CTS.repository.Prototypes.cts3.Text</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.TextGroup.html">CTS.repository~CTS.repository.Prototypes.cts3.TextGroup</a>
+							<a href="CTS.repository.Prototypes.cts3.TextGroup.html">CTS.repository.Prototypes.cts3.TextGroup</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.TextInventory.html">CTS.repository~CTS.repository.Prototypes.cts3.TextInventory</a>
+							<a href="CTS.repository.Prototypes.cts3.TextInventory.html">CTS.repository.Prototypes.cts3.TextInventory</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Translation.html">CTS.repository~CTS.repository.Prototypes.cts3.Translation</a>
+							<a href="CTS.repository.Prototypes.cts3.Translation.html">CTS.repository.Prototypes.cts3.Translation</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Work.html">CTS.repository~CTS.repository.Prototypes.cts3.Work</a>
-						</li>
-						
-						<li>
-							<a href="repository-CTS.repository.repository.html">CTS.repository~CTS.repository.repository</a>
+							<a href="CTS.repository.Prototypes.cts3.Work.html">CTS.repository.Prototypes.cts3.Work</a>
 						</li>
 						
 						<li>
@@ -173,6 +173,10 @@
 						
 						<li>
 							<a href="CTS.repository.Prototypes.Work.html">CTS.repository.Prototypes.Work</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.repository.html">CTS.repository.repository</a>
 						</li>
 						
 						<li>
@@ -476,6 +480,294 @@
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="register"><span class="type-signature">&lt;static> </span>register<span class="signature">(name, options, options[fieldname])</span><span class="type-signature"> &rarr; {constructor}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Register a XSLT stylesheets available in <a href="CTS.xslt.html#new">CTS.xslt.new</a>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the xslt stylesheet</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Options in Instance.options (For transformations). Keys are parameters of the XSLT stylesheet</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options[fieldname]</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, Any></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Informations about the transformation parameter
+                <h6>Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Type of the parameter : boolean, string</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>html</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTML representation (for plugins) : input (for type=text), checkbox, textarea, hidden</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>default</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">integer</span>
+|
+
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Default value for the option</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Returns the constructor for the new xslt
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">constructor</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
         </dl>
     
 
@@ -502,7 +794,7 @@
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on 2015-02-17T09:24:06+01:00 using the <a
+		on 2015-03-03T12:25:16+01:00 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>

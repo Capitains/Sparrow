@@ -127,7 +127,7 @@
   var _checkEndpoint = function(endpoint) {
     if(typeof endpoint === "string") {
       return new CTS.endpoint.default(endpoint);
-    } else if( endpoint instanceof Object) {
+    } else if( endpoint instanceof Object) {
       return endpoint;
     } else {
       return null;

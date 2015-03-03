@@ -1,6 +1,7 @@
 describe( "Testing CTS Repository object", function () {
   xml = jasmine.getFixtures().read('xml/repo.xml');
   translationRepo = jasmine.getFixtures().read('xml/repo3.xml');
+  jsonInventory = JSON.parse(jasmine.getFixtures().read('json/inventory.json'));
 
   describe("Verifying its modules are available", function() {
       beforeEach(function(){
@@ -347,4 +348,15 @@ describe( "Testing CTS Repository object", function () {
       })
     })
   })
+
+  describe('Helpers', function(){
+    //jsonInventory
+    it("should create an object from JSON", function() {
+      repo = new CTS.repository.repository("http://localhost") 
+      repo.fromObject(jsonInventory);
+      expect(repo.inventories.annotsrc.getRaw()).toBeDefined();
+      expect(repo.inventories.annotsrc.getRaw().Lucan["Civil War"].edition.Pharsalia.getTitle()).toEqual("Pharsalia");
+    })
+  });
+  
 });

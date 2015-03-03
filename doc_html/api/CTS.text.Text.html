@@ -44,6 +44,10 @@
 						</li>
 						
 						<li>
+							<a href="CTS.repository.helpers.html">CTS.repository.helpers</a>
+						</li>
+						
+						<li>
 							<a href="CTS.repository.Prototypes.html">CTS.repository.Prototypes</a>
 						</li>
 						
@@ -132,31 +136,27 @@
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Edition.html">CTS.repository~CTS.repository.Prototypes.cts3.Edition</a>
+							<a href="CTS.repository.Prototypes.cts3.Edition.html">CTS.repository.Prototypes.cts3.Edition</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Text.html">CTS.repository~CTS.repository.Prototypes.cts3.Text</a>
+							<a href="CTS.repository.Prototypes.cts3.Text.html">CTS.repository.Prototypes.cts3.Text</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.TextGroup.html">CTS.repository~CTS.repository.Prototypes.cts3.TextGroup</a>
+							<a href="CTS.repository.Prototypes.cts3.TextGroup.html">CTS.repository.Prototypes.cts3.TextGroup</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.TextInventory.html">CTS.repository~CTS.repository.Prototypes.cts3.TextInventory</a>
+							<a href="CTS.repository.Prototypes.cts3.TextInventory.html">CTS.repository.Prototypes.cts3.TextInventory</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Translation.html">CTS.repository~CTS.repository.Prototypes.cts3.Translation</a>
+							<a href="CTS.repository.Prototypes.cts3.Translation.html">CTS.repository.Prototypes.cts3.Translation</a>
 						</li>
 						
 						<li>
-							<a href="repository-CTS.repository.Prototypes.cts3.Work.html">CTS.repository~CTS.repository.Prototypes.cts3.Work</a>
-						</li>
-						
-						<li>
-							<a href="repository-CTS.repository.repository.html">CTS.repository~CTS.repository.repository</a>
+							<a href="CTS.repository.Prototypes.cts3.Work.html">CTS.repository.Prototypes.cts3.Work</a>
 						</li>
 						
 						<li>
@@ -173,6 +173,10 @@
 						
 						<li>
 							<a href="CTS.repository.Prototypes.Work.html">CTS.repository.Prototypes.Work</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.repository.html">CTS.repository.repository</a>
 						</li>
 						
 						<li>
@@ -434,6 +438,93 @@
 
         <tr>
             
+                <td class="name"><code>reffs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, <a href="CTS.text.Passage.html">CTS.text.Passage</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Passage and reffs</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>validReffs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, Object.&lt;string, string>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">List of levels of mapping</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>validReffs[0]</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Pair of Text (Identifier of the passage, urn)</td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>inventory</code></td>
             
 
@@ -554,6 +645,729 @@
     
 
     
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getFirstPassagePlus"><span class="type-signature"></span>getFirstPassagePlus<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Make a request for the first passage on the API
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;String, function()></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Options object
+                <h6>Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Success callback (Pass the urn and the Passage as arguments)</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Error Callback</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPassage"><span class="type-signature"></span>getPassage<span class="signature">(start, end)</span><span class="type-signature"> &rarr; {<a href="CTS.text.Passage.html">CTS.text.Passage</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get the passage from a test
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.Any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array representation of the passage's start</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.Any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array representation of the passage's end</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Passage object
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="CTS.text.Passage.html">CTS.text.Passage</a></span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getValidReff"><span class="type-signature"></span>getValidReff<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Make a getValidReff request
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;String, function()></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Options object
+                <h6>Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Level depth</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Success callback (Pass the urn and the Passage as arguments)</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Error Callback</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="makePassageUrn"><span class="type-signature"></span>makePassageUrn<span class="signature">(start, end)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Create a Passage urn given two lists of identifiers for start and end of the passage
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.Any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array representation of the passage's start</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.Any</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array representation of the passage's end</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    CTS Urn of the passage
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        </dl>
+    
 
     
 
@@ -578,7 +1392,7 @@
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on 2015-02-17T09:24:05+01:00 using the <a
+		on 2015-03-03T12:25:15+01:00 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>

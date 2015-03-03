@@ -231,6 +231,23 @@ describe('jQuery CTS Service', function() {
       expect(spy).toHaveBeenCalled();
       spy = null;
     });
+    it("should call the callback with the element as this variable", function() {
+      var spy = jasmine.createSpy("success");
+      var cb = function(data) {
+        expect($j(this).hasClass("fixture")).toBe(true);
+        spy();
+      }
+      startFake({
+        callback : cb,
+        trigger : "trigger"
+      });
+      fixture.trigger("trigger");
+      jasmine.Ajax.requests.mostRecent().respondWith({
+        status : 200
+      })
+      expect(spy).toHaveBeenCalled();
+      spy = null;
+    });
     it("should trigger doing", function() {
       var spy = jasmine.createSpy("success");
       startFake({

@@ -1,3 +1,12 @@
+/**
+ * CTS
+ *
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -14,12 +23,30 @@
 }(this, function() {
 	"use strict";
 
+  /**
+   * @namespace CTS
+   * @name  CTS
+   */
 	var CTS = function() {
 		return {
 		}
 	}
 	return new CTS();
 }));
+/**
+ * CTS.utils
+ *
+ * @module   CTS.utils
+ * 
+ * @requires CTS
+ * @requires CTS.endpoint
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -29,15 +56,18 @@
   }
 }(function(CTS) {
   /**
-   * Just an XmlHttpRequest polyfill for different IE versions. Simple reuse of sigma.parsers.json
+   * Just an XmlHttpRequest helper
    *
+   * @function
+   * @memberOf CTS.utils
+   * @name xhr
    *
-   * @param  method                  {string}     HTTP Method
-   * @param  url                     {string}     HTTP URI to call
-   * @param  options.callback        {?function}  Function to call when request is done.
-   * @param  options.type            {string}     Type of data wished (default: text/xml)
-   * @param  options.data            {?}          Data to send
-   * @param  options.error_callback  {?function}  Function to call when request gave an error.
+   * @param  {string}     method             HTTP Method
+   * @param  {string}     url                HTTP URI to call
+   * @param  {?function}  options.success    Function to call when request is done.
+   * @param  {string}     options.type       Type of data wished (default: text/xml)
+   * @param  {any}        options.data       Data to send
+   * @param  {?function}  options.error      Function to call when request gave an error.
    *
    */
   var _xhr = function(method, url, options) {
@@ -80,30 +110,29 @@
       xhr.open(method, url, options.async);
 
       xhr.onerror = function() {
-        if(typeof options.error_callback !== "undefined") {
-          options.error_callback(xhr.status, xhr.statusText);
+        if(typeof options.error === "function") {
+          options.error(xhr.status, xhr.statusText);
         }
       }
 
       xhr.onreadystatechange = function() {
         if(xhr.status === 500 || xhr.status === 401 || xhr.status === 403 || xhr.status === 404 || xhr.status === 400) {
-          if(typeof options.error_callback !== "undefined") {
-            options.error_callback(xhr.status, xhr.statusText);
+          if(typeof options.error === "function") {
+            options.error(xhr.status, xhr.statusText);
           }
         } else {
           if (xhr.readyState === 4) {
-            if(typeof options.callback === "function") {
+            if(typeof options.success === "function") {
               if(options.type === "text/xml") {
-                options.callback(xhr.responseXML);
+                options.success(xhr.responseXML);
               } else if (options.type === "text" || options.type === "plain/text") {
-                options.callback(xhr.responseText);
+                options.success(xhr.responseText);
               }
             }
           }
         }
       };
-
-      if((typeof options.data !== "undefined" || options.data !== null) && options.method === "POST") {
+      if((typeof options.data !== "undefined" || options.data !== null) && method === "POST") {
         xhr.overrideMimeType("multipart/form-data");
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;");
         xhr.send(CTS.utils.dataEncode(options.data));
@@ -112,8 +141,8 @@
       }
 
     } catch(err) {
-      if(typeof options.error_callback !== "undefined") {
-        options.error_callback(err);
+      if(typeof options.error === "function") {
+        options.error(err);
       }
     }
   }
@@ -121,24 +150,35 @@
   /**
    * Return a correct endpoint url
    *
-   * @param  endpoint  {string}  The CTS API endpoint
+   * @function
+   * @memberOf CTS.utils
+   * @name checkEndpoint
+   * 
+   * @param  {string|CTS.endpoint.Endpoint}  endpoint  The CTS API endpoint
+   * 
+   * @returns {?CTS.endpoint.Endpoint}  An endpoint
    *
    */
   var _checkEndpoint = function(endpoint) {
-    if(typeof endpoint !== "string") {
-      return null;
-    }
-    if(endpoint.slice(-1) !== "?") {
-      return endpoint + "?";
-    } else {
+    if(typeof endpoint === "string") {
+      return new CTS.endpoint.default(endpoint);
+    } else if( endpoint instanceof Object) {
       return endpoint;
+    } else {
+      return null;
     }
   }
 
   /**
    * Encode data for XHR
    *
-   * @param  data  {dict}  A dictionary where keys are string
+   * @function
+   * @memberOf CTS.utils
+   * @name dataEncode
+   *
+   * @param  {Object.<string, any>}  data  A dictionary where keys are string
+   * 
+   * @returns  {string}  The url encoded parameters
    *
    */
   var _dataEncode = function(data) {
@@ -161,6 +201,20 @@
     return urlEncodedData;
   }
 
+
+  /**
+   * Parse an urn identifier into an int for comparison
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name parseInt
+   * @deprecated  Not use anymore as technically, passage don't have to be in ascending order
+   *
+   * @param  {string|integer|Array.<string|integer>}  str  Data to be parsed
+   * 
+   * @returns  {integer}  Integer representing the urn identifier
+   *
+   */
   var _parseInt = function(str) {
     if(typeof str === "string") { var isString = str.toLowerCase().match("[a-z]{1}"); } else { isString === null; }
     if (!isNaN(str)) {
@@ -187,6 +241,20 @@
     return 0;
   }
 
+  /**
+   * Check if passage identifier are valid
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name validPassage
+   * @deprecated  Not use anymore as technically, passage don't have to be in ascending order
+   *
+   * @param  {Array.<string|integer|Array>}  $start  Start element 
+   * @param  {Array.<string|integer|Array>}  $end    End element
+   * 
+   * @returns  {boolean}  Boolean indicating if the passage is valid
+   *
+   */
   var _ValidPassage = function ($start, $end) {
     var bigger = false,
         s,
@@ -211,6 +279,17 @@
     return bigger;
   }
 
+
+  /**
+   * Get the window location parameters (GET parameters)
+   *
+   * @function
+   * @memberOf CTS.utils
+   * @name uriParam
+   * 
+   * @returns  {Object.<string, any>}  Boolean indicating if the passage is valid
+   *
+   */
   var _uriParam = function() {
       var result = {},
           params = window.location.search.split(/\?|\&/);
@@ -224,6 +303,10 @@
       return result;
   }
 
+  /**
+   * @namespace CTS.utils
+   * @name CTS.utils
+   */
   CTS.utils = {
     xhr : _xhr,
     dataEncode : _dataEncode,
@@ -233,6 +316,20 @@
     uriParam : _uriParam
   }
 }));
+/**
+ * CTS.service
+ *
+ * @module   CTS.service
+ * 
+ * @requires CTS.utils
+ * @requires CTS
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -242,11 +339,23 @@
   }
 }(function(CTS) {
 
+  /**
+   * @namespace CTS.service
+   * @name CTS.service
+   */
   CTS.service = {
+  /**
+   * @namespace CTS.service.services
+   * @name CTS.service.services
+   */
     services : {}
   }
+
   /**
    * Set the value of a field
+   * 
+   * @function
+   * @memberOf CTS.service._service
    *
    * @param  key       {string}  Field whom value has to change  
    * @param  value     {string}  New value for given field
@@ -258,15 +367,18 @@
 
   /**
    * Return values of current object
+   * 
+   * @function
+   * @memberOf CTS.service._service
    *
-   * @return  {object}  A dictionary of key-value pair where key are field name
+   * @returns  {Object.<string, string>}  A dictionary of key-value pair where key are field name
    *
    */
   var getValues = function() {
     var data = {},
         _this = this;
     Object.keys(_this.options).forEach(function(key) {
-      data[key] = _this.options[key]["value"] || _this.options[key]["default"];
+      data[key] = (typeof _this.options[key]["value"] !== "undefined") ? _this.options[key]["value"] : _this.options[key]["default"];
     });
     return data;
   }
@@ -274,29 +386,50 @@
   /**
    *  Get the option of the current instance
    *
-   * @return  {object}  Dictionary of pair key-object where key are field name and object contain datatype, html and default value 
+   * @function
+   * @memberOf CTS.service._service
+   *
+   * @return  {Object.<string, Object.<string, any>>}  Dictionary of pair key-object where key are field name and object contain datatype, html and default value 
    *
    */
   var getOptions = function() {
     return this.options;
   }
 
+  /**
+   * Send the request
+   * 
+   * @function
+   * @memberOf CTS.service._service
+   * 
+   * @param  {Function} callback Callback in case of success
+   * @param  {string}   format   Format expected by data
+   * @default  text/xml
+   */
   var send = function(callback, format) {
-    var _this = this;
     if (typeof format === "undefined") { format = "text/xml"; }
     //function(method, url, callback, type, async)
-    CTS.utils.xhr(_this.method, _this.endpoint, {
-      callback : function(data) {
+    CTS.utils.xhr(this.method, this.endpoint, {
+      success : function(data) {
         if(typeof callback === "function") { callback(data); }
       }, 
       type : format, 
-      data : _this.getValues()
+      "data" : this.getValues()
     });
   }
 
   /**
    * Prototype for services
    *
+   * @constructor
+   * @memberOf CTS.service
+   *
+   * @param  {string}                endpoint  Url of the service endpoint
+   * @param  {Object.<string, any>}  options   Any options to reuse inside
+   *
+   * @property  {string}                   endpoint  URL of the service
+   * @property  {string}                   method    HTTP Method to use for the HTTP request
+   * @property  {Object.<string, Object>}  options  Options for the service
    *
    */
   CTS.service._service = function(endpoint, options) {
@@ -313,7 +446,14 @@
   /**
    *  Create a new service
    *
-   *  @param
+   *  @function
+   *  @memberOf CTS.service
+   *  
+   *  @param  {string}                service   Name of the service stylesheet (Available in {@link CTS.service.services})
+   *  @param  {string}                endpoint  Url of the service endpoint
+   *  @param  {Object.<string, any>}  options   Any options to reuse inside
+   *
+   *  @returns {CTS.service._service}  A CTS.XSLT intance with given options
    *
    */
   CTS.service.new = function(service, endpoint, option) {
@@ -328,6 +468,19 @@
     }
   }
 }));
+/**
+ * CTS.xslt
+ *
+ * @module   CTS.xslt
+ * 
+ * @requires CTS
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -336,15 +489,29 @@
     factory(CTS);
   }
 }(function(CTS) {
+
+  /**
+   * @namespace CTS.xslt
+   * @name CTS.xslt
+   */
   CTS.xslt = {};
+
+  /**
+   * @namespace CTS.xslt.stylesheets
+   * @name  CTS.xslt.stylesheets
+   * @memberOf CTS.xslt
+   */
   CTS.xslt.stylesheets = {};
 
   /**
    * Transform xml into an XSLTProcessor
+   * @name      stylesheeting
+   * @memberOf  CTS.xslt.XSLT
+   * @function
+   * 
+   * @param     {string|Document}  transformDoc  The text/xml (XSL) representation of the Stylesheet
    *
-   * @param   transformDoc  The text/xml representation of the Stylesheet
-   *
-   * @return  XSLTProcessor Object
+   * @returns   {XSLTProcessor}     The XSLT Processor with loaded up stylesheet
    */
   var stylesheeting = function(transformDoc) {
     if(typeof transformDoc === "string") {
@@ -359,9 +526,11 @@
   /**
    * Send an synchronous request to load a stylesheet
    *
-   * @param   a_url the url of the styleshset
+   * @name      load
+   * @memberOf  CTS.xslt.XSLT
+   * @function
    *
-   * @return  an XSLTProcessor with the stylesheet imported
+   * @returns   {XSLTProcessor}  an XSLTProcessor with the stylesheet imported
    *
    * @throw an error upon failure to load the stylesheet
    */
@@ -383,8 +552,12 @@
   /**
    * Set the value of a field
    *
-   * @param  key       {string}  Field whom value has to change  
-   * @param  value     {string}  New value for given field
+   * @name      setValue
+   * @memberOf  CTS.xslt.XSLT
+   * @function
+   * 
+   * @param   {string}  key    Field whom value has to change  
+   * @param   {string}  value  New value for given field
    *
    */
   var setValue = function (key, value) {
@@ -394,7 +567,11 @@
   /**
    * Return values of current object
    *
-   * @return  {object}  A dictionary of key-value pair where key are field name
+   * @name      getValues
+   * @memberOf  CTS.xslt.XSLT
+   * @function
+   *
+   * @returns  {Object.<string, any>}  A dictionary of key-value pair where key are field name
    *
    */
   var getValues = function() {
@@ -407,7 +584,7 @@
       } else {
         $default = $this.options[key]["default"];
       }
-      data[key] = $this.options[key]["value"] || $default;
+      data[key] = (typeof $this.options[key]["value"] !== "undefined") ? $this.options[key]["value"] : $default;
     });
     return data;
   }
@@ -415,13 +592,29 @@
   /**
    *  Get the option of the current instance
    *
-   * @return  {object}  Dictionary of pair key-object where key are field name and object contain datatype, html and default value 
+   * @name      getOptions
+   * @memberOf  CTS.xslt.XSLT
+   * @function
+   *
+   * @returns  {Object.<string, Object.<string, any>>}  Dictionary of pair key-object where key are field name and object contain datatype, html and default value 
    *
    */
   var getOptions = function() {
     return this.options;
   }
 
+  /**
+   * Transform given xml through the loaded stylesheet
+   *
+   * @name      transform
+   * @memberOf  CTS.xslt.XSLT
+   * @function
+   *
+   * @param    {string|Document}  xml  A document to be transformed
+   *
+   * @returns  {Document}  A freshly transformed document
+   *
+   */
   var transform = function(xml) {
     var transformed,
         values,
@@ -443,7 +636,15 @@
 
   /**
    *  Prototype for XSLT Stylesheets
-   * 
+   *  
+   *  @constructor
+   *  @memberOf CTS.xslt
+   *
+   *  @param  {string}                endpoint  Url of the stylesheet
+   *  @param  {Object.<string, any>}  options   Any options to reuse inside
+   *
+   *  @property  {XSLTProcessor}   processor  Processor object for transformation
+   *  @property  {string}          endpoint   URL of the XSLT
    */
   CTS.xslt.XSLT = function(endpoint, options) {
     this.endpoint = endpoint;
@@ -460,22 +661,415 @@
   /**
    *  Create a new XSLT transformer object
    *
-   *  @param
+   *  @function
+   *  @memberOf CTS.xslt
+   *  
+   *  @param  {string}                        xslt      Name of the XSLT stylesheet (Available in {@link CTS.xslt.stylesheets})
+   *  @param  {string}                        endpoint  Url of the stylesheet
+   *  @param  {Object.<string, any>}          options   Any options to reuse inside
+   *
+   *  @returns {CTS.xslt.XSLT}  A CTS.XSLT intance with given options
    *
    */
-  CTS.xslt.new = function(xslt, endpoint, option) {
+  CTS.xslt.new = function(xslt, endpoint, options) {
     if(typeof xslt === "string") {
       if(xslt in this.stylesheets) {
-        return new this.stylesheets[xslt](endpoint, option);
+        return new this.stylesheets[xslt](endpoint, options);
       } else {
         throw xslt + " is Unknown."
       }
     } else {
-      //Place holder
+      throw "@param xslt is not a string";
     }
+  }
+
+  /**
+   * Register a XSLT stylesheets available in {@link CTS.xslt.new}
+   *
+   * @function
+   * @memberOf CTS.xslt
+   * 
+   * @param  {string}                           name                        Name of the xslt stylesheet
+   * @param  {Object.<string, object>}          options                     Options in Instance.options (For transformations). Keys are parameters of the XSLT stylesheet
+   * @param  {Object.<string, Any>}             options[fieldname]          Informations about the transformation parameter
+   * @param  {string}                           options[fieldname].type     Type of the parameter : boolean, string
+   * @param  {string}                           options[fieldname].html     HTML representation (for plugins) : input (for type=text), checkbox, textarea, hidden
+   * @param  {string|integer|boolean|function}  options[fieldname].default  Default value for the option
+   * 
+   * @returns {constructor}             Returns the constructor for the new xslt
+   */
+  CTS.xslt.register = function(name, options) {
+    //If the XSLT is an object, then we just create the
+    var tempXSLT = function(endpoint) {
+      CTS.xslt.XSLT.call(this);
+      this.options = options;
+    };
+    tempXSLT.prototype = Object.create(CTS.xslt.XSLT);
+
+    CTS.xslt.stylesheets[name] = tempXSLT;
+    return CTS.xslt.stylesheets[name];
   }
 }));
 
+/**
+ * CTS.endpoint
+ *
+ * @module   CTS.endpoint
+ * 
+ * @requires CTS.utils
+ * @requires CTS
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
+
+/* global define */(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['cts'], factory);
+  } else {
+    factory(CTS);
+  }
+}(function(CTS) {
+
+  /** 
+   * @namespace CTS.endpoint
+   * @name CTS.endpoint
+   */
+  CTS.endpoint = {}
+
+  /**
+   * Prototype of CTS.endpoint
+   * 
+   * @constructor
+   * @memberOf  CTS.endpoint
+   * 
+   * @param  {string}   api_endpoint  URL of the API endpoint
+   * @param  {?string}  inventory     Default inventory
+   *
+   * @property  {string}   url         Url of the Endpoint
+   * @property  {?string}  inventory   Default inventory to fallback on
+   */
+  CTS.endpoint.Endpoint = function(api_endpoint, inventory) {
+    this.url = api_endpoint;
+    this.inventory = (typeof inventory !== "undefined") ? inventory : null;
+
+    /**
+     * Create the GetCapabilities URL
+     * 
+     * @param  {?string}  inventory  Name of the inventory
+     * 
+     * @returns {string}             URL of the request
+     */
+    this.getCapabilitiesURL = function(inventory) { throw "Unsupported request"; }
+    this.getDescriptionURL  = function() { throw "Unsupported request"; }
+    this.getPrevNextUrnURL  = function(urn)  { throw "Unsupported request"; }
+
+    /**
+     * Create the GetValidReff URL
+     * 
+     * @param  {string}    urn                Urn of the text's passage
+     * @param  {?string}   options.level      Level of reference to retrieve
+     * @param  {?string}   options.inventory  Name of the inventory
+     * 
+     * @returns {string}                       URL of the request
+     */
+    this.getValidReffURL = function(urn, options) { throw "Unsupported request"; }
+
+    /**
+     * Create the GetPassage URL
+     * 
+     * @param  {urn}      urn        Urn of the Text's passage
+     * @param  {?string}  inventory  Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassageURL = function(urn, inventory)  { throw "Unsupported request"; }
+    this.getPassagePlusURL  = function(urn) { throw "Unsupported request"; }
+
+    /**
+     * Do a GetCapabilities request
+     * 
+     * @param {?string}    inventory         Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getCapabilities = function(inventory, options) { throw "Unsupported request"; }
+    this.getDescription  = function() { throw "Unsupported request"; }
+    this.getPrevNextUrn  = function(urn)  { throw "Unsupported request"; }
+
+    /**
+     * Do a GetValidReff request
+     * 
+     * @param {string}     urn                Urn of the text's passage
+     * @param {?string}    options.level      Level of reference to retrieve
+     * @param {?string}    options.inventory  Inventory name
+     * @param {?function}  options.success    Success callback
+     * @param {?function}  options.error      Error callback
+     */
+    this.getValidReff    = function(urn, options) { throw "Unsupported request"; }
+
+    /**
+     * Do a GetPassage request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getPassage      = function(urn, options) { throw "Unsupported request"; }
+    this.getPassagePlus  = function(urn) { throw "Unsupported request"; }
+
+    /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.GetFirstPassagePlus  = function(urn, options) { throw "Unsupported request"; }
+
+    /**
+     * Make an XHR Request using CTS.utils.xhr
+     * 
+     * @param  {string}    url              URL to call
+     * @param  {Function}  options.success  Success Callback function
+     * @param  {Function}  options.error    Error Callback function
+     */
+    this.getRequest = function(url, options) {
+      CTS.utils.xhr("GET", url, {
+        success : options.success,
+        error   : options.error,
+        type    : options.type
+      });
+    };
+
+    /**
+     * Make an XHR POST Request using CTS.utils.xhr
+     * 
+     * @param  {string}    url              URL to call
+     * @param  {Function}  options.success  Success Callback function
+     * @param  {Function}  options.error    Error Callback function
+     * @param  {Function}  options.data     Error Callback function
+     * @param  {Function}  options.type     Data type
+     */
+    this.postRequest = function(url, options) {
+      CTS.utils.xhr("POST", url, {
+        success : options.success,
+        error   : options.error,
+        data    : options.data,
+        type    : options.type
+      });
+    };
+  }
+  CTS.endpoint.Endpoint.prototype = Object.create(CTS.endpoint.Endpoint);
+
+  /**
+   * CTS API using simple xQuery rest system.
+   * 
+   * @constructor
+   * @augments    CTS.endpoint.Endpoint
+   * @memberOf  CTS.endpoint
+   * 
+   * @param  {string}   api_endpoint  URL of the API endpoint
+   * @param  {?string}  inventory     Default inventory
+   *
+   */
+  CTS.endpoint.XQ = function(api_endpoint, inventory) {
+    CTS.endpoint.Endpoint.call(this);
+
+    if(api_endpoint.slice(-1) !== "?") { api_endpoint = api_endpoint + "?"; }
+    this.url = api_endpoint;
+
+    this.inventory = (typeof inventory !== "undefined") ? inventory : null;
+
+    /**
+     * Small helper to create urls
+     * 
+     * @param    {Object.<string, any>}  params  Object representing parameters name
+     * 
+     * @returns  {string}                        The URL
+     */
+    this.getUrl = function(params) {
+      var urlParams = [];
+      Object.keys(params).forEach(function(key) {
+        urlParams.push(key + "=" + params[key]);
+      });
+      return this.url + urlParams.join("&");
+    }
+
+    /**
+     * Create the GetCapabilities URL
+     * 
+     * @param   {?string} inventory  Name of the inventory
+     * 
+     * @returns {string}             URL of the request
+     */
+    this.getCapabilitiesURL = function(inventory) {
+      var params = {
+        request : "GetCapabilities"
+      }
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetCapabilities request
+     * 
+     * @param {?string}    inventory         Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getCapabilities = function(inventory, options) {
+      if(typeof inventory !== "string") {
+        options = inventory;
+        inventory = null;
+      }
+      this.getRequest(this.getCapabilitiesURL(inventory), options);
+    }
+
+    /**
+     * Create the GetPassage URL
+     * 
+     * @param  {urn}     urn       Urn of the Text's passage
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassageURL = function(urn, inventory) {
+      var params = {
+        request : "GetPassage",
+        urn : urn
+      }
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetPassage request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getPassage = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getPassageURL(urn, options.inventory), options);
+    }
+
+    /**
+     * Create the GetValidReff URL
+     * @param  {string}    urn                Urn of the text's passage
+     * @param  {?string}   options.level      Level of reference to retrieve
+     * @param  {?string}   options.inventory  Name of the inventory
+     * 
+     * @returns {string}                       URL of the request
+     */
+    this.getValidReffURL = function(urn, options) {
+      var params = {
+        request : "GetValidReff",
+        urn : urn
+      }
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      if(typeof options.level !== "undefined") {
+        params.level = options.level;
+      }
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetFirstPassagePlus url
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlusURL  = function(urn, options) {
+      var params = {
+        request : "GetFirstPassagePlus",
+        urn : urn
+      }
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+    /**
+     * Do a GetFirstPassagePlus request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getFirstPassagePlus  = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getFirstPassagePlusURL(urn, options), options);
+    }
+
+    /**
+     * Do a GetValidReff request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.level     Level of reference to retrieve
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getValidReff = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getValidReffURL(urn, options), options);
+    }
+  }
+  CTS.endpoint.XQ.prototype = Object.create(CTS.endpoint.Endpoint);
+
+  /**
+   * Default Endpoint type to use for plugins
+   * Default to {@link CTS.endpoint.XQ}
+   * 
+   * @type     {CTS.endpoint.Endpoint}
+   * @memberOf  CTS.endpoint
+   */
+  CTS.endpoint.default = CTS.endpoint.XQ;
+}));
+/**
+ * CTS.text
+ *
+ * @module   CTS.text
+ * 
+ * @requires CTS
+ * @requires CTS.utils
+ * @requires CTS.endpoint
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -485,18 +1079,48 @@
   }
 }(function(CTS) {
 
+
+  /**
+   * Text related functions
+   * @namespace CTS.text
+   * @name CTS.text
+   */
   CTS.text = {};
 
   /**
-   * Get the text, loading it if necessary
+   * Get the text, removing nodes if necessary. if the instance has the text.property set, returns it.
    *
+   *  @function
+   *  @memberOf CTS.text.Passage
+   *  @name getText
+   *
+   *  @param    {Array.<string>}   removedNodes   List of nodes' tagname to remove
+   *
+   *  @returns  {string}  Instance text
    */
-  var _getText = function() {
-    return this.text;
+  var _getText = function(removedNodes) {
+    var xml = this.document,
+        text;
+    if(this.text !== null) { return this.text; }
+    if(typeof removedNodes === "undefined") {
+      removedNodes = ["note", "bibl", "head"];
+    }
+
+    removedNodes.forEach(function(nodeName) { 
+      var elements = xml.getElementsByTagName(nodeName);
+      while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+    });
+
+    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
+    return text;
   }
 
   /**
    * Set the text for the Text instance
+   *
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name setText
    *
    * @param  text  {string}    Text embodied by object.urn
    *
@@ -508,52 +1132,37 @@
   /**
    * Load the text from the endpoint
    *
-   * @param  callback        {?function}    Function to call when text is retrieved
-   * @param  error_callback  {?function}    Function to call when an error occured
-   * @param  endpoint        {?string}      CTS API Endpoint
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name retrieve
+   *
+   * @param  options.success   {?function}    Function to call when text is retrieved
+   * @param  options.error     {?function}    Function to call when an error occured
+   * @param  options.endpoint  {?string}      CTS API Endpoint
    *
    */
-  var _retrieve = function(callback, error_callback, endpoint) {
+  var _retrieve = function(options) {
     var _this = this,
         url;
-    // If the callback is the endpoint
-    if (typeof callback === "string") {
-      endpoint = CTS.utils.checkEndpoint(callback);
-      callback = null;
-    } else if (typeof error_callback === "string") {
-      endpoint = CTS.utils.checkEndpoint(error_callback);
-      error_callback = null;
-    } else if(typeof endpoint !== "string") {
-      if(_this.endpoint === null && _this.rest !== true) {
-        throw "No endpoint given";
-      }
-      endpoint = _this.endpoint;
-    } 
-    if (typeof callback !== "function") {
-      callback = null;
-    }
 
-    if(_this.rest === true) {
-      url = _this.urn;
+    if(typeof options === "undefined") { options = {}; }
+    if(typeof options.endpoint === "undefined") {
+      endpoint = this.endpoint;
     } else {
-      url = endpoint + "request=GetPassage&inv=" + _this.inventory + "&urn=" + _this.urn;
+      endpoint = CTS.utils.checkEndpoint(options.endpoint);
     }
 
-    try {
-      CTS.utils.xhr("GET", url, {
-        callback : function(data) {
-          _this.xml = data;
-          _this.document = (new DOMParser()).parseFromString(data, "text/xml");
-          if(callback) { callback(data); }
-        },
-        type : "text", 
-        error_callback : error_callback
-      });
-    } catch (e) {
-      if(typeof error_callback === "function") {
-        error_callback(e);
-      }
-    }
+    endpoint.getPassage(this.urn, {
+      inventory : this.inventory,
+      success : function(data) {
+        _this.xml = data;
+        _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+        if(typeof options.success === "function") { options.success(data); }
+      
+      },
+      type : "plain/text",
+      error : options.error
+    });
 
     //And here we should load the stuff through cts.utils.ajax
   }
@@ -561,7 +1170,11 @@
   /**
    * Check if the body of the XML is not empty
    *
-   * @return  {boolean} Indicator of success
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name getXML
+   *
+   * @returns  {boolean}  Boolean indecating if we got xml or not.
    *
    */
   var _checkXML = function() {
@@ -584,10 +1197,14 @@
   /**
    *  Gets the xml using the URN
    *
+   * @function
+   * @memberOf CTS.text.Passage
+   * @name getXml
+   *
    *  @param  elementName  {?string}  The name of the element to retrieve. Should be null to access format and still get whole document
    *  @param  format       {?string}  Type of data to retrieve. Default : xml. Available : xml, string
    *
-   *  @return      {Document|string}  Asked dom
+   *  @returns      {Document|string}  Asked dom
    *
    */
   var _getXml = function(elementName, format) {
@@ -623,20 +1240,22 @@
   /**
    * Create a Passage object representing part of a full text
    *
-   * @param  urn        {string}             URN identifying the text
-   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
-   * @param  inventory  {?inventory}         Inventory Identifier
+   * @constructor
+   * @memberOf CTS.text
+   *
+   * @param  urn        {string}                           URN identifying the text
+   * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
+   * @param  inventory  {?inventory}                       Inventory Identifier
+   *
+   * @property  {Document}               document   The XML document representing the passage
+   * @property  {string}                 xml        String representation of the XML representing the passage
+   * @property  {string}                 text       Text of the passage
+   * @property  {string}                 urn        URN identifying the passage
+   * @property  {?inventory}             inventory  Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}  endpoint  Endpoint to get the text
    *
    */
   CTS.text.Passage = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
-    if(typeof endpoint !== "string") {
-      endpoint = null;
-    }  
     if(typeof inventory !== "string") {
       inventory = null;
     }
@@ -646,10 +1265,9 @@
     //Strings
     this.xml = null;
     this.text = null;
-    this.rest = rest;
     this.urn = urn;
     this.inventory = inventory;
-    this.endpoint = endpoint;
+    this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.retrieve = _retrieve;
     this.setText = _setText;
@@ -661,41 +1279,174 @@
   /**
    * Create a text object representing either a passage or a full text
    *
-   * @param  urn        {string}             URN identifying the text
-   * @param  endpoint   {?string|boolean}    CTS API Endpoint. If false, it means the URN is a URI (Support for CTS REST)
-   * @param  inventory  {?inventory}         Inventory Identifier
+   * @constructor
+   * @memberOf CTS.text
+   * 
+   * @param  urn        {string}                           URN identifying the text
+   * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
+   * @param  inventory  {?inventory}                       Inventory Identifier
    *
+   * @property  {string}                                           urn               URN identifying the passage
+   * @property  {Object.<string, CTS.text.Passage}                 reffs             Passage and reffs
+   * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
+   * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
+   * @property  {?inventory}                                       inventory         Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}                            endpoint          Endpoint to get the text
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
-    var rest = false;
-    if(endpoint === false) {
-      //This means we have a uri instead of a urn
-      rest = true;
-    }
-    if(typeof endpoint !== "string") {
-      endpoint = null;
-    }  
     if(typeof inventory !== "string") {
       inventory = null;
     }
 
-    this.rest = rest;
-    this.urn = urn;
+    this.urn = urn.split(":").slice(0,4).join(":");
     this.inventory = inventory;
-    this.endpoint = endpoint;
+    this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
-    this.getPassage = function(ref1, ref2) {
-      if(typeof ref2 === "undefined") {
-        if(ref1.split("-").length == 2) {
-          ref1, ref2 = ref1.split("-");
+    this.validReffs = {}
+    this.passages = {}
+
+    /**
+     * Create a Passage urn given two lists of identifiers for start and end of the passage
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {string}           CTS Urn of the passage
+     */
+    this.makePassageUrn = function(start, end) {
+      if(typeof end === "undefined") { var end = []; }
+      var s = []
+      var e = []
+      for (var i = 0; i < start.length; i++) {
+        if(typeof start[i] === "undefined") {
+          break;
+        } else {
+          if(start[i].length > 0 || start[i] > 0) {
+            s.push(start[i]);
+          }
+        }
+      };
+
+      for (var i = 0; i < end.length; i++) {
+        if(i >= s.length) {
+          break;
+        }
+        if(typeof end[i] === "undefined") {
+          break;
+        } else {
+          if(end[i].length > 0 ||end[i] > 0) {
+            e.push(end[i]);
+          }
+        }
+      };
+
+      var ref = this.urn;
+      if(s.length > 0) {
+        ref = ref + ":" + s.join(".");
+
+        if(e.length == s.length) {
+          ref = ref + "-" + e.join(".");
         }
       }
-      return [ref1, ref2];
+      return ref;
     }
-    this.getValidReff = function() { throw "Not Implemented Yet"; }
+
+    /**
+     * Get the passage from a test
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {CTS.text.Passage}      Passage object 
+     */
+    this.getPassage = function(ref1, ref2) {
+      var ref = this.makePassageUrn(ref1, ref2);
+      if(this.passages[ref]) {
+        return this.passages[ref];
+      }
+      this.passages[ref] = new CTS.text.Passage(ref, this.endpoint, this.inventory);
+
+      return this.passages[ref];
+    }
+
+    /**
+     * Make a request for the first passage on the API
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
+     */ 
+    this.getFirstPassagePlus = function(options) {
+      var self = this;
+      options.endpoint = this.endpoint;
+      endpoint = CTS.utils.checkEndpoint(options.endpoint);
+      endpoint.getFirstPassagePlus(this.urn, {
+        inventory : this.inventory,
+        success : function(data) {
+          var xml = (new DOMParser()).parseFromString(data, "text/xml");
+          var ref = xml.getElementsByTagName("current")[0].textContent;
+          self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
+          self.passages[ref].document = xml;
+
+          if(typeof options.success === "function") { options.success(ref, self.passages[ref]); }
+        
+        },
+        type : "plain/text",
+        error : options.error
+      });
+    }
+    /**
+     * Make a getValidReff request
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.level    Level depth
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
+     */ 
+    this.getValidReff = function(options) {
+      var self = this;
+      if(typeof options.level === "undefined") { options.level = 1; }
+
+      //Need to copy the callback system
+      if(typeof self.validReffs[options.level] !== "undefined") {
+        if(typeof options.success === "function") {
+          options.success(self.validReffs[options.level]);
+        }
+        return;
+      } else {
+        self.endpoint.getValidReff(self.urn, {
+          inventory : self.inventory,
+          success : function(data) {
+            var urns = data.getElementsByTagName("reff")[0].getElementsByTagName("urn");
+            urns = [].map.call(urns, function(node) { return node.childNodes[0].nodeValue; });
+            var object = {}
+            urns.forEach(function(val) {
+              var s = val.split(":");
+              object[s[s.length - 1]] = val;
+            });
+            self.validReffs[options.level] = object;
+            if(typeof options.success === "function") {
+              options.success(object);
+            }
+          },
+          type : "text/xml",
+          error : options.error
+        })
+      }
+    }
   }  
 }));
+/**
+ * CTS.repository
+ *
+ * @module   CTS.repository
+ * 
+ * @requires CTS.utils
+ * @requires CTS.endpoint
+ * @requires CTS
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
+
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -706,15 +1457,35 @@
 }(function(CTS) {
 "use strict";
 
+  /**
+   *  @namespace CTS.repository
+   *  
+   */
   CTS.repository = {}
 
-  CTS.repository.prototypes = {}
+  /**
+   *  @namespace CTS.repository.Prototypes
+   */
+  CTS.repository.Prototypes = {}
 
   /**
    * Prototype for CTS Text (alias share practices between Edition and Translation)
-   * @param {string} type [description]
+   * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @param {string}   type  Type of Text
+   *  
+   *  @property  {string}                      urn                        URN of the Text
+   *  @property  {string}                      type                       Type of the Text
+   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.Text = function(type) {
+  CTS.repository.Prototypes.Text = function(type) {
     this.descriptions = {}
     this.titles = {}
     this.urn = "";
@@ -726,8 +1497,11 @@
 
     /**
      * Get the description
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getDesc  = function(lang) {
       if(lang === "undefined") {
@@ -740,8 +1514,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -756,8 +1533,19 @@
   /**
    * Prototype for CTS Work
    * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  @name  Work
+   *  
+   *  @property  {string}                                               urn             URN of the Work
+   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                               defaultLang     Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.Work>}               texts           Texts available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.Edition>}            editions        Editions available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.Translation>}        translations    Translations available in the inventory
    */
-  CTS.repository.prototypes.Work = function() {
+  CTS.repository.Prototypes.Work = function() {
     this.titles = {};
     this.urn = "";
     this.defaultLang = "";
@@ -769,8 +1557,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -783,10 +1574,13 @@
 
     /**
      * Convert the work into a Theoritical Text
-     * @type {CTS}
+     * 
+     *  @function
+     *  
+     *  @returns {CTS.repository.Prototypes.Text}  Actual Work into a theoretical text
      */
     this.toTheoretical = function() {
-      var theoretical = new CTS.repository.prototypes.Text();
+      var theoretical = new CTS.repository.Prototypes.Text();
       theoretical.urn = this.urn;
       theoretical.defaultLangLabel = this.defaultLang;
       theoretical.titles = this.titles;
@@ -798,8 +1592,15 @@
   /**
    * Prototype for CTS TextGroup
    * 
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @property  {string}                                       urn          URN of the TextGroup
+   *  @property  {Object.<string, string>}                      titles       <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                       defaultLang  Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.Work>}       works        Textgroup available in the inventory
    */
-  CTS.repository.prototypes.TextGroup = function() {
+  CTS.repository.Prototypes.TextGroup = function() {
     this.titles = {};
     this.urn = "";
     this.defaultLang = "";
@@ -807,8 +1608,11 @@
 
     /**
      * Get the title of the object
-     * @param  {?string} lang Lang wished
-     * @return {string}       Title of the object. Return default lang if lang not found
+     * 
+     *  @function
+     *  
+     *  @param  {?string} lang Lang wished
+     *  @returns {string}       Title of the object. Return default lang if lang not found
      */
     this.getTitle = function(lang) {
       if(lang === "undefined") {
@@ -824,9 +1628,16 @@
   /**
    * TextInventory Prototype
    * 
-   * @param {string} identifier Identifier, usually an URI
+   *  @constructor
+   *  @memberOf  CTS.repository.Prototypes
+   *  
+   *  @param     {string}                                            identifier  Identifier, usually an URI
+   *
+   *  @property  {string}                                            namespace   Namespace for nodes parsing
+   *  @property  {Node}                                              xml         XML node representing the TextInventory node
+   *  @property  {Array.<CTS.repository.Prototypes.TextGroup>}       textgroups  Textgroup available in the inventory
    */
-  CTS.repository.prototypes.TextInventory = function(identifier) {
+  CTS.repository.Prototypes.TextInventory = function(identifier) {
     this.identifier = identifier;
     this.namespace = "";
     this.textgroups = [];
@@ -835,9 +1646,11 @@
      * Get a N-Dimensional object corresponding to your TextInventory
      * Hierarchy as following : TextGroup > Work > Edition | Translation | Theoretical
      * 
-     * @param  {string}  lang        Lang to chose for titles (keys in the dictionary)
-     * @param  {boolean} theoretical Include theoretical works
-     * @return {Object}              Dictionary with hierarchy such as TextGroup > Work > Edition | Translation | Theoretical
+     *  @function
+     *  
+     *  @param   {string}  lang        Lang to chose for titles (keys in the dictionary)
+     *  @param   {boolean} theoretical Include theoretical works
+     *  @returns {Object}              Dictionary with hierarchy such as TextGroup > Work > Edition | Translation | Theoretical
      */
     this.getRaw = function(lang, theoretical) {
       if(typeof theoretical === "undefined") {
@@ -872,18 +1685,33 @@
    * CTS 3 Implementations
    */
 
-  //Namespace
-  CTS.repository.prototypes.cts3 = {};
+  /**
+   *  @namespace CTS.repository.Prototypes.cts3
+   */
+  CTS.repository.Prototypes.cts3 = {};
 
   /**
    * Instantiate CTS Text from CTS3 XML (CTS Text is the abstract model shared by Edition and Translation)
-   * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   type  Type of Text
-   * @param {string}   urn   URN of the parent
+   *
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   type  Type of Text
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Text
+   *  @property  {string}                      type                       Type of the Text
+   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Text = function (nodes, type, urn) {
-    CTS.repository.prototypes.Text.call(this, type);
+  CTS.repository.Prototypes.cts3.Text = function (nodes, type, urn) {
+    CTS.repository.Prototypes.Text.call(this, type);
 
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
@@ -903,44 +1731,80 @@
       this.titles[this.defaultLangLabel] = labels[i].textContent;
     };
   }
-  CTS.repository.prototypes.cts3.Text.prototype = Object.create(CTS.repository.prototypes.Text.prototype)
+  CTS.repository.Prototypes.cts3.Text.prototype = Object.create(CTS.repository.Prototypes.Text.prototype)
 
   /**
    * Instantiate CTS Edition from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
-   * @param {lang}     lang  Lang of the text
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  @param {lang}     lang  Lang of the text
+   *  
+   *  @property  {string}                      urn                        URN of the Edition
+   *  @property  {string}                      lang                       Lang of the Edition
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Edition = function(nodes, urn, lang) {
-    CTS.repository.prototypes.cts3.Text.call(this, nodes, "edition", urn);
+  CTS.repository.Prototypes.cts3.Edition = function(nodes, urn, lang) {
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "edition", urn);
     //Edition have the lang from their parent
     this.lang = lang;
   }
-  CTS.repository.prototypes.cts3.Edition.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
+  CTS.repository.Prototypes.cts3.Edition.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
   /**
    * Instantiate CTS Translation from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.Text
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Translation
+   *  @property  {string}                      lang                       Lang of the Translation
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.prototypes.cts3.Translation = function(nodes, urn) {
-    CTS.repository.prototypes.cts3.Text.call(this, nodes, "translation", urn);
+  CTS.repository.Prototypes.cts3.Translation = function(nodes, urn) {
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "translation", urn);
     //Translation get their lang from their body
     this.lang = nodes.getAttribute("xml:lang");
   }
-  CTS.repository.prototypes.cts3.Translation.prototype = Object.create(CTS.repository.prototypes.cts3.Text.prototype)
+  CTS.repository.Prototypes.cts3.Translation.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
 
   /**
    * Instantiate CTS Work from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
-   * @param {string}   urn   URN of the parent
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Work
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                                               urn             URN of the Work
+   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                               defaultLang     Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Text>}          texts           Texts available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Edition>}       editions        Editions available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Translation>}   translations    Translations available in the inventory
    */
-  CTS.repository.prototypes.cts3.Work = function(nodes, urn) {
-    CTS.repository.prototypes.Work.call(this);
+  CTS.repository.Prototypes.cts3.Work = function(nodes, urn) {
+    CTS.repository.Prototypes.Work.call(this);
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
     this.lang = nodes.getAttribute("xml:lang");
 
@@ -953,25 +1817,34 @@
 
     var editions = nodes.getElementsByTagName("edition");
     for (var i = editions.length - 1; i >= 0; i--) {
-      this.editions.push(new CTS.repository.prototypes.cts3.Edition(editions[i], this.urn, this.lang));
+      this.editions.push(new CTS.repository.Prototypes.cts3.Edition(editions[i], this.urn, this.lang));
     };
 
     var translations = nodes.getElementsByTagName("translation");
     for (var i = translations.length - 1; i >= 0; i--) {
-      this.translations.push(new CTS.repository.prototypes.cts3.Translation(translations[i], this.urn));
+      this.translations.push(new CTS.repository.Prototypes.cts3.Translation(translations[i], this.urn));
     };
 
     this.texts = this.translations.concat(this.editions);
   }
-  CTS.repository.prototypes.cts3.Work.prototype = Object.create(CTS.repository.prototypes.Work.prototype)
+  CTS.repository.Prototypes.cts3.Work.prototype = Object.create(CTS.repository.Prototypes.Work.prototype)
 
   /**
    * Instantiate CTS TextGroup from CTS3 XML
    * 
-   * @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.TextGroup
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *
+   *  @property  {string}                                       urn          URN of the TextGroup
+   *  @property  {Object.<string, string>}                      titles       <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                       defaultLang  Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.Work>}  works        Textgroup available in the inventory
    */
-  CTS.repository.prototypes.cts3.TextGroup = function(nodes) {
-    CTS.repository.prototypes.TextGroup.call(this);
+  CTS.repository.Prototypes.cts3.TextGroup = function(nodes) {
+    CTS.repository.Prototypes.TextGroup.call(this);
     this.urn = "urn:cts:" + nodes.getAttribute("projid");
 
     // We get the labels
@@ -983,20 +1856,28 @@
 
     var works = nodes.getElementsByTagName("work");
     for (var i = works.length - 1; i >= 0; i--) {
-      this.works.push(new CTS.repository.prototypes.cts3.Work(works[i], this.urn))
+      this.works.push(new CTS.repository.Prototypes.cts3.Work(works[i], this.urn))
     };
   }
-  CTS.repository.prototypes.cts3.TextGroup.prototype = Object.create(CTS.repository.prototypes.TextGroup.prototype)
+  CTS.repository.Prototypes.cts3.TextGroup.prototype = Object.create(CTS.repository.Prototypes.TextGroup.prototype)
 
   /**
    * Instantiate CTS TextInventory from CTS3 XML
    * 
-   * @param {document} xml          Parsed XML representing the inventory
-   * @param {string}   namespace    Namespace to use
-   * @param {string}   identifier   Identifier, usually an URI
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts3.TextInventory
+   *  @memberOf  CTS.repository.Prototypes.cts3
+   *  
+   *  @param {document} xml          Parsed XML representing the inventory
+   *  @param {string}   namespace    Namespace to use
+   *  @param {string}   identifier   Identifier, usually an URI
+   *
+   *  @property  {string}                                            namespace   Namespace for nodes parsing
+   *  @property  {Node}                                              xml         XML node representing the TextInventory node
+   *  @property  {Array.<CTS.repository.Prototypes.cts3.TextGroup>}  textgroups  Textgroup available in the inventory
    */
-  CTS.repository.prototypes.cts3.TextInventory = function(xml, namespace, identifier) {
-    CTS.repository.prototypes.TextInventory.call(this, identifier);
+  CTS.repository.Prototypes.cts3.TextInventory = function(xml, namespace, identifier) {
+    CTS.repository.Prototypes.TextInventory.call(this, identifier);
     this.xml = xml;
     this.namespace = namespace;
     this.xml = this.xml.getElementsByTagNameNS(this.namespace, "TextInventory");
@@ -1004,11 +1885,12 @@
     if(this.xml.length == 1) {
       var textgroups = this.xml[0].getElementsByTagNameNS(this.namespace, "textgroup");
       for (var i = textgroups.length - 1; i >= 0; i--) {
-        this.textgroups.push(new CTS.repository.prototypes.cts3.TextGroup(textgroups[i]))
+        this.textgroups.push(new CTS.repository.Prototypes.cts3.TextGroup(textgroups[i]))
       };
     }
   }
-  CTS.repository.prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.prototypes.TextInventory.prototype)
+  CTS.repository.Prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.Prototypes.TextInventory.prototype)
+
 
   /**
    * Repository Object
@@ -1018,9 +1900,12 @@
 
   /**
    * Set the endpoint URL of the object
-   *
-   *  @param    {list|string}  url  A url for the repository
-   *
+   * 
+   *  @memberOf  CTS.repository.repository
+   *  @name setEndpoint
+   *  @method
+   *  
+   *  @param    {Array.<string>}  url  A url for the repository
    */
   var _setEndpoint = function(url) {
     if(typeof url === "string") {
@@ -1033,8 +1918,11 @@
   /**
    * Set the inventories
    *
+   *  @memberOf  CTS.repository.repository
+   *  @name setInventory
+   *  @method
+   *  
    *  @param  {dict}  dict  A dictionary where keys are inventory's name and value a label
-   *
    */
 
   var _setInventory = function(dict) {
@@ -1044,8 +1932,12 @@
   /**
    * Add an inventory to the Repository Object
    * 
-   * @param {string}  name  Database name of the inventory
-   * @param {?string} label Pretty name for UI (optional)
+   *  @memberOf  CTS.repository.repository
+   *  @name addInventory
+   *  @method
+   * 
+   *  @param  {string}   name   Database name of the inventory
+   *  @param  {?string}  label  Pretty name for UI (optional)
    */
   var _addInventory = function(name, label) {
     if(typeof name === "string") {
@@ -1062,7 +1954,11 @@
   /**
    * Remove an inventory
    * 
-   * @param  {string} name Database name of the inventory
+   *  @memberOf  CTS.repository.repository
+   *  @name delInventory
+   *  @method
+   *  
+   *  @param  {string} name Database name of the inventory
    */
   var _delInventory = function(name) {
     if(typeof name === "string" && name in self.inventory) {
@@ -1075,9 +1971,13 @@
   /**
    * Get the repository from source url
    *
-   * @param  {?function}       callback        Function to call when data are loaded
-   * @param  {?function}       error_callback  Function to call when data are not loaded
-   * @param  {?list}           inventory_name  Name of the inventory to load
+   *  @memberOf  CTS.repository.repository
+   *  @name load
+   *  @method
+   *  
+   *  @param  {?function}                callback        Function to call when data are loaded
+   *  @param  {?function}                error_callback  Function to call when data are not loaded
+   *  @param  {?Array.<string>}           inventory_name  Name of the inventory to load
    *
    */
   var _load = function(callback, error_callback, inventories) {
@@ -1098,30 +1998,38 @@
       var error_callback = function(e) { return; };
     }
 
-    xhr("GET", endpoint + "request=GetCapabilities&inv=" + inventories[0], 
-      {
-        callback : function(data) {
-          _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
-          if(inventories.length === 1) {
-            if(callback !== null) { callback(); }
-          } else {
-            inventories.shift();
-            _this.load(callback, error_callback, inventories);
-          }
-        },
-        type : "text/xml", 
-        error_callback : error_callback
-      });
+    this.endpoint.getCapabilities(inventories[0], {
+      success : function(data) {
+        _this.inventories[inventories[0]] = new _this.TextInventory(data, _this.namespace, inventories[0]);
+        if(inventories.length === 1) {
+          if(callback !== null) { callback(); }
+        } else {
+          inventories.shift();
+          _this.load(callback, error_callback, inventories);
+        }
+      },
+      error   : error_callback,
+      type    : "text/xml"
+    });
 
     return this;
   }
 
   /**
    * CTS Repository object
-   * 
-   * @param  {string}  endpoint  Endpoint of the repository
-   * @param  {integer} version   Version used by CTS API
-   * @param  {string}  namespace Namespace for xml nodes
+   *
+   *  @constructor
+   *  @memberOf  CTS.repository
+   *  
+   *  @param  {string}  endpoint  Endpoint of the repository
+   *  @param  {integer} version   Version used by CTS API
+   *  @param  {string}  namespace Namespace for xml nodes
+   *
+   *  @property  {integer}                version      Version used by CTS API
+   *  @property  {namespace}              namespace    Namespace used for XML parsing
+   *  @property  {dict}                   inventory    Dictionaries of inventory's label
+   *  @property  {dict}                   inventories  Dictionaries of inventory object
+   *  @property  {CTS.endpoint.Endpoint}  endpoint     Endpoint instance where the repository should make request
    * 
    */
   CTS.repository.repository = function (endpoint, version, namespace) {
@@ -1149,10 +2057,119 @@
       this.delInventory = _delInventory;
       this.load = _load;
 
-      this.TextInventory = CTS.repository.prototypes["cts"+this.version].TextInventory;
+      /**
+       * Converts a json Object to CTS Abstractions
+       * @param  {Object.<string, Object>} object List of inventories
+       */
+      this.fromObject = function(object) {
+        var self = this;
+        Object.keys(object).forEach(function(inventory_name) {
+          self.inventories[inventory_name] = CTS.repository.helpers.TextInventory(object[inventory_name]);
+          self.inventory[inventory_name] = inventory_name;
+        })
+      }
+
+      this.TextInventory = CTS.repository.Prototypes["cts"+this.version].TextInventory;
+  }
+
+  /**
+   * @namespace CTS.repository.helpers
+   * @memberof CTS.repository
+   */
+  CTS.repository.helpers = {}
+
+  /**
+   * Create a Text object given a Text structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.Prototypes.Work}  
+   */
+  CTS.repository.helpers.Text = function(object) {
+    var text = new CTS.repository.Prototypes.Text();
+    Object.keys(object).forEach(function(key) {
+      text[key] = object[key];
+    });
+    return text;
+  }
+
+  /**
+   * Create a Work object given a Work structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.Prototypes.Work}  
+   */
+  CTS.repository.helpers.Work = function(object) {
+    var work = new CTS.repository.Prototypes.Work();
+    Object.keys(object).forEach(function(key) {
+      if(key === "editions" || key === "translations" || key === "texts") {
+        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
+      } else {
+        work[key] = object[key];
+      }
+    });
+    return work;
+  }
+
+  /**
+   * Create a TextGroup object given a TextGroup structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.TextInventory}  
+   */
+  CTS.repository.helpers.TextGroup = function(object) {
+    var textgroup = new CTS.repository.Prototypes.TextGroup();
+    Object.keys(object).forEach(function(key) {
+      if(key !== "works") {
+        textgroup[key] = object[key];
+      } else {
+        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
+      }
+    });
+    return textgroup;
+  }
+  
+  /**
+   * Create a TextInventory object given a TextInventory structure (Like angular-local-storage cached data, without functions)
+   *
+   * @memberOf CTS.repository.helpers
+   * 
+   * @param   {Object.<string, Any>} object  An object with data
+   * @returns {CTS.repository.TextInventory}  
+   */
+  CTS.repository.helpers.TextInventory = function(object) {
+    var inventory = new CTS.repository.Prototypes.TextInventory();
+    Object.keys(object).forEach(function(key) {
+      if(key !== "textgroups") {
+        inventory[key] = object[key];
+      } else {
+        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
+      }
+    });
+    return inventory;
   }
 
 }));
+/**
+ * CTS.lang
+ *
+ * @module   CTS.lang
+ * 
+ * @requires CTS.utils
+ * @requires CTS
+ * 
+ * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @author PonteIneptique (Thibault Clérice)
+ * @version 1.0.0
+ * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
+ *
+ */
+
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -1163,6 +2180,25 @@
 }(function(CTS) {
   "use strict";
 
+  /**
+   * Get the given work into a given language
+   *
+   * @name get
+   * @memberOf CTS.lang
+   * @function
+   * 
+   * @param   {string}   word  Word identifier to get
+   * @param   {?string}  lang  Lang code (Default is English)
+   * @returns {string}         The pretty words to print
+   * 
+   * @example  Using dictionary example given for {@link CTS.lang.lexicons}
+   * CTS.lang.get("cat")
+   * // Returns cat
+   * CTS.lang.get("cat", "fr")
+   * // Returns Chat
+   * CTS.lang.get("object", "fr")
+   * // Return Object
+   */
   var _translate = function(word, lang) {
     if(typeof lang === "undefined" || !(lang in CTS.lang.lexicons)) {
       lang = "en";
@@ -1174,8 +2210,21 @@
 
   }
 
+  /**
+   * @namespace CTS.lang
+   * @name CTS.lang
+   */
   CTS.lang = {
     get : _translate,
+    /**
+     * Dictionary of lexicons
+     *
+     * @example {en : {"object" : "Object", "cat" : "Cat"}, "fr" : {"cat" : "Chat"}}
+     *
+     * @name lexicons
+     * @memberOf CTS.lang
+     * @type {Object.<string, Object<string, string>>}
+     */
     lexicons : {}
   }
 }));
@@ -1245,6 +2294,106 @@
     }
   }
   CTS.service.services["llt.tokenizer"].prototype = Object.create(CTS.service._service)
+
+}));
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['cts'], factory);
+  } else {
+    factory(CTS);
+  }
+}(function(CTS) {
+
+  /**
+   * Helper to use same object type to make request to an unknown type of API using only one url
+   * 
+   * @param  {string}   api_endpoint  URL of the API endpoint
+   * @param  {?string}  inventory     Default inventory
+   *
+   */
+  CTS.endpoint.simpleUrl = function(api_endpoint, inventory) {
+    CTS.endpoint.Endpoint.call(this);
+
+    this.url = api_endpoint;
+    this.inventory = (typeof inventory !== "undefined") ? inventory : null;
+
+    /**
+     * Small helper to create urls
+     * @param {object}  params  Object representing parameters name
+     */
+    this.getUrl = function(params) {
+      return this.url;
+    }
+
+    /**
+     * Create the GetCapabilities URL
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getCapabilitiesURL = function(inventory) {
+      return this.getUrl();
+    }
+
+    /**
+     * Do a GetCapabilities request
+     * @param {?string}    inventory         Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getCapabilities = function(inventory, options) {
+      this.getRequest(this.url, options);
+    }
+
+    /**
+     * Create the GetPassage URL
+     * @param  {urn}     urn       Urn of the Text's passage
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassageURL = function(urn, inventory) {
+      return this.getUrl();
+    }
+
+    /**
+     * Do a GetPassage request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getPassage = function(urn, options) {
+      this.getRequest(this.url, options);
+    }
+
+    /**
+     * Create the GetValidReff URL
+     * @param  {string}    urn                Urn of the text's passage
+     * @param  {?string}   options.level      Level of reference to retrieve
+     * @param  {?string}   options.inventory  Name of the inventory
+     * 
+     * @returns {string}                       URL of the request
+     */
+    this.getValidReffURL = function(urn, options) {
+      return this.getUrl();
+    }
+
+    /**
+     * Do a GetValidReff request
+     * 
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.level     Level of reference to retrieve
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getValidReff = function(urn, options) {
+      this.getRequest(this.url, options);
+    }
+  }
+  CTS.endpoint.simpleUrl.prototype = Object.create(CTS.endpoint.Endpoint);
 
 }));
 (function (factory) {

@@ -31,16 +31,31 @@
   CTS.text = {};
 
   /**
-   * Get the text, loading it if necessary
+   * Get the text, removing nodes if necessary. if the instance has the text.property set, returns it.
    *
    *  @function
    *  @memberOf CTS.text.Passage
    *  @name getText
    *
+   *  @param    {Array.<string>}   removedNodes   List of nodes' tagname to remove
+   *
    *  @returns  {string}  Instance text
    */
-  var _getText = function() {
-    return this.text;
+  var _getText = function(removedNodes) {
+    var xml = this.document,
+        text;
+    if(this.text !== null) { return this.text; }
+    if(typeof removedNodes === "undefined") {
+      removedNodes = ["note", "bibl", "head"];
+    }
+
+    removedNodes.forEach(function(nodeName) { 
+      var elements = xml.getElementsByTagName(nodeName);
+      while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+    });
+
+    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
+    return text;
   }
 
   /**
@@ -214,28 +229,148 @@
    * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
    * @param  inventory  {?inventory}                       Inventory Identifier
    *
-   * @property  {string}                 urn        URN identifying the passage
-   * @property  {?inventory}             inventory  Inventory containing the text
-   * @property  {CTS.endpoint.Endpoint}  endpoint  Endpoint to get the text
+   * @property  {string}                                           urn               URN identifying the passage
+   * @property  {Object.<string, CTS.text.Passage>}                 reffs             Passage and reffs
+   * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
+   * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
+   * @property  {?inventory}                                       inventory         Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}                            endpoint          Endpoint to get the text
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
     if(typeof inventory !== "string") {
       inventory = null;
     }
 
-    this.urn = urn;
+    this.urn = urn.split(":").slice(0,4).join(":");
     this.inventory = inventory;
     this.endpoint = CTS.utils.checkEndpoint(endpoint);
     //Functions
     this.reffs = {}
-    this.getPassage = function(ref1, ref2) {
-      if(typeof ref2 === "undefined") {
-        if(ref1.split("-").length == 2) {
-          ref1, ref2 = ref1.split("-");
+    this.validReffs = {}
+    this.passages = {}
+
+    /**
+     * Create a Passage urn given two lists of identifiers for start and end of the passage
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {string}           CTS Urn of the passage
+     */
+    this.makePassageUrn = function(start, end) {
+      if(typeof end === "undefined") { var end = []; }
+      var s = []
+      var e = []
+      for (var i = 0; i < start.length; i++) {
+        if(typeof start[i] === "undefined") {
+          break;
+        } else {
+          if(start[i].length > 0 || start[i] > 0) {
+            s.push(start[i]);
+          }
+        }
+      };
+
+      for (var i = 0; i < end.length; i++) {
+        if(i >= s.length) {
+          break;
+        }
+        if(typeof end[i] === "undefined") {
+          break;
+        } else {
+          if(end[i].length > 0 ||end[i] > 0) {
+            e.push(end[i]);
+          }
+        }
+      };
+
+      var ref = this.urn;
+      if(s.length > 0) {
+        ref = ref + ":" + s.join(".");
+
+        if(e.length == s.length) {
+          ref = ref + "-" + e.join(".");
         }
       }
-      return [ref1, ref2];
+      return ref;
     }
-    this.getValidReff = function() { throw "Not Implemented Yet"; }
+
+    /**
+     * Get the passage from a test
+     * @param  {Array.Any} start  Array representation of the passage's start
+     * @param  {Array.Any} end    Array representation of the passage's end
+     * @returns {CTS.text.Passage}      Passage object 
+     */
+    this.getPassage = function(ref1, ref2) {
+      var ref = this.makePassageUrn(ref1, ref2);
+      if(this.passages[ref]) {
+        return this.passages[ref];
+      }
+      this.passages[ref] = new CTS.text.Passage(ref, this.endpoint, this.inventory);
+
+      return this.passages[ref];
+    }
+
+    /**
+     * Make a request for the first passage on the API
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
+     */ 
+    this.getFirstPassagePlus = function(options) {
+      var self = this;
+      options.endpoint = this.endpoint;
+      endpoint = CTS.utils.checkEndpoint(options.endpoint);
+      endpoint.getFirstPassagePlus(this.urn, {
+        inventory : this.inventory,
+        success : function(data) {
+          var xml = (new DOMParser()).parseFromString(data, "text/xml");
+          var ref = xml.getElementsByTagName("current")[0].textContent;
+          self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
+          self.passages[ref].document = xml;
+
+          if(typeof options.success === "function") { options.success(ref, self.passages[ref]); }
+        
+        },
+        type : "plain/text",
+        error : options.error
+      });
+    }
+    /**
+     * Make a getValidReff request
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.level    Level depth
+     * @param  {function}                  options.success  Success callback (Pass the urn and the Passage as arguments)
+     * @param  {function}                  options.error    Error Callback
+     */ 
+    this.getValidReff = function(options) {
+      var self = this;
+      if(typeof options.level === "undefined") { options.level = 1; }
+
+      //Need to copy the callback system
+      if(typeof self.validReffs[options.level] !== "undefined") {
+        if(typeof options.success === "function") {
+          options.success(self.validReffs[options.level]);
+        }
+        return;
+      } else {
+        self.endpoint.getValidReff(self.urn, {
+          inventory : self.inventory,
+          success : function(data) {
+            var urns = data.getElementsByTagName("reff")[0].getElementsByTagName("urn");
+            urns = [].map.call(urns, function(node) { return node.childNodes[0].nodeValue; });
+            var object = {}
+            urns.forEach(function(val) {
+              var s = val.split(":");
+              object[s[s.length - 1]] = val;
+            });
+            self.validReffs[options.level] = object;
+            if(typeof options.success === "function") {
+              options.success(object);
+            }
+          },
+          type : "text/xml",
+          error : options.error
+        })
+      }
+    }
   }  
 }));
