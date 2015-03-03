@@ -283,7 +283,6 @@ describe( "Testing CTS Texts functions", function () {
     	  expect(successFN2).toHaveBeenCalled();
     	});
 			
-//http://sosol.perseids.org/exist/rest/db/xq/CTS.xq?request=GetValidReff&inv=annotsrc&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1
 		});
 
   });
