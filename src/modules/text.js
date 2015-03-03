@@ -230,7 +230,7 @@
    * @param  inventory  {?inventory}                       Inventory Identifier
    *
    * @property  {string}                                           urn               URN identifying the passage
-   * @property  {Object.<string, CTS.text.Passage}                 reffs             Passage and reffs
+   * @property  {Object.<string, CTS.text.Passage>}                 reffs             Passage and reffs
    * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
    * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
    * @property  {?inventory}                                       inventory         Inventory containing the text
