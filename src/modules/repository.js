@@ -45,7 +45,7 @@
    *  
    *  @property  {string}                      urn                        URN of the Text
    *  @property  {string}                      type                       Type of the Text
-   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {string}                      lang                       Lang of the Text
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -105,7 +105,7 @@
    *  @name  Work
    *  
    *  @property  {string}                                               urn             URN of the Work
-   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {string}                                               lang            Lang of the Work
    *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                                               defaultLang     Default lang to use to display title
    *  @property  {Array.<CTS.repository.Prototypes.Work>}               texts           Texts available in the inventory
@@ -270,7 +270,7 @@
    *  
    *  @property  {string}                      urn                        URN of the Text
    *  @property  {string}                      type                       Type of the Text
-   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {string}                      lang                       Lang of the Text
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -312,7 +312,7 @@
    *  @param {lang}     lang  Lang of the text
    *  
    *  @property  {string}                      urn                        URN of the Edition
-   *  @property  {string}                      lang                       Lang of the Edition
+   *  @property  {string}                      lang                       Lang of the Edition
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -337,7 +337,7 @@
    *  @param {string}   urn   URN of the parent
    *  
    *  @property  {string}                      urn                        URN of the Translation
-   *  @property  {string}                      lang                       Lang of the Translation
+   *  @property  {string}                      lang                       Lang of the Translation
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -363,7 +363,7 @@
    *  @param {string}   urn   URN of the parent
    *  
    *  @property  {string}                                               urn             URN of the Work
-   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {string}                                               lang            Lang of the Work
    *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                                               defaultLang     Default lang to use to display title
    *  @property  {Array.<CTS.repository.Prototypes.cts3.Text>}          texts           Texts available in the inventory
@@ -672,8 +672,8 @@
   CTS.repository.helpers.Work = function(object) {
     var work = new CTS.repository.Prototypes.Work();
     Object.keys(object).forEach(function(key) {
-      if(key === "editions" || key === "translations" || key === "texts") {
-        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
+      if(key === "editions" || key === "translations" || key === "texts") {
+        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
       } else {
         work[key] = object[key];
       }
@@ -695,7 +695,7 @@
       if(key !== "works") {
         textgroup[key] = object[key];
       } else {
-        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
+        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
       }
     });
     return textgroup;
@@ -715,7 +715,7 @@
       if(key !== "textgroups") {
         inventory[key] = object[key];
       } else {
-        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
+        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
       }
     });
     return inventory;

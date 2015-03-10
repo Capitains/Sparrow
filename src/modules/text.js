@@ -54,7 +54,7 @@
       while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
     });
 
-    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
+    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
     return text;
   }
 
@@ -263,7 +263,7 @@
         if(typeof start[i] === "undefined") {
           break;
         } else {
-          if(start[i].length > 0 || start[i] > 0) {
+          if(start[i].length > 0 || start[i] > 0) {
             s.push(start[i]);
           }
         }

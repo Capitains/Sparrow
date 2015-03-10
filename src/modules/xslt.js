@@ -153,7 +153,7 @@
       this.load();
     }
     processor = this.processor;
-    if(typeof xml === "string") {
+    if(typeof xml === "string") {
       xml = (new DOMParser()).parseFromString(xml,"text/xml");
     }
     values = this.getValues();
