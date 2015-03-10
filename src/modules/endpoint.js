@@ -169,7 +169,7 @@
   CTS.endpoint.XQ = function(api_endpoint, inventory) {
     CTS.endpoint.Endpoint.call(this);
 
-    if(api_endpoint.slice(-1) !== "?") { api_endpoint = api_endpoint + "?"; }
+    if(api_endpoint.slice(-1) !== "?") { api_endpoint = api_endpoint + "?"; }
     this.url = api_endpoint;
 
     this.inventory = (typeof inventory !== "undefined") ? inventory : null;
@@ -200,7 +200,7 @@
       var params = {
         request : "GetCapabilities"
       }
-      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
         params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -234,7 +234,7 @@
         request : "GetPassage",
         urn : urn
       }
-      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
         params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -273,7 +273,7 @@
       if(typeof options.level !== "undefined") {
         params.level = options.level;
       }
-      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -295,7 +295,7 @@
       if(typeof options === "undefined") {
         options = {};
       }
-      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);

@@ -623,7 +623,7 @@
       this.load();
     }
     processor = this.processor;
-    if(typeof xml === "string") {
+    if(typeof xml === "string") {
       xml = (new DOMParser()).parseFromString(xml,"text/xml");
     }
     values = this.getValues();
@@ -882,7 +882,7 @@
   CTS.endpoint.XQ = function(api_endpoint, inventory) {
     CTS.endpoint.Endpoint.call(this);
 
-    if(api_endpoint.slice(-1) !== "?") { api_endpoint = api_endpoint + "?"; }
+    if(api_endpoint.slice(-1) !== "?") { api_endpoint = api_endpoint + "?"; }
     this.url = api_endpoint;
 
     this.inventory = (typeof inventory !== "undefined") ? inventory : null;
@@ -913,7 +913,7 @@
       var params = {
         request : "GetCapabilities"
       }
-      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
         params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -947,7 +947,7 @@
         request : "GetPassage",
         urn : urn
       }
-      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
         params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -986,7 +986,7 @@
       if(typeof options.level !== "undefined") {
         params.level = options.level;
       }
-      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -1008,7 +1008,7 @@
       if(typeof options === "undefined") {
         options = {};
       }
-      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
+      if((typeof options.inventory !== "undefined" && options.inventory !== null) || this.inventory !== null) {
         params.inv = (typeof options.inventory !== "undefined" && options.inventory !== null) ? options.inventory : this.inventory;
       }
       return this.getUrl(params);
@@ -1111,7 +1111,7 @@
       while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
     });
 
-    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
+    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
     return text;
   }
 
@@ -1287,7 +1287,7 @@
    * @param  inventory  {?inventory}                       Inventory Identifier
    *
    * @property  {string}                                           urn               URN identifying the passage
-   * @property  {Object.<string, CTS.text.Passage}                 reffs             Passage and reffs
+   * @property  {Object.<string, CTS.text.Passage>}                 reffs             Passage and reffs
    * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
    * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
    * @property  {?inventory}                                       inventory         Inventory containing the text
@@ -1320,7 +1320,7 @@
         if(typeof start[i] === "undefined") {
           break;
         } else {
-          if(start[i].length > 0 || start[i] > 0) {
+          if(start[i].length > 0 || start[i] > 0) {
             s.push(start[i]);
           }
         }
@@ -1478,7 +1478,7 @@
    *  
    *  @property  {string}                      urn                        URN of the Text
    *  @property  {string}                      type                       Type of the Text
-   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {string}                      lang                       Lang of the Text
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -1538,7 +1538,7 @@
    *  @name  Work
    *  
    *  @property  {string}                                               urn             URN of the Work
-   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {string}                                               lang            Lang of the Work
    *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                                               defaultLang     Default lang to use to display title
    *  @property  {Array.<CTS.repository.Prototypes.Work>}               texts           Texts available in the inventory
@@ -1703,7 +1703,7 @@
    *  
    *  @property  {string}                      urn                        URN of the Text
    *  @property  {string}                      type                       Type of the Text
-   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {string}                      lang                       Lang of the Text
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -1745,7 +1745,7 @@
    *  @param {lang}     lang  Lang of the text
    *  
    *  @property  {string}                      urn                        URN of the Edition
-   *  @property  {string}                      lang                       Lang of the Edition
+   *  @property  {string}                      lang                       Lang of the Edition
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -1770,7 +1770,7 @@
    *  @param {string}   urn   URN of the parent
    *  
    *  @property  {string}                      urn                        URN of the Translation
-   *  @property  {string}                      lang                       Lang of the Translation
+   *  @property  {string}                      lang                       Lang of the Translation
    *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                      defaultLangLabel           Default lang to use to display title
    *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
@@ -1796,7 +1796,7 @@
    *  @param {string}   urn   URN of the parent
    *  
    *  @property  {string}                                               urn             URN of the Work
-   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {string}                                               lang            Lang of the Work
    *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
    *  @property  {string}                                               defaultLang     Default lang to use to display title
    *  @property  {Array.<CTS.repository.Prototypes.cts3.Text>}          texts           Texts available in the inventory
@@ -2105,8 +2105,8 @@
   CTS.repository.helpers.Work = function(object) {
     var work = new CTS.repository.Prototypes.Work();
     Object.keys(object).forEach(function(key) {
-      if(key === "editions" || key === "translations" || key === "texts") {
-        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
+      if(key === "editions" || key === "translations" || key === "texts") {
+        work[key] = object[key].map(function(text) { return CTS.repository.helpers.Text(text)});
       } else {
         work[key] = object[key];
       }
@@ -2128,7 +2128,7 @@
       if(key !== "works") {
         textgroup[key] = object[key];
       } else {
-        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
+        textgroup.works = object.works.map(function(work) { return CTS.repository.helpers.Work(work)});
       }
     });
     return textgroup;
@@ -2148,7 +2148,7 @@
       if(key !== "textgroups") {
         inventory[key] = object[key];
       } else {
-        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
+        inventory.textgroups = object.textgroups.map(function(textgroup) { return CTS.repository.helpers.TextGroup(textgroup)});
       }
     });
     return inventory;

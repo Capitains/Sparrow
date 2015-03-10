@@ -109,7 +109,7 @@
         });
         _this.container.append($input);
       } else {
-        var $container = $("<div />", { "class" : _this.getClass("field-container")}),
+        var $container = $("<div />", { "class" : _this.getClass("field-container")}),
             $label = $("<label />", {"class" : _this.getClass("field-label"), "for" : _this.id + "-" + key}),
             $inputContainer = $("<div />", {"class" : _this.getClass("field-input-container")});
         $label.text(_this.translate(key));
