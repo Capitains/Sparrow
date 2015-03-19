@@ -1,7 +1,7 @@
 {
   "name": "capitains-sparrow",
   "description": "Javascript abstractions and plugins for the CITE/CTS specification",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "keywords": [
     "CITE",
     "CTS",
@@ -16,7 +16,6 @@
     "grunt-contrib-uglify": "~0.4.x",
     "grunt-contrib-jasmine": "~0.6.x",
     "grunt-contrib-clean": "~0.6",
-
     "grunt-jslint": "~1.1",
     "grunt-jsdoc": "~0.5",
     "grunt-gh-pages": "~0.10",
@@ -58,12 +57,10 @@
   "bugs": {
     "url": "https://github.com/Capitains/Sparrow/issues"
   },
-  "repository": 
-    {
-      "type": "git",
-      "url": "https://github.com/Capitains/Sparrow.git"
-    }
-  ,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Capitains/Sparrow.git"
+  },
   "licenses": [
     {
       "name": "GNU GPL 3.0",
