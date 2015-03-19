@@ -75,7 +75,10 @@ module.exports = function(grunt) {
       }
     },
     'gh-pages': {
-      src: ['doc_html']
+      options: {
+        base: 'doc_html'
+      },
+      src: '**/*'
     },
     release : {
       options: {
@@ -103,5 +106,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jasmine']);
   grunt.registerTask('page', ['jsdoc', 'gh-pages'])
 
-  grunt.registerTask('version', ['build', 'release', 'page']);
+  grunt.registerTask('version', ['build', 'page', 'release']);
 };
