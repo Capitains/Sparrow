@@ -1,9 +1,0 @@
-{
-    "templates": {
-        "systemName"            : "Capitains Sparrow",
-        "copyright"             :  "@PerseusDL",
-        "navType"               : "vertical",
-        "theme"                 : "journal",
-        "linenums"              :  true,
-    }
-}

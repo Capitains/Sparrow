@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Capitains Sparrow Index</title>
+	<title>Capitains Sparrow Namespace: lang</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -212,31 +212,349 @@
 					
 
 
+	<h1 class="page-title">Namespace: lang</h1>
+<section>
+
+<header>
+    <h2>
+        <span class="ancestors"><a href="CTS.html">CTS</a>.</span>
+    
+    lang
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+
+        
+<dl class="details">
 	
-	<span class="page-title">Index</span>
-	
-	
-
-
-
-
-
-
-
-
-
-
-
 
 	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<dt class="name" id="lexicons">
+    <h4><span class="type-signature">&lt;static> </span>lexicons<span class="type-signature"> :Object.&lt;string, Object.&lt;string, string>></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Dictionary of lexicons
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object.&lt;string, Object.&lt;string, string>></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
 
+	
+
+	
+
+	
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript"> {en : {&quot;object&quot; : &quot;Object&quot;, &quot;cat&quot; : &quot;Cat&quot;}, &quot;fr&quot; : {&quot;cat&quot; : &quot;Chat&quot;}}</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="get"><span class="type-signature">&lt;static> </span>get<span class="signature">(word, lang)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get the given work into a given language
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>word</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Word identifier to get</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Lang code (Default is English)</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The pretty words to print
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">  Using dictionary example given for <a href="CTS.lang.html#lexicons">CTS.lang.lexicons</a>
+CTS.lang.get(&quot;cat&quot;)
+&#x2F;&#x2F; Returns cat
+CTS.lang.get(&quot;cat&quot;, &quot;fr&quot;)
+&#x2F;&#x2F; Returns Chat
+CTS.lang.get(&quot;object&quot;, &quot;fr&quot;)
+&#x2F;&#x2F; Return Object</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
