@@ -76,7 +76,7 @@ module.exports = function(grunt) {
     },
     'gh-pages': {
       src: ['doc_html']
-    }
+    },
     release : {
       options: {
         additionalFiles: ['bower.json']
