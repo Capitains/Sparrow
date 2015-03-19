@@ -1,12 +1,12 @@
 {
   "name": "capitains-sparrow",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "homepage": "https://github.com/Capitains/Sparrow",
   "authors": [
     "Thibault Clérice <leponteineptique@gmail.com>"
   ],
   "description": "CTS API abstractions and jQuery plugin",
-  "main": "build/cts.min.js",
+  "main": "dist/cts.min.js",
   "keywords": [
     "cts"
   ],
