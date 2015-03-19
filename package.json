@@ -69,19 +69,19 @@
     }
   ],
   "bugs": {
-    "web": "https://github.com/PerseusDL/Capitains-Sparrow/issues"
+    "url": "https://github.com/Capitains/Sparrow/issues"
   },
-  "repositories": [
+  "repositories": 
     {
       "type": "git",
-      "url": "https://github.com/PerseusDL/Capitains-Sparrow.git"
+      "url": "https://github.com/Capitains/Sparrow.git"
     }
-  ],
+  ,
   "licenses": [
     {
       "name": "GNU GPL 3.0",
       "url": "http://www.gnu.org/copyleft/gpl.html"
     }
   ],
-  "homepage": "http://perseusdl.github.io/Capitains-Sparrow/"
+  "homepage": "http://capitains.github.io/Sparrow/"
 }
