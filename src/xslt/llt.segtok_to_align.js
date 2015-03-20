@@ -64,6 +64,11 @@
         "type" : "string",
         "html" : "hidden",
         "default" : "urn:cite:perseus:align"
+      },
+      "e_title" : {
+        "type" : "string",
+        "html" : "hidden",
+        "default" : ""
       }
     }
   }
