@@ -81,6 +81,9 @@ describe('CTS.XSLT Helper', function(){
     it("should have segtok_to_tb", function() {
       expect(CTS.xslt.stylesheets["llt.segtok_to_tb"]).toBeDefined();
     })
+    it("should have segtok_to_align", function() {
+      expect(CTS.xslt.stylesheets["llt.segtok_to_align"]).toBeDefined();
+    })
   });
   
   /**

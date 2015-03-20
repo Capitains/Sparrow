@@ -28,7 +28,7 @@
       "e_lnum" : { 
         "type" : "string",
         "html" : "hidden",
-        "default" : "L1"
+        "default" : "l1"
       },
       "e_docuri" : { 
         "type" : "string",
@@ -59,7 +59,12 @@
         "type" : "boolean",
         "html" : "checkbox",
         "default" : true
-      } 
+      },
+      "e_collection" : {
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "urn:cite:perseus:align"
+      }
     }
   }
   CTS.xslt.stylesheets["llt.segtok_to_align"].prototype = Object.create(CTS.xslt.XSLT)
