@@ -115,7 +115,7 @@
    *
    * @function
    * @memberOf CTS.text.Passage
-   * @name getXML
+   * @name checkXML
    *
    * @returns  {boolean}  Boolean indecating if we got xml or not.
    *

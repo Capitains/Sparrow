@@ -89,8 +89,16 @@
           if (xhr.readyState === 4) {
             if(typeof options.success === "function") {
               if(options.type === "text/xml") {
-                options.success(xhr.responseXML);
-              } else if (options.type === "text" || options.type === "plain/text") {
+                if(xhr.responseXML !== null && xhr.responseXML.innerHtml) {
+                  try {
+                    var xml = (new DOMParser()).parseFromString(xhr.responseText, "text/xml");
+                  } catch (e) {
+                    options.error(e)
+                  }
+                } else {
+                  options.success(xhr.responseXML);
+                }
+              } else if (options.type === "text" || options.type === "plain/text" || options.type === "text/plain") {
                 options.success(xhr.responseText);
               }
             }
