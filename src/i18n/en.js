@@ -47,6 +47,7 @@
     "llt.segtok_to_tb.e_appuri" : "Application URI",
     "llt.segtok_to_tb.e_datetime" : "Date",
     "llt.segtok_to_tb.e_collection" : "Collection",
+    "llt.segtok_to_tb.e_attachtoroot" : "Attach to the root", 
 
     /*
 	LLT.Segtok_to_align XSLT translations
