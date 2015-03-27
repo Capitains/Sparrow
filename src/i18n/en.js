@@ -48,6 +48,19 @@
     "llt.segtok_to_tb.e_datetime" : "Date",
     "llt.segtok_to_tb.e_collection" : "Collection",
     "llt.segtok_to_tb.e_attachtoroot" : "Attach to the root", 
+
+    /*
+	LLT.Segtok_to_align XSLT translations
+    */
+    "llt.segtok_to_align.e_docuri" : "Document URI",
+    "llt.segtok_to_align.e_appuri" : "Application URI",
+    "llt.segtok_to_align.e_datetime" : "Date",
+    "llt.segtok_to_align.e_agenturi" : "Agent URI",
+    "llt.segtok_to_align.e_lang" : "Language Code",
+    "llt.segtok_to_align.e_ldir" : "Text Direction",
+    "llt.segtok_to_align.e_lnum" : "Language Number",
+    "llt.segtok_to_align.e_mergesentences" : "Align as Single Chunk", 
+    "llt.segtok_to_align.e_includepunc" : "Include Punctuation",
   }
 
   CTS.lang.lexicons["en"] = $words;
