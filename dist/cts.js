@@ -2418,6 +2418,106 @@
    * @Github : https://github.com/alpheios-project/treebank-editor/blob/master/db/xslt/segtok_to_tb.xsl
    * 
    */
+  CTS.xslt.stylesheets["cts.passage_to_text"] = function(endpoint, options) {
+    CTS.xslt.XSLT.call(this, endpoint, options);
+    this.options = { }
+  }
+  CTS.xslt.stylesheets["cts.passage_to_text"].prototype = Object.create(CTS.xslt.XSLT)
+
+}));
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['cts'], factory);
+  } else {
+    factory(CTS);
+  }
+}(function(CTS) {
+  /**
+   * LLT Segtok(enization) service's output into a Treebank Annotation
+   *
+   * @Github : https://github.com/alpheios-project/treebank-editor/blob/master/db/xslt/segtok_to_align.xsl
+   * 
+   */
+  CTS.xslt.stylesheets["llt.segtok_to_align"] = function(endpoint, options) {
+    CTS.xslt.XSLT.call(this, endpoint, options);
+    this.options = {
+      "e_lang" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "lat"
+      },
+      "e_dir" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "ltr"
+      },
+      "e_lnum" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "l1"
+      },
+      "e_docuri" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : ""
+      },
+      "e_agenturi" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "http://services.perseids.org/llt/segtok"
+      },
+      "e_appuri" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : ""
+      },
+      "e_datetime" : { 
+        "type" : "string",
+        "html" : "hidden",
+        "default" : function() { return (new Date()).toDateString(); }
+      },
+      "e_includepunc" : { 
+        "type" : "boolean",
+        "html" : "checkbox",
+        "default" : true
+      },
+      "e_mergesentences" : { 
+        "type" : "boolean",
+        "html" : "checkbox",
+        "default" : true
+      },
+      "e_collection" : {
+        "type" : "string",
+        "html" : "hidden",
+        "default" : "urn:cite:perseus:align"
+      },
+      "e_title" : {
+        "type" : "string",
+        "html" : "hidden",
+        "default" : ""
+      }
+    }
+  }
+  CTS.xslt.stylesheets["llt.segtok_to_align"].prototype = Object.create(CTS.xslt.XSLT)
+
+}));
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['cts'], factory);
+  } else {
+    factory(CTS);
+  }
+}(function(CTS) {
+  /**
+   * LLT Segtok(enization) service's output into a Treebank Annotation
+   *
+   * @Github : https://github.com/alpheios-project/treebank-editor/blob/master/db/xslt/segtok_to_tb.xsl
+   * 
+   */
   CTS.xslt.stylesheets["llt.segtok_to_tb"] = function(endpoint, options) {
     CTS.xslt.XSLT.call(this, endpoint, options);
     this.options = {
@@ -2517,6 +2617,19 @@
     "llt.segtok_to_tb.e_datetime" : "Date",
     "llt.segtok_to_tb.e_collection" : "Collection",
     "llt.segtok_to_tb.e_attachtoroot" : "Attach to the root", 
+
+    /*
+	LLT.Segtok_to_align XSLT translations
+    */
+    "llt.segtok_to_align.e_docuri" : "Document URI",
+    "llt.segtok_to_align.e_appuri" : "Application URI",
+    "llt.segtok_to_align.e_datetime" : "Date",
+    "llt.segtok_to_align.e_agenturi" : "Agent URI",
+    "llt.segtok_to_align.e_lang" : "Language Code",
+    "llt.segtok_to_align.e_ldir" : "Text Direction",
+    "llt.segtok_to_align.e_lnum" : "Language Number",
+    "llt.segtok_to_align.e_mergesentences" : "Align as Single Chunk", 
+    "llt.segtok_to_align.e_includepunc" : "Include Punctuation",
   }
 
   CTS.lang.lexicons["en"] = $words;
