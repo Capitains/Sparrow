@@ -56,6 +56,14 @@
     this.getPrevNextUrnURL  = function(urn)  { throw "Unsupported request"; }
 
     /**
+     * Create a GetLabel url
+     * @param  {string}     urn               Urn of the text's passage
+     * @param  {?string}    inventory         Inventory name
+     * @return {string}                       URL representation of the GetLabel request
+     */
+    this.getLabelURL = function(urn, inventory) { throw "Unsupported request"; }
+
+    /**
      * Create the GetValidReff URL
      * 
      * @param  {string}    urn                Urn of the text's passage
@@ -119,6 +127,15 @@
      * @param {?function}  options.error     Error callback
      */
     this.GetFirstPassagePlus  = function(urn, options) { throw "Unsupported request"; }
+
+    /**
+     * Performs a GetLabel request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback to which the response is sent
+     * @param {?function}  options.error     Error callback
+     */
+    this.getLabel = function(urn, options)  { throw "Unsupported request"; }
 
     /**
      * Make an XHR Request using CTS.utils.xhr
