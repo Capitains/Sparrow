@@ -137,6 +137,43 @@ describe('Endpoint Abstraction', function(){
       expect(errorFN).toHaveBeenCalled();
     });
 
+
+    it("should handle getLabel url making", function(){
+      //With inventory given
+      expect(API.getLabelURL("urn:la", "annotsrc")).toEqual("http://localhost?request=GetLabel&urn=urn:la&inv=annotsrc");
+
+      //With inventory none
+      expect(API.getLabelURL("urn:la")).toEqual("http://localhost?request=GetLabel&urn=urn:la");
+
+      //With default
+      API = new CTS.endpoint.XQ("http://localhost?", "annotsrc")
+      expect(API.getLabelURL("urn:la")).toEqual("http://localhost?request=GetLabel&urn=urn:la&inv=annotsrc");
+    });
+
+    it("should do GetLabel", function() {
+      successFN = jasmine.createSpy("success");
+      errorFN = jasmine.createSpy("error");
+
+      API.getLabel("urn:la", {
+          inventory : "annotsrc",
+          success : successFN
+      });
+      expect(jasmine.Ajax.requests.mostRecent().url).toEqual("http://localhost?request=GetLabel&urn=urn:la&inv=annotsrc");
+
+      response(200);
+      expect(successFN).toHaveBeenCalled();
+
+      successFN = jasmine.createSpy("success");
+
+      API.getLabel("urn:la", {
+        inventory : "annotsrc",
+        success   : successFN,
+        error     : errorFN
+      });
+
+      response(400);
+      expect(errorFN).toHaveBeenCalled();
+    });
   });
   
 });

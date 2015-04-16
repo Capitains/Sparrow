@@ -330,6 +330,38 @@
       }
       this.getRequest(this.getValidReffURL(urn, options), options);
     }
+
+    /**
+     * Create a GetLabel url
+     * @param  {string}     urn               Urn of the text's passage
+     * @param  {?string}    inventory         Inventory name
+     * @return {string}                       URL representation of the GetLabel request
+     */
+    this.getLabelURL = function(urn, inventory) {
+      var params = {
+        request : "GetLabel",
+        urn : urn
+      };
+
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Performs a GetLabel request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback to which the response is sent
+     * @param {?function}  options.error     Error callback
+     */
+    this.getLabel = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getLabelURL(urn, options.inventory), options)
+    }
   }
   CTS.endpoint.XQ.prototype = Object.create(CTS.endpoint.Endpoint);
 

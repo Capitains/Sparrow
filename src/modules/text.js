@@ -342,7 +342,8 @@
      * @param  {function}                  options.error    Error Callback
      */ 
     this.getValidReff = function(options) {
-      var self = this;
+      var self = this,
+          options = options || {};
       if(typeof options.level === "undefined") { options.level = 1; }
 
       //Need to copy the callback system
@@ -354,6 +355,7 @@
       } else {
         self.endpoint.getValidReff(self.urn, {
           inventory : self.inventory,
+          level : options.level,
           success : function(data) {
             var urns = data.getElementsByTagName("reff")[0].getElementsByTagName("urn");
             urns = [].map.call(urns, function(node) { return node.childNodes[0].nodeValue; });
