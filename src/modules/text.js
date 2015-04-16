@@ -63,11 +63,11 @@
     }
 
     removedNodes.forEach(function(nodeName) { 
-      var elements = xml.getElementsByTagName(nodeName);
+      var elements = xml.getElementsByTagNameNS("*", nodeName);
       while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
     });
 
-    text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
+    text = (xml.getElementsByTagNameNS("*", "text")[0] || xml.getElementsByTagNameNS("*", "body")[0]).textContent;
     return (strip === true) ? trim(text) : text;
   }
 
@@ -177,7 +177,7 @@
       xml = _this.document;
     //If we have a selector, we go around by transforming the DOM into a document
     } else {
-      xml = _this.document.getElementsByTagName(elementName);
+      xml = _this.document.getElementsByTagNameNS("*", elementName);
       reconstruct = true;
     }
 
@@ -336,7 +336,7 @@
         inventory : this.inventory,
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
-          var ref = xml.getElementsByTagName("current")[0].textContent;
+          var ref = xml.getElementsByTagNameNS("*", "current")[0].textContent;
           self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
           self.passages[ref].document = xml;
 
@@ -370,7 +370,7 @@
           inventory : self.inventory,
           level : options.level,
           success : function(data) {
-            var urns = data.getElementsByTagName("reff")[0].getElementsByTagName("urn");
+            var urns = data.getElementsByTagNameNS("*", "reff")[0].getElementsByTagNameNS("*", "urn");
             urns = [].map.call(urns, function(node) { return node.childNodes[0].nodeValue; });
             var object = {}
             urns.forEach(function(val) {
