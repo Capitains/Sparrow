@@ -31,21 +31,34 @@
   CTS.text = {};
 
   /**
+   * Helpers for stripping text
+   * @param  {string} string String to strip
+   * @return {string}        String stripped
+   */
+  var trim = function(string) {
+    return string.replace(/(\r\n|\n|\r)/gm,"").replace(/\s+/gm," ").replace(/^\s+/, "")
+  }
+  /**
    * Get the text, removing nodes if necessary. if the instance has the text.property set, returns it.
    *
    *  @function
    *  @memberOf CTS.text.Passage
    *  @name getText
    *
-   *  @param    {Array.<string>}   removedNodes   List of nodes' tagname to remove
+   *  @param    {?Array.<string>}   removedNodes   List of nodes' tagname to remove
+   *  @param    {?boolean}          strip          If true, strip the spaces in the text
    *
    *  @returns  {string}  Instance text
    */
-  var _getText = function(removedNodes) {
+  var _getText = function(removedNodes, strip) {
     var xml = this.document,
         text;
-    if(this.text !== null) { return this.text; }
-    if(typeof removedNodes === "undefined") {
+
+    if(this.text !== null) { 
+      text = (strip === true) ? trim(this.text) : this.text;
+      return text;
+    }
+    if(typeof removedNodes === "undefined" || removedNodes === null) {
       removedNodes = ["note", "bibl", "head"];
     }
 
@@ -55,7 +68,7 @@
     });
 
     text = (xml.getElementsByTagName("text")[0] || xml.getElementsByTagName("body")[0]).textContent;
-    return text;
+    return (strip === true) ? trim(text) : text;
   }
 
   /**

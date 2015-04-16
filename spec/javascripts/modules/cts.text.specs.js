@@ -22,12 +22,24 @@ describe( "Testing CTS Texts functions", function () {
     });
 
     describe('Setters and getters for TEXT', function(){
-        var text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
+
+        beforeEach(function() {
+          text = new CTS.text.Passage("http://restservice/urn:cts:lala", false);
+        });
+        afterEach(function() {
+          delete text;
+        })
 
         it("shoud handle texts setters and getters", function() {
           expect(text.text).toEqual(null);
           text.setText("lala");
           expect(text.getText()).toEqual("lala");
+        });
+
+        it("shoud handle stripping via setters and getters", function() {
+          expect(text.text).toEqual(null);
+          text.setText("\r\n\tlala     \t\t\n lala\n\n\r\n\r");
+          expect(text.getText(null, true)).toEqual("lala lala");
         });
     });
 
@@ -37,6 +49,9 @@ describe( "Testing CTS Texts functions", function () {
       beforeEach(function() {
           xml = jasmine.getFixtures().read('xml/text.xml');
           xml = (new DOMParser()).parseFromString(xml, "text/xml");
+
+          xml2 = jasmine.getFixtures().read('xml/text2.xml');
+          xml2 = (new DOMParser()).parseFromString(xml2, "text/xml");
       });
 
         it("should say data is (TEI-)XML when it is", function() {
@@ -56,6 +71,13 @@ describe( "Testing CTS Texts functions", function () {
         it("should return text", function() {
           text.document = xml;
           expect(text.getText()).toEqual(
+            "Ho ! Saki, pass around and offer the bowl (of love for God) : --- "
+          );
+        });
+
+        it("should return stripped text", function() {
+          text.document = xml2;
+          expect(text.getText(null, true)).toEqual(
             "Ho ! Saki, pass around and offer the bowl (of love for God) : --- "
           );
         });
