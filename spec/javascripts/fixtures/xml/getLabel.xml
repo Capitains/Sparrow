@@ -1,0 +1,16 @@
+<CTS:GetLabel xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:CTS="http://chs.harvard.edu/xmlns/cts">
+    <CTS:request elapsed-time="259">
+        <CTS:requestName>GetLabel</CTS:requestName>
+        <CTS:requestUrn>urn:cts:pdlrefwk:viaf88890045.003.perseus-eng1</CTS:requestUrn>
+        <CTS:psg/>
+        <CTS:workurn/>
+    </CTS:request>
+    <CTS:reply xmlns:ti="http://chs.harvard.edu/xmlns/cts">
+        <CTS:label>
+            <ti:groupname xml:lang="eng">Smith, William</ti:groupname>
+            <ti:title xml:lang="eng">A Dictionary of Greek and Roman biography and mythology</ti:title>
+            <ti:work>urn:cts:pdlrefwk:viaf88890045.003</ti:work>
+            <ti:citation>head, entry</ti:citation>
+        </CTS:label>
+    </CTS:reply>
+</CTS:GetLabel>
