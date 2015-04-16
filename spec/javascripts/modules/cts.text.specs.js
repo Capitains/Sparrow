@@ -265,7 +265,7 @@ describe( "Testing CTS Texts functions", function () {
     	  	error : errorFN
     	  });
 	      expect(successFN).not.toHaveBeenCalled();
-	      expect(jasmine.Ajax.requests.mostRecent().url).toBe("http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetValidReff&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1&inv=annotsrc")
+	      expect(jasmine.Ajax.requests.mostRecent().url).toBe("http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetValidReff&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1&level=1&inv=annotsrc")
 	      jasmine.Ajax.requests.mostRecent().respondWith({
 	        "status": 200,
 	        "contentType": 'text/xml',
