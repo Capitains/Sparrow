@@ -2,6 +2,7 @@ describe( "Testing CTS Texts functions", function () {
 
   getFirstPassagePlus = jasmine.getFixtures().read('xml/getFirstPassagePlus.xml');
   getValidReff = jasmine.getFixtures().read('xml/getValidReff.xml');
+  getLabel = jasmine.getFixtures().read('xml/getLabel.xml');
   //First, test the non AJAX functions
   describe('Passage', function(){
     describe('Creation of the object', function(){
@@ -277,7 +278,7 @@ describe( "Testing CTS Texts functions", function () {
 	        jasmine.Ajax.uninstall();
 	    });
 
-    	it('Should be able to call a getFirstPassagePlus and make a Passage with given body', function(){
+    	it('Should be able to call a getValidReff', function(){
     		var text = null;
     	  T.getValidReff({
     	  	success : function(data) {
@@ -306,6 +307,92 @@ describe( "Testing CTS Texts functions", function () {
     	});
 			
 		});
+
+    describe('GetLabel', function(){
+      
+      beforeEach(function() {
+        T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
+        jasmine.Ajax.install();
+        successFN = jasmine.createSpy("success 1");
+        successFN2 = jasmine.createSpy("success 2");
+        errorFN = jasmine.createSpy("error");
+      });
+      afterEach(function() {
+          jasmine.Ajax.uninstall();
+      });
+
+      it('Should be able to call getLabel', function(){
+        var text = null;
+        T.getLabel({
+          success : function(data) {
+            expect(data.getTextgroup("eng")).toEqual("Smith, William")
+            expect(data.getTitle("eng")).toEqual("A Dictionary of Greek and Roman biography and mythology")
+            successFN();
+          },
+          error : errorFN
+        });
+        expect(successFN).not.toHaveBeenCalled();
+        expect(jasmine.Ajax.requests.mostRecent().url).toBe("http://localhost:8080/exist/rest/db/xq/CTS.xq?request=GetLabel&urn=urn:cts:greekLit:tlg0012.tlg001.perseus-grc1&inv=annotsrc")
+        jasmine.Ajax.requests.mostRecent().respondWith({
+          "status": 200,
+          "contentType": 'text/xml',
+          "responseText": getLabel
+        });
+
+        expect(successFN).toHaveBeenCalled();
+      });
+      
+    });
+
+    describe('Titles and textgroups', function(){
+      afterEach(function() {
+          jasmine.Ajax.uninstall();
+      });
+      describe('Titles', function(){
+        beforeEach(function() {
+          T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
+        });
+        //When no titles, throw
+        it('Should throw an error when title does not exist', function(){
+          expect(function() { return T.getTitle(); }).toThrow(new Error("No title are available"))
+        });
+        it("Should get the lang asked for", function() {
+          T.title = { "eng" : "hi", "fre" : "ahah"}
+          expect(T.getTitle("eng")).toEqual("hi")
+        })
+        it("Should get a default when lang asked for does not exist", function() {
+          T.title = { "eng" : "hi"}
+          expect(T.getTitle("fre")).toEqual("hi")
+        })
+        it("Should get a default when no lang is asked", function() {
+          T.title = { "eng" : "hi"}
+          expect(T.getTitle()).toEqual("hi")
+        })
+      });
+
+      describe('Textgroups', function(){
+        beforeEach(function() {
+          T = new CTS.text.Text("urn:cts:greekLit:tlg0012.tlg001.perseus-grc1", endpoint, "annotsrc")
+        });
+        //When no titles, throw
+        it('Should throw an error when title does not exist', function(){
+          expect(function() { return T.getTextgroup(); }).toThrow(new Error("No textgroup are available"))
+        });
+        it("Should get the lang asked for", function() {
+          T.textgroup = { "eng" : "hi", "fre" : "ahah"}
+          expect(T.getTextgroup("eng")).toEqual("hi")
+        })
+        it("Should get a default when lang asked for does not exist", function() {
+          T.textgroup = { "eng" : "hi"}
+          expect(T.getTextgroup("fre")).toEqual("hi")
+        })
+        it("Should get a default when no lang is asked", function() {
+          T.textgroup = { "eng" : "hi"}
+          expect(T.getTextgroup()).toEqual("hi")
+        })
+      });
+      
+    });
 
   });
   

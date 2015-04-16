@@ -242,12 +242,16 @@
    * @param  endpoint   {?string|CTS.endpoint.Endpoint}    CTS API Endpoint. 
    * @param  inventory  {?inventory}                       Inventory Identifier
    *
-   * @property  {string}                                           urn               URN identifying the passage
-   * @property  {Object.<string, CTS.text.Passage>}                 reffs             Passage and reffs
-   * @property  {Object.<string, Object.<string, string>>}         validReffs        List of levels of mapping
-   * @property  {Object.<string, string>}                          validReffs[0]     Pair of Text (Identifier of the passage, urn)
-   * @property  {?inventory}                                       inventory         Inventory containing the text
-   * @property  {CTS.endpoint.Endpoint}                            endpoint          Endpoint to get the text
+   * @property  {string}                                           urn                   URN identifying the passage
+   * @property  {Object.<string, CTS.text.Passage>}                reffs                 Passage and reffs
+   * @property  {Object.<string, Object.<string, string>>}         validReffs            List of levels of mapping
+   * @property  {Object.<string, string>}                          validReffs[0]         Pair of Text (Identifier of the passage, urn)
+   * @property  {?inventory}                                       inventory             Inventory containing the text
+   * @property  {CTS.endpoint.Endpoint}                            endpoint              Endpoint to get the text
+   * @property  {Object.<string, string>}                          title                 Text titles object
+   * @property  {string}                                           title[lang]           Title in a given lang
+   * @property  {Object.<string, string>}                          textgroup             Text titles object
+   * @property  {string}                                           textgroup[lang]       Title in a given lang
    */
   CTS.text.Text = function(urn, endpoint, inventory) {
     if(typeof inventory !== "string") {
@@ -261,6 +265,44 @@
     this.reffs = {}
     this.validReffs = {}
     this.passages = {}
+    this.title = {}
+    this.textgroup = {}
+
+    /**
+     * Get a title given a lang
+     * @param  {?string} lang Lang of the title
+     * @return {string}       The title
+     */
+    this.getTitle = function(lang) {
+      var text = this,
+          titles = Object.keys(text.title);
+      if(titles.length === 0) {
+        throw new Error("No title are available");
+      }
+      if(typeof lang === "undefined" || typeof titles[lang] === "undefined") {
+        return text.title[titles[0]];
+      } else {
+        return text.title[lang]
+      }
+    }
+
+    /**
+     * Get a textgroup given a lang
+     * @param  {?string} lang Lang of the Textgroup
+     * @return {string}       The textgroup
+     */
+    this.getTextgroup = function(lang) {
+      var text = this,
+          textgroups = Object.keys(text.textgroup);
+      if(textgroups.length === 0) {
+        throw new Error("No textgroup are available");
+      }
+      if(typeof lang === "undefined" || typeof textgroups[lang] === "undefined") {
+        return text.textgroup[textgroups[0]];
+      } else {
+        return text.textgroup[lang]
+      }
+    }
 
     /**
      * Create a Passage urn given two lists of identifiers for start and end of the passage
@@ -347,6 +389,7 @@
         error : options.error
       });
     }
+
     /**
      * Make a getValidReff request
      * @param  {Object.<String, function>} options          Options object
@@ -386,6 +429,37 @@
           error : options.error
         })
       }
+    }
+    
+    /**
+     * Make a getValidReff request
+     * @param  {Object.<String, function>} options          Options object
+     * @param  {function}                  options.success  Success callback (Pass the this object as callback)
+     * @param  {function}                  options.error    Error Callback
+     */ 
+    this.getLabel = function(options) {
+      var self = this,
+          options = options || {};
+
+      self.endpoint.getLabel(self.urn, {
+        inventory : self.inventory,
+        success : function(data) {
+          var textgroups = data.getElementsByTagNameNS("*", "groupname"),
+              titles = data.getElementsByTagNameNS("*", "title");
+
+          for (var i = textgroups.length - 1; i >= 0; i--) {
+            self.textgroup[textgroups[i].getAttribute('xml:lang')] = textgroups[i].textContent;
+          };
+          for (var i = titles.length - 1; i >= 0; i--) {
+            self.title[titles[i].getAttribute('xml:lang')] = titles[i].textContent;
+          };
+          if(typeof options.success === "function") {
+            options.success(self);
+          }
+        },
+        type : "text/xml",
+        error : options.error
+      })
     }
   }  
 }));
