@@ -239,6 +239,39 @@
     }
 
     /**
+     * Create the GetPassagePlus URL
+     * 
+     * @param  {urn}     urn       Urn of the Text's passage
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassagePlusURL = function(urn, inventory) {
+      var params = {
+        request : "GetPassagePlus",
+        urn : urn
+      }
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetPassagePlus request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getPassagePlus = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getPassagePlusURL(urn, options.inventory), options);
+    }
+
+    /**
      * Create the GetPassage URL
      * 
      * @param  {urn}     urn       Urn of the Text's passage
