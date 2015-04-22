@@ -960,6 +960,39 @@
     }
 
     /**
+     * Create the GetPassagePlus URL
+     * 
+     * @param  {urn}     urn       Urn of the Text's passage
+     * @param  {?string} inventory Name of the inventory
+     * 
+     * @returns {string}            URL of the request
+     */
+    this.getPassagePlusURL = function(urn, inventory) {
+      var params = {
+        request : "GetPassagePlus",
+        urn : urn
+      }
+      if((typeof inventory !== "undefined" && inventory !== null) || this.inventory !== null) {
+        params.inv = (typeof inventory !== "undefined" && inventory !== null) ? inventory : this.inventory;
+      }
+      return this.getUrl(params);
+    }
+
+    /**
+     * Do a GetPassagePlus request
+     * @param {string}     urn               Urn of the text's passage
+     * @param {?string}    options.inventory Inventory name
+     * @param {?function}  options.success   Success callback
+     * @param {?function}  options.error     Error callback
+     */
+    this.getPassagePlus = function(urn, options) {
+      if(typeof options === "undefined") {
+        options = {};
+      }
+      this.getRequest(this.getPassagePlusURL(urn, options.inventory), options);
+    }
+
+    /**
      * Create the GetPassage URL
      * 
      * @param  {urn}     urn       Urn of the Text's passage
@@ -1137,6 +1170,17 @@
 }(function(CTS) {
 
 
+  var parseLabel = function(data) {
+    var textgroups = data.getElementsByTagNameNS("*", "groupname"),
+      titles = data.getElementsByTagNameNS("*", "title");
+
+    for (var i = textgroups.length - 1; i >= 0; i--) {
+      this.textgroup[textgroups[i].getAttribute('xml:lang')] = textgroups[i].textContent;
+    };
+    for (var i = titles.length - 1; i >= 0; i--) {
+      this.title[titles[i].getAttribute('xml:lang')] = titles[i].textContent;
+    };
+  }
   /**
    * Text related functions
    * @namespace CTS.text
@@ -1209,11 +1253,12 @@
    * @param  options.success   {?function}    Function to call when text is retrieved
    * @param  options.error     {?function}    Function to call when an error occured
    * @param  options.endpoint  {?string}      CTS API Endpoint
+   * @param  options.metadata  {?boolean}     Retrieve metadata and create a this.Text
    *
    */
   var _retrieve = function(options) {
     var _this = this,
-        url;
+        url
 
     if(typeof options === "undefined") { options = {}; }
     if(typeof options.endpoint === "undefined") {
@@ -1222,11 +1267,14 @@
       endpoint = CTS.utils.checkEndpoint(options.endpoint);
     }
 
-    endpoint.getPassage(this.urn, {
+    var fn = (options.metadata === true) ? endpoint.getPassagePlus : endpoint.getPassage;
+    _this.Text = new CTS.text.Text(_this.urn, _this.inventory)
+    fn.call(endpoint, this.urn, {
       inventory : this.inventory,
       success : function(data) {
         _this.xml = data;
         _this.document = (new DOMParser()).parseFromString(data, "text/xml");
+        if(options.metadata === true) parseLabel.call(_this.Text, _this.document);
         if(typeof options.success === "function") { options.success(data); }
       
       },
@@ -1558,15 +1606,7 @@
       self.endpoint.getLabel(self.urn, {
         inventory : self.inventory,
         success : function(data) {
-          var textgroups = data.getElementsByTagNameNS("*", "groupname"),
-              titles = data.getElementsByTagNameNS("*", "title");
-
-          for (var i = textgroups.length - 1; i >= 0; i--) {
-            self.textgroup[textgroups[i].getAttribute('xml:lang')] = textgroups[i].textContent;
-          };
-          for (var i = titles.length - 1; i >= 0; i--) {
-            self.title[titles[i].getAttribute('xml:lang')] = titles[i].textContent;
-          };
+          parseLabel.call(self, data)
           if(typeof options.success === "function") {
             options.success(self);
           }
