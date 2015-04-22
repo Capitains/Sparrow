@@ -7,7 +7,7 @@
  * @requires CTS.endpoint
  * @requires CTS
  * 
- * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @link https://github.com/Capitains/Sparrow
  * @author PonteIneptique (Thibault Clérice)
  * @version 1.0.0
  * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
@@ -282,17 +282,17 @@
 
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
 
-    this.citations = [].map.call(nodes.getElementsByTagName("citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
+    this.citations = [].map.call(nodes.getElementsByTagNameNS("*", "citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
 
     // We get the labels
-    var descriptions = nodes.getElementsByTagName("description");
+    var descriptions = nodes.getElementsByTagNameNS("*", "description");
     for (var i = descriptions.length - 1; i >= 0; i--) {
       this.defaultLangDesc = descriptions[i].getAttribute("xml:lang");
       this.descriptions[this.defaultLangDesc] = descriptions[i].textContent;
     };
 
     // We get the labels
-    var labels = nodes.getElementsByTagName("label");
+    var labels = nodes.getElementsByTagNameNS("*", "label");
     for (var i = labels.length - 1; i >= 0; i--) {
       this.defaultLangLabel = labels[i].getAttribute("xml:lang");
       this.titles[this.defaultLangLabel] = labels[i].textContent;
@@ -376,18 +376,18 @@
     this.lang = nodes.getAttribute("xml:lang");
 
     // We get the labels
-    var groupnames = nodes.getElementsByTagName("title");
+    var groupnames = nodes.getElementsByTagNameNS("*", "title");
     for (var i = groupnames.length - 1; i >= 0; i--) {
       this.defaultLang = groupnames[i].getAttribute("xml:lang");
       this.titles[this.defaultLang] = groupnames[i].textContent;
     };
 
-    var editions = nodes.getElementsByTagName("edition");
+    var editions = nodes.getElementsByTagNameNS("*", "edition");
     for (var i = editions.length - 1; i >= 0; i--) {
       this.editions.push(new CTS.repository.Prototypes.cts3.Edition(editions[i], this.urn, this.lang));
     };
 
-    var translations = nodes.getElementsByTagName("translation");
+    var translations = nodes.getElementsByTagNameNS("*", "translation");
     for (var i = translations.length - 1; i >= 0; i--) {
       this.translations.push(new CTS.repository.Prototypes.cts3.Translation(translations[i], this.urn));
     };
@@ -415,13 +415,13 @@
     this.urn = "urn:cts:" + nodes.getAttribute("projid");
 
     // We get the labels
-    var labels = nodes.getElementsByTagName("groupname");
+    var labels = nodes.getElementsByTagNameNS("*", "groupname");
     for (var i = labels.length - 1; i >= 0; i--) {
       this.defaultLang = labels[i].getAttribute("xml:lang");
       this.titles[this.defaultLang] = labels[i].textContent;
     };
 
-    var works = nodes.getElementsByTagName("work");
+    var works = nodes.getElementsByTagNameNS("*", "work");
     for (var i = works.length - 1; i >= 0; i--) {
       this.works.push(new CTS.repository.Prototypes.cts3.Work(works[i], this.urn))
     };

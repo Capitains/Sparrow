@@ -1,7 +1,7 @@
 /**
  * CTS
  *
- * @link https://github.com/PerseusDL/Capitains-Sparrow
+ * @link https://github.com/Capitains/Sparrow
  * @author PonteIneptique (Thibault Clérice)
  * @version 1.0.0
  * @license https://github.com/PerseusDL/Capitains-Sparrow/blob/master/LICENSE
