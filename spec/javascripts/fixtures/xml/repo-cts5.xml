@@ -70,7 +70,6 @@
                         </ti:online>
                     </ti:edition>
                     <ti:translation workUrn="urn:cts:latinLit:phi0690.phi003" urn="urn:cts:latinLit:phi0690.phi003.perseus-eng1">
-
                         <ti:label xml:lang="eng">Aeneid</ti:label>
                         <ti:description xml:lang="eng">Vergil. Aeneid. John Dryden. trans.</ti:description>
                         <ti:memberof collection="Perseus:collection:Greco-Roman-protected"/>

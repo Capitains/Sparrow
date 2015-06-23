@@ -1540,7 +1540,8 @@
         inventory : this.inventory,
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
-          var ref = xml.getElementsByTagNameNS("*", "current")[0].textContent;
+          var urn = xml.getElementsByTagNameNS("http://chs.harvard.edu/xmlns/cts", "urn");
+          var ref = (urn.length > 0) ? urn[0].textContent : xml.getElementsByTagNameNS("*", "current")[0].textContent;
           self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
           self.passages[ref].document = xml;
 
@@ -1671,15 +1672,33 @@
    *  @property  {string}                      defaultLangDesc            Default lang to use to display title
    *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
-  CTS.repository.Prototypes.Text = function(type) {
+  CTS.repository.Prototypes.Text = function(type, nodes, namespace) {
     this.descriptions = {}
     this.titles = {}
-    this.urn = "";
+    this.urn = this.urn || "";
     this.citations = [];
     this.defaultLangDesc;
     this.defaultLangLabel;
     this.type = type;
-    this.lang = "";
+    this.lang = this.lang || "";
+
+    if(typeof nodes !== "undefined") {
+      this.citations = [].map.call(nodes.getElementsByTagNameNS(namespace, "citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
+
+      // We get the labels
+      var descriptions = nodes.getElementsByTagNameNS(namespace, "description");
+      for (var i = descriptions.length - 1; i >= 0; i--) {
+        this.defaultLangDesc = descriptions[i].getAttribute("xml:lang");
+        this.descriptions[this.defaultLangDesc] = descriptions[i].textContent;
+      };
+
+      // We get the labels
+      var labels = nodes.getElementsByTagNameNS(namespace, "label");
+      for (var i = labels.length - 1; i >= 0; i--) {
+        this.defaultLangLabel = labels[i].getAttribute("xml:lang");
+        this.titles[this.defaultLangLabel] = labels[i].textContent;
+      };
+    }
 
     /**
      * Get the description
@@ -1731,16 +1750,37 @@
    *  @property  {Array.<CTS.repository.Prototypes.Edition>}            editions        Editions available in the inventory
    *  @property  {Array.<CTS.repository.Prototypes.Translation>}        translations    Translations available in the inventory
    */
-  CTS.repository.Prototypes.Work = function() {
+  CTS.repository.Prototypes.Work = function(nodes, namespace) {
     this.titles = {};
-    this.urn = "";
+    this.urn = this.urn || "";
     this.defaultLang = "";
-    this.lang = "";
+    this.lang = this.lang || "";
 
     this.editions = [];
     this.translations = [];
     this.texts = [];
 
+
+    if(typeof nodes !== "undefined"){
+      // We get the labels
+      var groupnames = nodes.getElementsByTagNameNS(namespace, "title");
+      for (var i = groupnames.length - 1; i >= 0; i--) {
+        this.defaultLang = groupnames[i].getAttribute("xml:lang");
+        this.titles[this.defaultLang] = groupnames[i].textContent;
+      };
+
+      var editions = nodes.getElementsByTagNameNS(namespace, "edition");
+      for (var i = editions.length - 1; i >= 0; i--) {
+        this.editions.push(new (ns(namespace)).Edition(editions[i], this.urn, this.lang));
+      };
+
+      var translations = nodes.getElementsByTagNameNS(namespace, "translation");
+      for (var i = translations.length - 1; i >= 0; i--) {
+        this.translations.push(new (ns(namespace)).Translation(translations[i], this.urn));
+      };
+
+      this.texts = this.translations.concat(this.editions);
+    }
     /**
      * Get the title of the object
      * 
@@ -1786,11 +1826,25 @@
    *  @property  {string}                                       defaultLang  Default lang to use to display title
    *  @property  {Array.<CTS.repository.Prototypes.Work>}       works        Textgroup available in the inventory
    */
-  CTS.repository.Prototypes.TextGroup = function() {
+  CTS.repository.Prototypes.TextGroup = function(nodes, namespace) {
     this.titles = {};
-    this.urn = "";
+    this.urn = this.urn || "";
     this.defaultLang = "";
     this.works = [];
+
+    if(typeof nodes !== "undefined"){
+      // We get the labels
+      var labels = nodes.getElementsByTagNameNS(namespace, "groupname");
+      for (var i = labels.length - 1; i >= 0; i--) {
+        this.defaultLang = labels[i].getAttribute("xml:lang");
+        this.titles[this.defaultLang] = labels[i].textContent;
+      };
+  
+      var works = nodes.getElementsByTagNameNS(namespace, "work");
+      for (var i = works.length - 1; i >= 0; i--) {
+        this.works.push(new (ns(namespace)).Work(works[i], this.urn))
+      };
+    }
 
     /**
      * Get the title of the object
@@ -1897,25 +1951,8 @@
    *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
   CTS.repository.Prototypes.cts3.Text = function (nodes, type, urn) {
-    CTS.repository.Prototypes.Text.call(this, type);
-
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
-
-    this.citations = [].map.call(nodes.getElementsByTagNameNS("*", "citation"), function(e) { return e.getAttribute("label") || "Unknown"; });
-
-    // We get the labels
-    var descriptions = nodes.getElementsByTagNameNS("*", "description");
-    for (var i = descriptions.length - 1; i >= 0; i--) {
-      this.defaultLangDesc = descriptions[i].getAttribute("xml:lang");
-      this.descriptions[this.defaultLangDesc] = descriptions[i].textContent;
-    };
-
-    // We get the labels
-    var labels = nodes.getElementsByTagNameNS("*", "label");
-    for (var i = labels.length - 1; i >= 0; i--) {
-      this.defaultLangLabel = labels[i].getAttribute("xml:lang");
-      this.titles[this.defaultLangLabel] = labels[i].textContent;
-    };
+    CTS.repository.Prototypes.Text.call(this, type, nodes, "*");
   }
   CTS.repository.Prototypes.cts3.Text.prototype = Object.create(CTS.repository.Prototypes.Text.prototype)
 
@@ -1939,9 +1976,10 @@
    *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
   CTS.repository.Prototypes.cts3.Edition = function(nodes, urn, lang) {
-    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "edition", urn);
     //Edition have the lang from their parent
     this.lang = lang;
+
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "edition", urn);
   }
   CTS.repository.Prototypes.cts3.Edition.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
@@ -1964,9 +2002,10 @@
    *  @property  {Array.<string>}              citations                  List of label for citations scheme
    */
   CTS.repository.Prototypes.cts3.Translation = function(nodes, urn) {
-    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "translation", urn);
     //Translation get their lang from their body
     this.lang = nodes.getAttribute("xml:lang");
+
+    CTS.repository.Prototypes.cts3.Text.call(this, nodes, "translation", urn);
   }
   CTS.repository.Prototypes.cts3.Translation.prototype = Object.create(CTS.repository.Prototypes.cts3.Text.prototype)
 
@@ -1990,28 +2029,10 @@
    *  @property  {Array.<CTS.repository.Prototypes.cts3.Translation>}   translations    Translations available in the inventory
    */
   CTS.repository.Prototypes.cts3.Work = function(nodes, urn) {
-    CTS.repository.Prototypes.Work.call(this);
     this.urn = urn + "." + nodes.getAttribute("projid").split(":")[1];
     this.lang = nodes.getAttribute("xml:lang");
 
-    // We get the labels
-    var groupnames = nodes.getElementsByTagNameNS("*", "title");
-    for (var i = groupnames.length - 1; i >= 0; i--) {
-      this.defaultLang = groupnames[i].getAttribute("xml:lang");
-      this.titles[this.defaultLang] = groupnames[i].textContent;
-    };
-
-    var editions = nodes.getElementsByTagNameNS("*", "edition");
-    for (var i = editions.length - 1; i >= 0; i--) {
-      this.editions.push(new CTS.repository.Prototypes.cts3.Edition(editions[i], this.urn, this.lang));
-    };
-
-    var translations = nodes.getElementsByTagNameNS("*", "translation");
-    for (var i = translations.length - 1; i >= 0; i--) {
-      this.translations.push(new CTS.repository.Prototypes.cts3.Translation(translations[i], this.urn));
-    };
-
-    this.texts = this.translations.concat(this.editions);
+    CTS.repository.Prototypes.Work.call(this, nodes, "*");
   }
   CTS.repository.Prototypes.cts3.Work.prototype = Object.create(CTS.repository.Prototypes.Work.prototype)
 
@@ -2030,20 +2051,9 @@
    *  @property  {Array.<CTS.repository.Prototypes.cts3.Work>}  works        Textgroup available in the inventory
    */
   CTS.repository.Prototypes.cts3.TextGroup = function(nodes) {
-    CTS.repository.Prototypes.TextGroup.call(this);
     this.urn = "urn:cts:" + nodes.getAttribute("projid");
 
-    // We get the labels
-    var labels = nodes.getElementsByTagNameNS("*", "groupname");
-    for (var i = labels.length - 1; i >= 0; i--) {
-      this.defaultLang = labels[i].getAttribute("xml:lang");
-      this.titles[this.defaultLang] = labels[i].textContent;
-    };
-
-    var works = nodes.getElementsByTagNameNS("*", "work");
-    for (var i = works.length - 1; i >= 0; i--) {
-      this.works.push(new CTS.repository.Prototypes.cts3.Work(works[i], this.urn))
-    };
+    CTS.repository.Prototypes.TextGroup.call(this, nodes, "*");
   }
   CTS.repository.Prototypes.cts3.TextGroup.prototype = Object.create(CTS.repository.Prototypes.TextGroup.prototype)
 
@@ -2076,6 +2086,172 @@
     }
   }
   CTS.repository.Prototypes.cts3.TextInventory.prototype = Object.create(CTS.repository.Prototypes.TextInventory.prototype)
+
+  /**
+   * CTS 5 Implementations
+   */
+
+  /**
+   *  @namespace CTS.repository.Prototypes.cts3
+   */
+  CTS.repository.Prototypes.cts5 = {};
+
+  /**
+   * Instantiate CTS Text from CTS5 XML (CTS Text is the abstract model shared by Edition and Translation)
+   *
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Text
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   type  Type of Text
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Text
+   *  @property  {string}                      type                       Type of the Text
+   *  @property  {string}                      lang                       Lang of the Text
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
+   */
+  CTS.repository.Prototypes.cts5.Text = function (nodes, type, urn) {
+    this.urn = nodes.getAttribute("urn");
+
+    CTS.repository.Prototypes.Text.call(this, type, nodes, "http://chs.harvard.edu/xmlns/cts");
+  }
+  CTS.repository.Prototypes.cts5.Text.prototype = Object.create(CTS.repository.Prototypes.Text.prototype)
+
+  /**
+   * Instantiate CTS Edition from CTS5 XML
+   * 
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts5.Text
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  @param {lang}     lang  Lang of the text
+   *  
+   *  @property  {string}                      urn                        URN of the Edition
+   *  @property  {string}                      lang                       Lang of the Edition
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
+   */
+  CTS.repository.Prototypes.cts5.Edition = function(nodes, urn, lang) {
+    //Edition have the lang from their parent
+    this.lang = lang;
+
+    CTS.repository.Prototypes.cts5.Text.call(this, nodes, "edition", urn);
+  }
+  CTS.repository.Prototypes.cts5.Edition.prototype = Object.create(CTS.repository.Prototypes.cts5.Text.prototype)
+
+  /**
+   * Instantiate CTS Translation from CTS5 XML
+   * 
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts5.Text
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                      urn                        URN of the Translation
+   *  @property  {string}                      lang                       Lang of the Translation
+   *  @property  {Object.<string, string>}     titles                     <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangLabel           Default lang to use to display title
+   *  @property  {Object.<string, string>}     descriptions               <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                      defaultLangDesc            Default lang to use to display title
+   *  @property  {Array.<string>}              citations                  List of label for citations scheme
+   */
+  CTS.repository.Prototypes.cts5.Translation = function(nodes, urn) {
+    //Translation get their lang from their body
+    this.lang = nodes.getAttribute("xml:lang");
+
+    CTS.repository.Prototypes.cts5.Text.call(this, nodes, "translation", urn);
+  }
+  CTS.repository.Prototypes.cts5.Translation.prototype = Object.create(CTS.repository.Prototypes.cts5.Text.prototype)
+
+
+  /**
+   * Instantiate CTS Work from CTS5 XML
+   * 
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.Work
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *  @param {string}   urn   URN of the parent
+   *  
+   *  @property  {string}                                               urn             URN of the Work
+   *  @property  {string}                                               lang            Lang of the Work
+   *  @property  {Object.<string, string>}                              titles          <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                               defaultLang     Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts5.Text>}          texts           Texts available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts5.Edition>}       editions        Editions available in the inventory
+   *  @property  {Array.<CTS.repository.Prototypes.cts5.Translation>}   translations    Translations available in the inventory
+   */
+  CTS.repository.Prototypes.cts5.Work = function(nodes, urn) {
+    this.urn = nodes.getAttribute("urn");
+    this.lang = nodes.getAttribute("xml:lang");
+
+    CTS.repository.Prototypes.Work.call(this, nodes, "http://chs.harvard.edu/xmlns/cts");
+  }
+  CTS.repository.Prototypes.cts5.Work.prototype = Object.create(CTS.repository.Prototypes.Work.prototype)
+
+  /**
+   * Instantiate CTS TextGroup from CTS5 XML
+   * 
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts5.TextGroup
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {NodeList} nodes DOM element to use for completion of the instance
+   *
+   *  @property  {string}                                       urn          URN of the TextGroup
+   *  @property  {Object.<string, string>}                      titles       <langCode, title> Dictionary of titles to show for the textgroup (Author name)
+   *  @property  {string}                                       defaultLang  Default lang to use to display title
+   *  @property  {Array.<CTS.repository.Prototypes.cts5.Work>}  works        Textgroup available in the inventory
+   */
+  CTS.repository.Prototypes.cts5.TextGroup = function(nodes) {
+    this.urn = nodes.getAttribute("urn");
+
+    CTS.repository.Prototypes.TextGroup.call(this, nodes, "http://chs.harvard.edu/xmlns/cts");
+  }
+  CTS.repository.Prototypes.cts5.TextGroup.prototype = Object.create(CTS.repository.Prototypes.TextGroup.prototype)
+
+  /**
+   * Instantiate CTS TextInventory from CTS5 XML
+   * 
+   *  @constructor
+   *  @augments CTS.repository.Prototypes.cts5.TextInventory
+   *  @memberOf  CTS.repository.Prototypes.cts5
+   *  
+   *  @param {document} xml          Parsed XML representing the inventory
+   *  @param {string}   namespace    Namespace to use
+   *  @param {string}   identifier   Identifier, usually an URI
+   *
+   *  @property  {string}                                            namespace   Namespace for nodes parsing
+   *  @property  {Node}                                              xml         XML node representing the TextInventory node
+   *  @property  {Array.<CTS.repository.Prototypes.cts5.TextGroup>}  textgroups  Textgroup available in the inventory
+   */
+  CTS.repository.Prototypes.cts5.TextInventory = function(xml, namespace, identifier) {
+    CTS.repository.Prototypes.TextInventory.call(this, identifier);
+    this.xml = xml;
+    this.namespace = namespace || "http://chs.harvard.edu/xmlns/cts";
+    this.xml = this.xml.getElementsByTagNameNS(this.namespace, "TextInventory");
+    if(this.xml.length == 1) {
+      var textgroups = this.xml[0].getElementsByTagNameNS(this.namespace, "textgroup");
+      for (var i = textgroups.length - 1; i >= 0; i--) {
+        this.textgroups.push(new CTS.repository.Prototypes.cts5.TextGroup(textgroups[i]))
+      };
+    }
+  }
+  CTS.repository.Prototypes.cts5.TextInventory.prototype = Object.create(CTS.repository.Prototypes.TextInventory.prototype)
 
 
   /**
@@ -2338,6 +2514,10 @@
       }
     });
     return inventory;
+  }
+
+  var ns = function(namespace) {
+    return (namespace === "http://chs.harvard.edu/xmlns/cts") ? CTS.repository.Prototypes.cts5 : CTS.repository.Prototypes.cts3;
   }
 
 }));

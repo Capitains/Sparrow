@@ -2,6 +2,8 @@ Capitains Sparrow
 ===
 
 [![Build Status](https://travis-ci.org/Capitains/Sparrow.svg)](https://travis-ci.org/Capitains/Sparrow)
+[![Bower version](https://badge.fury.io/bo/capitains-sparrow.svg)](http://badge.fury.io/bo/capitains-sparrow)
+[![npm version](https://badge.fury.io/js/capitains-sparrow.svg)](http://badge.fury.io/js/capitains-sparrow)
 
 # About
 This software has been developed by @PerseusDL team to provide a simple and ready to use Javascript abstraction/implementation of the CTS norm. On the road leading to the CTS abstraction, we thought it might be nice to provide ready-to-use plugins for various uses and various libraries.
