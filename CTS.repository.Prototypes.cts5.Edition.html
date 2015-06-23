@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Capitains Sparrow Class: Text</title>
+	<title>Capitains Sparrow Class: Edition</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -236,14 +236,12 @@
 					
 
 
-	<h1 class="page-title">Class: Text</h1>
+	<h1 class="page-title">Class: Edition</h1>
 <section>
 
 <header>
     <h2>
-        <span class="ancestors"><a href="CTS.html">CTS</a><a href="CTS.repository.html">.repository</a><a href="CTS.repository.Prototypes.html">.Prototypes</a><a href="CTS.repository.Prototypes.cts3.html">.cts3</a>.</span>
-    
-    Text
+    Edition
     </h2>
     
 </header>
@@ -255,7 +253,7 @@
     
         
 <dt>
-    <h4 class="name" id="Text"><span class="type-signature"></span>new Text<span class="signature">(nodes, type, urn)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Edition"><span class="type-signature"></span>new Edition<span class="signature">(nodes, urn, lang)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -263,7 +261,7 @@
     
     
     <div class="description">
-        Instantiate CTS Text from CTS3 XML (CTS Text is the abstract model shared by Edition and Translation)
+        Instantiate CTS Edition from CTS5 XML
     </div>
     
 
@@ -320,29 +318,6 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Type of Text</td>
-        </tr>
-
-	
-
-        <tr>
-            
                 <td class="name"><code>urn</code></td>
             
 
@@ -360,6 +335,29 @@
             
 
             <td class="description last">URN of the parent</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">lang</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Lang of the text</td>
         </tr>
 
 	
@@ -414,30 +412,7 @@
 
             
 
-            <td class="description last">URN of the Text</td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Type of the Text</td>
+            <td class="description last">URN of the Edition</td>
         </tr>
 
 	
@@ -460,7 +435,7 @@
 
             
 
-            <td class="description last">Lang of the Text</td>
+            <td class="description last">Lang of the Edition</td>
         </tr>
 
 	
@@ -633,7 +608,7 @@
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="CTS.repository.Prototypes.Text.html">CTS.repository.Prototypes.Text</a></li>
+            <li><a href="CTS.repository.Prototypes.cts5.Text.html">CTS.repository.Prototypes.cts5.Text</a></li>
         </ul>
     
 

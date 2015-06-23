@@ -160,6 +160,30 @@
 						</li>
 						
 						<li>
+							<a href="CTS.repository.Prototypes.cts5.Edition.html">CTS.repository.Prototypes.cts5.Edition</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.Prototypes.cts5.Text.html">CTS.repository.Prototypes.cts5.Text</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.Prototypes.cts5.TextGroup.html">CTS.repository.Prototypes.cts5.TextGroup</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.Prototypes.cts5.TextInventory.html">CTS.repository.Prototypes.cts5.TextInventory</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.Prototypes.cts5.Translation.html">CTS.repository.Prototypes.cts5.Translation</a>
+						</li>
+						
+						<li>
+							<a href="CTS.repository.Prototypes.cts5.Work.html">CTS.repository.Prototypes.cts5.Work</a>
+						</li>
+						
+						<li>
 							<a href="CTS.repository.Prototypes.Text.html">CTS.repository.Prototypes.Text</a>
 						</li>
 						
@@ -582,6 +606,122 @@
         </tr>
 
 	
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Text titles object</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>title[lang]</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Title in a given lang</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>textgroup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Text titles object</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>textgroup[lang]</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Title in a given lang</td>
+        </tr>
+
+	
 	</tbody>
 </table>
 </dl>
@@ -837,6 +977,193 @@
         
             
 <dt>
+    <h4 class="name" id="getLabel"><span class="type-signature"></span>getLabel<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Make a getValidReff request
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;String, function()></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Options object
+                <h6>Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Success callback (Pass the this object as callback)</td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Error Callback</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getPassage"><span class="type-signature"></span>getPassage<span class="signature">(start, end)</span><span class="type-signature"> &rarr; {<a href="CTS.text.Passage.html">CTS.text.Passage</a>}</span></h4>
     
     
@@ -984,6 +1311,306 @@
 	<dd>
 		
 <span class="param-type"><a href="CTS.text.Passage.html">CTS.text.Passage</a></span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getTextgroup"><span class="type-signature"></span>getTextgroup<span class="signature">(lang)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get a textgroup given a lang
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Lang of the Textgroup</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The textgroup
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getTitle"><span class="type-signature"></span>getTitle<span class="signature">(lang)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get a title given a lang
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>lang</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Lang of the title</td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The title
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
 
 
 	</dd>
@@ -1392,7 +2019,7 @@
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on 2015-03-27T10:05:05-04:00 using the <a
+		on 2015-06-23T18:16:56+02:00 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
