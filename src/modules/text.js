@@ -393,7 +393,8 @@
         inventory : this.inventory,
         success : function(data) {
           var xml = (new DOMParser()).parseFromString(data, "text/xml");
-          var ref = xml.getElementsByTagNameNS("*", "current")[0].textContent;
+          var urn = xml.getElementsByTagNameNS("http://chs.harvard.edu/xmlns/cts", "urn");
+          var ref = (urn.length > 0) ? urn[0].textContent : xml.getElementsByTagNameNS("*", "current")[0].textContent;
           self.passages[ref] = new CTS.text.Passage(ref, self.endpoint, self.inventory)
           self.passages[ref].document = xml;
 
