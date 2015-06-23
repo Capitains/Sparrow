@@ -1,5 +1,5 @@
 describe( "Testing CTS 5 Repository object", function () {
-  fixtures = {
+  var fixtures = {
     "cts5" : {
       "repo" : jasmine.getFixtures().read('xml/repo-cts5.xml'),
       "translationsRepo" : jasmine.getFixtures().read('xml/repo-cts5.xml'),
@@ -358,6 +358,7 @@ describe( "Testing CTS 5 Repository object", function () {
     it("should create an object from JSON", function() {
       repo = new CTS.repository.repository("http://localhost", 5) 
       repo.fromObject(fixtures.cts5.json);
+      console.log(Object.keys(repo.inventories)[0])
       expect(repo.inventories.sparrow.getRaw()).toBeDefined();
       expect(repo.inventories.sparrow.getRaw().Lucan["Civil War"].edition.Pharsalia.getTitle()).toEqual("Pharsalia");
     })

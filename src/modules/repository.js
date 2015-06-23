@@ -140,25 +140,27 @@
     this.translations = [];
     this.texts = [];
 
-    // We get the labels
-    var groupnames = nodes.getElementsByTagNameNS(namespace, "title");
-    for (var i = groupnames.length - 1; i >= 0; i--) {
-      this.defaultLang = groupnames[i].getAttribute("xml:lang");
-      this.titles[this.defaultLang] = groupnames[i].textContent;
-    };
 
-    var editions = nodes.getElementsByTagNameNS(namespace, "edition");
-    for (var i = editions.length - 1; i >= 0; i--) {
-      this.editions.push(new (ns(namespace)).Edition(editions[i], this.urn, this.lang));
-    };
+    if(typeof nodes !== "undefined"){
+      // We get the labels
+      var groupnames = nodes.getElementsByTagNameNS(namespace, "title");
+      for (var i = groupnames.length - 1; i >= 0; i--) {
+        this.defaultLang = groupnames[i].getAttribute("xml:lang");
+        this.titles[this.defaultLang] = groupnames[i].textContent;
+      };
 
-    var translations = nodes.getElementsByTagNameNS(namespace, "translation");
-    for (var i = translations.length - 1; i >= 0; i--) {
-      this.translations.push(new (ns(namespace)).Translation(translations[i], this.urn));
-    };
+      var editions = nodes.getElementsByTagNameNS(namespace, "edition");
+      for (var i = editions.length - 1; i >= 0; i--) {
+        this.editions.push(new (ns(namespace)).Edition(editions[i], this.urn, this.lang));
+      };
 
-    this.texts = this.translations.concat(this.editions);
+      var translations = nodes.getElementsByTagNameNS(namespace, "translation");
+      for (var i = translations.length - 1; i >= 0; i--) {
+        this.translations.push(new (ns(namespace)).Translation(translations[i], this.urn));
+      };
 
+      this.texts = this.translations.concat(this.editions);
+    }
     /**
      * Get the title of the object
      * 
@@ -210,17 +212,19 @@
     this.defaultLang = "";
     this.works = [];
 
-    // We get the labels
-    var labels = nodes.getElementsByTagNameNS(namespace, "groupname");
-    for (var i = labels.length - 1; i >= 0; i--) {
-      this.defaultLang = labels[i].getAttribute("xml:lang");
-      this.titles[this.defaultLang] = labels[i].textContent;
-    };
-
-    var works = nodes.getElementsByTagNameNS(namespace, "work");
-    for (var i = works.length - 1; i >= 0; i--) {
-      this.works.push(new (ns(namespace)).Work(works[i], this.urn))
-    };
+    if(typeof nodes !== "undefined"){
+      // We get the labels
+      var labels = nodes.getElementsByTagNameNS(namespace, "groupname");
+      for (var i = labels.length - 1; i >= 0; i--) {
+        this.defaultLang = labels[i].getAttribute("xml:lang");
+        this.titles[this.defaultLang] = labels[i].textContent;
+      };
+  
+      var works = nodes.getElementsByTagNameNS(namespace, "work");
+      for (var i = works.length - 1; i >= 0; i--) {
+        this.works.push(new (ns(namespace)).Work(works[i], this.urn))
+      };
+    }
 
     /**
      * Get the title of the object
@@ -494,7 +498,7 @@
    */
   CTS.repository.Prototypes.cts5.Text = function (nodes, type, urn) {
     this.urn = nodes.getAttribute("urn");
-    
+
     CTS.repository.Prototypes.Text.call(this, type, nodes, "http://chs.harvard.edu/xmlns/cts");
   }
   CTS.repository.Prototypes.cts5.Text.prototype = Object.create(CTS.repository.Prototypes.Text.prototype)
