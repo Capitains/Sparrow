@@ -1,0 +1,87 @@
+<CTS:GetCapabilities xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:CTS="http://chs.harvard.edu/xmlns/cts">
+    <CTS:request elapsed-time="40">
+        <CTS:requestName>GetCapabilities</CTS:requestName>
+        <CTS:requestUrn/>
+        <CTS:psg/>
+        <CTS:workurn>:.</CTS:workurn>
+    </CTS:request>
+    <CTS:reply>
+        <ti:TextInventory xmlns:ti="http://chs.harvard.edu/xmlns/cts" tiid="sparrow">
+            <ti:textgroup urn="urn:cts:latinLit:phi0917">
+                <ti:groupname xml:lang="eng">Lucan</ti:groupname>
+                <ti:work urn="urn:cts:latinLit:phi0917.phi001" xml:lang="lat">
+                    <ti:title xml:lang="eng">Civil War</ti:title>
+                    <ti:edition workUrn="urn:cts:latinLit:phi0917.phi001" urn="urn:cts:latinLit:phi0917.phi001.perseus-lat1">
+                        <ti:label xml:lang="eng">Pharsalia</ti:label>
+                        <ti:description xml:lang="eng">Pharsaliae Libri X. M. Annaeus Lucanus. Carolus
+                    Hermannus Weise. Leipzig. G. Bassus. 1835.</ti:description>
+                        <ti:memberof collection="Perseus:collection:Greco-Roman"/>
+                        <ti:online docname="">
+                            <ti:validate schema="tei-epidoc.rng"/>
+                            <ti:namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                            <ti:citationMapping/>
+                        </ti:online>
+                    </ti:edition>
+                </ti:work>
+            </ti:textgroup>
+            <ti:textgroup urn="urn:cts:latinLit:phi0959">
+                <ti:groupname xml:lang="eng">Ovid</ti:groupname>
+                <ti:groupname>Ovid</ti:groupname>
+                <ti:work urn="urn:cts:latinLit:phi0959.phi006" xml:lang="lat">
+                    <ti:title xml:lang="eng">Metamorphoses</ti:title>
+                    <ti:edition workUrn="urn:cts:latinLit:phi0959.phi006" urn="urn:cts:latinLit:phi0959.phi006.perseus-lat2">
+                        <ti:label xml:lang="eng">Metamorphoses</ti:label>
+                        <ti:description xml:lang="eng">Perseus:bib:oclc,32116154, Ovid. Metamorphoses. Hugo
+                     Magnus. Gotha (Germany). Friedr. Andr. Perthes. 1892.</ti:description>
+                        <ti:memberof collection="Perseus:collection:Greco-Roman"/>
+                        <ti:online docname="/db/apps/canonical-latinLit/data/phi0959/phi006/phi0959.phi006.perseus-lat2.xml">
+                            <ti:validate schema="tei-epidoc.rng"/>
+                            <ti:namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                            <ti:citationMapping>
+                                <ti:citation label="unknown" xpath="/tei:div[@n='?']" scope="/tei:TEI/tei:text/tei:body">
+                                    <ti:citation label="unknown" xpath="/tei:l[@n='?']" scope="/tei:TEI/tei:text/tei:body/tei:div[@n='?']"/>
+                                </ti:citation>
+                            </ti:citationMapping>
+                        </ti:online>
+                    </ti:edition>
+                </ti:work>
+            </ti:textgroup>
+            <ti:textgroup urn="urn:cts:latinLit:phi0690">
+                <ti:groupname xml:lang="eng">Virgil</ti:groupname>
+                <ti:groupname xml:lang="fre">Virgile</ti:groupname>
+                <ti:work urn="urn:cts:latinLit:phi0690.phi003" xml:lang="lat">
+                    <ti:title xml:lang="eng">Aeneid</ti:title>
+                    <ti:title xml:lang="fre">Énéide</ti:title>
+                    <ti:edition workUrn="urn:cts:latinLit:phi0690.phi003" urn="urn:cts:latinLit:phi0690.phi003.perseus-lat1">
+                        <ti:label xml:lang="eng">Aeneid</ti:label>
+                        <ti:label xml:lang="fre">Énéide</ti:label>
+                        <ti:description xml:lang="eng">Perseus:bib:oclc,22858571, Vergil. Bucolics, Aeneid, and Georgics Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.</ti:description>
+                        <ti:description xml:lang="fre">Perseus:bib:oclc,22858571, Vergil. Bucoliques, Énéide, and Géorgiques Of Vergil. J. B. Greenough. Boston. Ginn and Co. 1900.</ti:description>
+                        <ti:memberof collection="Perseus:collection:Greco-Roman"/>
+                        <ti:online docname="">
+                            <ti:validate schema="tei-epidoc.rng"/>
+                            <ti:namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                            <ti:citationMapping>
+
+                                <ti:citation label="book" xpath="/div1[@n='?']" scope="/TEI.2/text/body">
+                                    <ti:citation label="line" xpath="/l[@n='?']" scope="/TEI.2/text/body/div1[@n='?']"/>
+                                </ti:citation>
+                            </ti:citationMapping>
+                        </ti:online>
+                    </ti:edition>
+                    <ti:translation workUrn="urn:cts:latinLit:phi0690.phi003" urn="urn:cts:latinLit:phi0690.phi003.perseus-eng1">
+
+                        <ti:label xml:lang="eng">Aeneid</ti:label>
+                        <ti:description xml:lang="eng">Vergil. Aeneid. John Dryden. trans.</ti:description>
+                        <ti:memberof collection="Perseus:collection:Greco-Roman-protected"/>
+                        <ti:online docname="">
+                            <ti:validate schema="tei-epidoc.rng"/>
+                            <ti:namespaceMapping abbreviation="tei" nsURI="http://www.tei-c.org/ns/1.0"/>
+                            <ti:citationMapping/>
+                        </ti:online>
+                    </ti:translation>
+                </ti:work>
+            </ti:textgroup>
+        </ti:TextInventory>
+    </CTS:reply>
+</CTS:GetCapabilities>

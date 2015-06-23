@@ -1,0 +1,88 @@
+[4mInitializing[24m
+Command-line options: [36m--verbose[39m
+
+Reading "Gruntfile.js" Gruntfile...[32mOK[39m
+
+[1mRegistering Gruntfile tasks.[22m
+Reading package.json...[32mOK[39m
+Parsing package.json...[32mOK[39m
+Initializing config...[32mOK[39m
+
+[1mRegistering "grunt-contrib-clean" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-clean/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-clean/package.json...[32mOK[39m
+Loading "clean.js" tasks...[32mOK[39m
++ [36mclean[39m
+
+[1mRegistering "grunt-contrib-concat" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-concat/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-concat/package.json...[32mOK[39m
+Loading "concat.js" tasks...[32mOK[39m
++ [36mconcat[39m
+
+[1mRegistering "grunt-contrib-uglify" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-uglify/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-uglify/package.json...[32mOK[39m
+Loading "uglify.js" tasks...[32mOK[39m
++ [36muglify[39m
+
+[1mRegistering "grunt-contrib-jasmine" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/package.json...[32mOK[39m
+Loading "jasmine.js" tasks...[32mOK[39m
++ [36mjasmine[39m
+
+[1mRegistering "grunt-jslint" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-jslint/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-jslint/package.json...[32mOK[39m
+Loading "jslint.js" tasks...[32mOK[39m
++ [36mjslint[39m
+
+[1mRegistering "grunt-jsdoc" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-jsdoc/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-jsdoc/package.json...[32mOK[39m
+Loading "jsdoc-plugin.js" tasks...[32mOK[39m
++ [36mjsdoc[39m
+
+[1mRegistering "grunt-gh-pages" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-gh-pages/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-gh-pages/package.json...[32mOK[39m
+Loading "gh-pages.js" tasks...[32mOK[39m
++ [36mgh-pages[39m, [36mgh-pages-clean[39m
+
+[1mRegistering "grunt-release" local Npm module tasks.[22m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-release/package.json...[32mOK[39m
+Parsing /home/thibault/dev/capitains/Sparrow/node_modules/grunt-release/package.json...[32mOK[39m
+Loading "grunt-release.js" tasks...[32mOK[39m
++ [36mrelease[39m
+Loading "Gruntfile.js" tasks...[32mOK[39m
++ [36mbuild[39m, [36mdefault[39m, [36mpage[39m, [36mtest[39m, [36mversion[39m
+
+Running tasks: [36mjasmine[39m
+
+[4mRunning "jasmine" task[24m
+
+[4mRunning "jasmine:src" (jasmine) task[24m
+Verifying property [36mjasmine.src[39m exists in config...[32mOK[39m
+Files: [36msrc/cts.js[39m, [36msrc/modules/endpoint.js[39m, [36msrc/modules/i18n.js[39m, [36msrc/modules/repository.js[39m, [36msrc/modules/service.js[39m, [36msrc/modules/text.js[39m, [36msrc/modules/utils.js[39m, [36msrc/modules/xslt.js[39m, [36msrc/i18n/en.js[39m, [36msrc/services/llt.tokenizer.js[39m, [36msrc/endpoints/endpoint.simpleUrl.js[39m, [36msrc/xslt/cts.passage_to_text.js[39m, [36msrc/xslt/llt.segtok_to_align.js[39m, [36msrc/xslt/llt.segtok_to_tb.js[39m -> [36msrc[39m
+Options: [36mversion="2.0.0"[39m, [36mtimeout=10000[39m, [36mstyles=[][39m, [36mspecs="spec/**/*.specs.js"[39m, [36mhelpers=[][39m, [36mvendor=["node_modules/jasmine-ajax/lib/mock-ajax.js","node_modules/jasmine-expect/dist/jasmine-matchers.js","node_modules/jquery/dist/jquery.min.js","node_modules/jasmine-jquery/lib/jasmine-jquery.js","spec/javascripts/.helper.js"][39m, [36moutfile="_SpecRunner.html"[39m, [36mhost=""[39m, [36mtemplate="/home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/jasmine/templates/DefaultRunner.tmpl"[39m, [36mtemplateOptions={}[39m, [36mjunit={}[39m, [36mignoreEmpty=false[39m, [36mdisplay="full"[39m, [36msummary=false[39m, [36mkeepRunner[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../jasmine/reporters/PhantomReporter.js...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/reporter.js...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../vendor/jasmine-2.0.0/jasmine.css...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/jasmine.css...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../vendor/jasmine-2.0.0/jasmine.js...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/jasmine.js...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../vendor/jasmine-2.0.0/jasmine-html.js...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/jasmine-html.js...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../vendor/jasmine-2.0.0/boot.js...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/boot.js...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../vendor/jasmine-2.0.0/jasmine_favicon.png...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/jasmine_favicon.png...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/lib/../../node_modules/es5-shim/es5-shim.js...[32mOK[39m
+Writing .grunt/grunt-contrib-jasmine/es5-shim.js...[32mOK[39m
+Reading /home/thibault/dev/capitains/Sparrow/node_modules/grunt-contrib-jasmine/tasks/jasmine/templates/DefaultRunner.tmpl...[32mOK[39m
+Processing source...[32mOK[39m
+Writing _SpecRunner.html...[32mOK[39m
+
+[1mTesting jasmine specs via phantom[22m
+
