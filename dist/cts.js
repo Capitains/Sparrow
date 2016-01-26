@@ -569,6 +569,13 @@
    *
    */
   var setValue = function (key, value) {
+    // ideally it will be a pre-registered field, but
+    // for the sake of flexibility, it should be okay if
+    // an unregistered one is set. It's up to the client then
+    // to validate the value.
+    if (! this.options[key]) {
+      this.options[key] = {} 
+    }
     this.options[key]["value"] = value;
   }
 
