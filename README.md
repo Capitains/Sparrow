@@ -14,7 +14,6 @@ To build the compressed files, in a terminal, in the root of this repository:
 npm install
 grunt build
 ```
-
 # Plugins/Modules
 
 - [I18n plugin](./doc/i18n.md)
@@ -37,3 +36,14 @@ grunt build
 - [jQuery.cts.typeahead](./doc/plugins/jquery.cts.typeahead.md) : A way to search for an edition or translation
 - [jQuery.cts.service](./doc/plugins/jquery.cts.service.md) : A way to embed service parameters and form in your html
 - [jQuery.cts.xslt](./doc/plugins/jquery.cts.xslt.md) : A way to embed XSLT parameters and form in your html and transform the text
+
+
+# Releasing
+
+Sparrow packages are registered as [npm](https://docs.npmjs.com/getting-started/publishing-npm-packages) and  [bower](http://bower.io/docs/creating-packages/) packages.  The release process is follows:
+
+1. Update the release version in bower.json and package.json
+1. `grunt build` 
+1. commit the updated json and package files and push to github
+1. `grunt page` to update the gh-pages branch with latest code documentation
+1. Using the GitHub interface create a new release tag and release notes.
