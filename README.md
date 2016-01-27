@@ -40,7 +40,7 @@ grunt build
 
 # Releasing
 
-Sparrow packages are registered as [bower packages](http://bower.io/docs/creating-packages/).  The release process is follows:
+Sparrow packages are registered as [npm](https://docs.npmjs.com/getting-started/publishing-npm-packages) and  [bower](http://bower.io/docs/creating-packages/) packages.  The release process is follows:
 
 1. Update the release version in bower.json and package.json
 1. `grunt build` 
