@@ -47,3 +47,4 @@ Sparrow packages are registered as [npm](https://docs.npmjs.com/getting-started/
 1. commit the updated json and package files and push to github
 1. `grunt page` to update the gh-pages branch with latest code documentation
 1. Using the GitHub interface create a new release tag and release notes.
+1. `npm publish` to publish the new release to NPM (Bower is published automatically from GitHub)
