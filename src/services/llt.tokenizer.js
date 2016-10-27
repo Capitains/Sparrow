@@ -60,6 +60,11 @@
         "type" : "string",
         "html" : "input",
         "default" : "http://www.tei-c.org/ns/1.0"
+      },
+      "semicolon_delimiter" : {
+        "type" : "boolean",
+        "html" : "checkbox",
+        "default" : true
       }
     }
   }
