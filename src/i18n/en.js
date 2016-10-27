@@ -36,6 +36,7 @@
     "llt.tokenizer.remove_node" : "Nodes to remove from XML",
     "llt.tokenizer.go_to_root" : "Name of the root node",
     "llt.tokenizer.ns" : "Namespace of the XML",
+    "llt.tokenizer.semicolon_delimiter" : "Semicolon Delimiter",
 /*
     LLT.Segtok_to_tb XSLT translations
 */
