@@ -2663,12 +2663,18 @@
         "type" : "string",
         "html" : "input",
         "default" : "http://www.tei-c.org/ns/1.0"
+      },
+      "semicolon_delimiter" : {
+        "type" : "boolean",
+        "html" : "checkbox",
+        "default" : true
       }
     }
   }
   CTS.service.services["llt.tokenizer"].prototype = Object.create(CTS.service._service)
 
 }));
+
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -2970,6 +2976,7 @@
     "llt.tokenizer.remove_node" : "Nodes to remove from XML",
     "llt.tokenizer.go_to_root" : "Name of the root node",
     "llt.tokenizer.ns" : "Namespace of the XML",
+    "llt.tokenizer.semicolon_delimiter" : "Semicolon Delimiter",
 /*
     LLT.Segtok_to_tb XSLT translations
 */
