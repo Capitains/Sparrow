@@ -1,7 +1,7 @@
 {
   "name": "capitains-sparrow",
   "description": "Javascript abstractions and plugins for the CITE/CTS specification",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "keywords": [
     "CITE",
     "CTS",
@@ -32,7 +32,7 @@
   },
   "contributors": [
     {
-      "name": "Thibault Clérice",
+      "name": "Thibault Clerice",
       "email": "",
       "web": "http://github.com/PonteIneptique"
     },
@@ -44,7 +44,7 @@
   ],
   "maintainers": [
     {
-      "name": "Thibault Clérice",
+      "name": "Thibault Clerice",
       "email": "",
       "web": "http://github.com/PonteIneptique"
     },
